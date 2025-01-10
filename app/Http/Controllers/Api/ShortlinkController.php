@@ -6,12 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ShortlinkController extends Controller
 {
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        try {
+            $validatedData = $this->validateRequest($request);
+
+            $shortCode = Str::random(6);
+
+            $shortlink = Shortlink::create(array_merge($validatedData, [
+                'short_code' => $shortCode,
+            ]));
+
+            return response()->json($shortlink, 201);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while creating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
             'original_url' => 'required|url',
             'utm_source' => 'nullable|string|max:255',
             'utm_medium' => 'nullable|string|max:255',
@@ -19,14 +42,6 @@ class ShortlinkController extends Controller
             'utm_term' => 'nullable|string|max:255',
             'utm_content' => 'nullable|string|max:255',
         ]);
-
-        $shortCode = Str::random(6);
-
-        $shortlink = Shortlink::create(array_merge($validated, [
-            'short_code' => $shortCode,
-        ]));
-
-        return response()->json($shortlink, 201);
     }
 
     public function deactivate($id)
