@@ -17,8 +17,12 @@ class CreateShortlinksTable extends Migration
             $table->string('utm_campaign')->nullable();
             $table->string('utm_term')->nullable();
             $table->string('utm_content')->nullable();
+            $table->unsignedBigInteger('total_clicks')->default(0);
+            $table->unsignedBigInteger('unique_clicks')->default(0);
+            $table->json('geo_data')->nullable();
+            $table->json('device_data')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->timestamps(); // For created_at and updated_at
+            $table->timestamps();
         });
     }
 
