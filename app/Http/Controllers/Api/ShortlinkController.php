@@ -13,6 +13,34 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShortlinkController extends Controller
 {
+    public function index()
+    {
+        $shortlinks = Shortlink::all();
+
+        return response()->json($shortlinks);
+    }
+
+    public function show($id)
+    {
+        try {
+            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+
+            return response()->json($shortlink);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while retrieving shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    public function showActive()
+    {
+        $shortlinks = Shortlink::where('is_active', true)->get();
+
+        return response()->json($shortlinks);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -45,6 +73,21 @@ class ShortlinkController extends Controller
         ]);
     }
 
+    public function activate($id)
+    {
+        try {
+            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink->update(['is_active' => true]);
+
+            return response()->json(['message' => 'Shortlink activated successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while activating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
     public function deactivate($id)
     {
         try {
@@ -56,6 +99,21 @@ class ShortlinkController extends Controller
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while deactivating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink->delete();
+
+            return response()->json(['message' => 'Shortlink deleted successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while deleting shortlink: ' . $e->getMessage());
             return response()->json(['error' => 'An unexpected error occurred.'], 500);
         }
     }
