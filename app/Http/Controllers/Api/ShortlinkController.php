@@ -20,6 +20,19 @@ class ShortlinkController extends Controller
         return response()->json($shortlinks);
     }
 
+    public function redirect($short_code)
+    {
+        try {
+            $shortlink = Shortlink::where('short_code', $short_code)->firstOrFail();
+            return redirect($shortlink->original_url);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while redirecting: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
     public function show($id)
     {
         try {
