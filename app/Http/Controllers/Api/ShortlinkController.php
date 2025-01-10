@@ -20,13 +20,21 @@ class ShortlinkController extends Controller
         return response()->json($shortlinks);
     }
 
-    public function redirect($short_code)
+    public function redirect($short_code, Request $request)
     {
         try {
             $shortlink = Shortlink::where('short_code', $short_code)->firstOrFail();
 
             if ($shortlink->is_active) {
                 $shortlink->increment('total_clicks');
+
+                // Track unique clicks by IP address
+                $ipAddress = $request->ip();
+                if (!$shortlink->uniqueClicks()->where('ip_address', $ipAddress)->exists()) {
+                    $shortlink->uniqueClicks()->create(['ip_address' => $ipAddress]);
+                    $shortlink->increment('unique_clicks');
+                }
+
                 return redirect($shortlink->original_url);
             } else {
                 return response()->json(['error' => 'Shortlink is not active'], 400);

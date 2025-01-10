@@ -23,6 +23,9 @@ class CreateShortlinksTable extends Migration
             $table->json('device_data')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->index('short_code');
+            $table->index('is_active');
         });
     }
 
