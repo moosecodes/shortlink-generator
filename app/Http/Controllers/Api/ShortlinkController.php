@@ -25,9 +25,12 @@ class ShortlinkController extends Controller
         try {
             $shortlink = Shortlink::where('short_code', $short_code)->firstOrFail();
 
-            $shortlink->increment('total_clicks');
-
-            return redirect($shortlink->original_url);
+            if ($shortlink->is_active) {
+                $shortlink->increment('total_clicks');
+                return redirect($shortlink->original_url);
+            } else {
+                return response()->json(['error' => 'Shortlink is not active'], 400);
+            }
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
