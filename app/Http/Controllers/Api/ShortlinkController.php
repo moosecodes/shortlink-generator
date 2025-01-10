@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ShortlinkController extends Controller
 {
@@ -46,9 +47,16 @@ class ShortlinkController extends Controller
 
     public function deactivate($id)
     {
-        $shortlink = Shortlink::findOrFail($id);
-        $shortlink->update(['is_active' => false]);
+        try {
+            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink->update(['is_active' => false]);
 
-        return response()->json(['message' => 'Shortlink deactivated successfully']);
+            return response()->json(['message' => 'Shortlink deactivated successfully']);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while deactivating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
     }
 }
