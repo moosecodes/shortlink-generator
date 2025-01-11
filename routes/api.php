@@ -17,6 +17,7 @@ Route::get('/shortlinks/redirect/{short_code}', [ShortlinkController::class, 're
 
 Route::post('/shortlinks', [ShortlinkController::class, 'store']);
 
+Route::patch('/shortlinks/update', [ShortlinkController::class, 'update']);
 Route::patch('/shortlinks/{id}/deactivate', [ShortlinkController::class, 'deactivate']);
 Route::patch('/shortlinks/{id}/activate', [ShortlinkController::class, 'activate']);
 

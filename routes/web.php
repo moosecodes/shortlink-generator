@@ -26,6 +26,12 @@ Route::middleware([
         return Inertia::render('CreateShortlink');
     });
 
+    Route::get('/shortlinks/update/{id}', function ($shortlink_id) {
+        return Inertia::render('UpdateShortlink', [
+            'shortlink_id' => $shortlink_id,
+        ]);
+    });
+
     Route::get('/shortlinks/all', function () {
         return Inertia::render('ListAllShortlinks');
     });

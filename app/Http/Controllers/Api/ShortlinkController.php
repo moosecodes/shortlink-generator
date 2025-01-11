@@ -88,6 +88,25 @@ class ShortlinkController extends Controller
         }
     }
 
+    public function update(Request $request)
+    {
+        try {
+            $validatedData = $this->validateRequest($request);
+            $shortlink = Shortlink::where('short_code', $request->id)->firstOrFail();
+
+            $shortlink->update($validatedData);
+
+            return response()->json($shortlink);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->errors()], 422);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Shortlink not found'], 404);
+        } catch (Exception $e) {
+            Log::error('Unexpected error occurred while updating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+        }
+    }
+
     private function validateRequest(Request $request)
     {
         return $request->validate([
