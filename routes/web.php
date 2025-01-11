@@ -21,4 +21,15 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::prefix('shortlinks')->group(function () {
+        Route::get('/all', function () {
+            return Inertia::render('ListAllShortlinks');
+        });
+        Route::get('/{shortlink_id}', function ($shortlink_id) {
+            return Inertia::render('ShortlinkDetails', [
+                'shortlink_id' => $shortlink_id,
+            ]);
+        });
+    });
 });
