@@ -15,7 +15,7 @@ const message = ref('');
 
 const fetchShortlink = async () => {
     try {
-        const response = await axios.get(`/api/shortlinks/${shortlink_id}`);
+        const response = await axios.get(`/api/shortlinks/show/${shortlink_id}`);
         shortlink.value = response.data;
         originalUrl.value = shortlink.value.original_url;
         utmSource.value = shortlink.value.utm_source;
@@ -39,7 +39,6 @@ const submitForm = async () => {
             utm_term: utmTerm.value,
             utm_content: utmContent.value,
         });
-        console.log(response);
 
         message.value = 'Shortlink updated successfully!';
     } catch (error) {

@@ -32,11 +32,11 @@ Route::middleware([
         ]);
     });
 
-    Route::get('/shortlinks/all', function () {
+    Route::get('/shortlinks/show/all', function () {
         return Inertia::render('ListAllShortlinks');
     });
 
-    Route::get('/shortlinks/info/{shortlink_id}', function ($shortlink_id) {
+    Route::get('/shortlinks/show/{shortlink_id}', function ($shortlink_id) {
         return Inertia::render('ShortlinkDetails', [
             'shortlink_id' => $shortlink_id,
         ]);

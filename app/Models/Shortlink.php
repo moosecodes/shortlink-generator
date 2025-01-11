@@ -18,9 +18,11 @@ class Shortlink extends Model
         'utm_campaign',
         'utm_term',
         'utm_content',
-        'is_active',
         'total_clicks',
         'unique_clicks',
+        'geo_data',
+        'device_data',
+        'is_active',
     ];
 
     public function uniqueClicks()

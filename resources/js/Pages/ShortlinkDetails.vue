@@ -11,7 +11,7 @@ const shortlink = ref(null);
 // Fetch the shortlink data
 const fetchShortlink = async () => {
     try {
-        const response = await axios.get(`/api/shortlinks/${shortlink_id}`);
+        const response = await axios.get(`/api/shortlinks/info/${shortlink_id}`);
         shortlink.value = response.data;
     } catch (error) {
         console.error('Error fetching shortlink:', error);
