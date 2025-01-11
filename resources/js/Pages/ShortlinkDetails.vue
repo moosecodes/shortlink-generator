@@ -3,7 +3,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import axios from 'axios';
 
 // Define props
-const {shortlink_id} = defineProps(['shortlink_id']);
+const { shortlink_id } = defineProps(['shortlink_id']);
 
 // Reactive state for shortlink details
 const shortlink = ref(null);
