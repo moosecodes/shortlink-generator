@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { VBtn } from 'vuetify/components';
+import { VForm, VContainer, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const { shortlink_id } = defineProps(['shortlink_id']);
 
@@ -52,36 +51,68 @@ onMounted(fetchShortlink);
 </script>
 
 <template>
-    <div>
-        <h1 class="text-2xl font-bold mb-2">Update Shortlink</h1>
-        <div class="font-bold font-gray-500 my-2">{{ shortlink_id.shortlink_id }}</div>
-        <form @submit.prevent="submitForm">
-            <v-btn color="primary" class="my-2" type="submit">Update Shortlink</v-btn>
-            <p v-if="message">{{ message }}</p>
-            <div>
-                <label for="originalUrl">Original URL:</label>
-                <input type="text" id="originalUrl" v-model="originalUrl" required />
-            </div>
-            <div>
-                <label for="utmSource">UTM Source:</label>
-                <input type="text" id="utmSource" v-model="utmSource" />
-            </div>
-            <div>
-                <label for="utmMedium">UTM Medium:</label>
-                <input type="text" id="utmMedium" v-model="utmMedium" />
-            </div>
-            <div>
-                <label for="utmCampaign">UTM Campaign:</label>
-                <input type="text" id="utmCampaign" v-model="utmCampaign" />
-            </div>
-            <div>
-                <label for="utmTerm">UTM Term:</label>
-                <input type="text" id="utmTerm" v-model="utmTerm" />
-            </div>
-            <div>
-                <label for="utmContent">UTM Content:</label>
-                <input type="text" id="utmContent" v-model="utmContent" />
-            </div>
-        </form>
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold my-2">
+            Update Shortlink for <span :class="shortlink?.is_active ? 'text-green-500' : 'text-red-500'">{{ shortlink?.short_code }}</span>
+        </h1>
     </div>
+    <v-form v-model="valid" @submit.prevent="submitForm">
+        <v-row>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="originalUrl"
+                    label="Original URL"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmSource"
+                    label="UTM Source"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmMedium"
+                    label="UTM Medium"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmCampaign"
+                    label="UTM Campaign"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmTerm"
+                    label="UTM Term"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmContent"
+                    label="UTM Content"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="isActive"
+                    label="Is Active"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-btn type="submit" color="primary" class="mt-4">Update Shortlink</v-btn>
+    </v-form>
+    <p v-if="message">{{ message }}</p>
 </template>

@@ -4,10 +4,10 @@ import ListAllShortlinks from '@/Components/shortlinks/ListAllShortlinks.vue';
 </script>
 
 <template>
-    <AppLayout title="View All Shortlinks">
+    <AppLayout title="Manage Shortlinks">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                View All Shortlinks
+                Manage Shortlinks
             </h2>
         </template>
 

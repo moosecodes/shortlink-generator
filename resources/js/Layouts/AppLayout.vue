@@ -57,7 +57,7 @@ const logout = () => {
                                 </NavLink>
 
                                 <NavLink :href="route('showAllShortlinks')" :active="route().current('showAllShortlinks')">
-                                    All Shortlinks
+                                    Manage Shortlinks
                                 </NavLink>
 
                                 <NavLink :href="route('newShortlink')" :active="route().current('newShortlink')">

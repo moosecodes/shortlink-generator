@@ -10,8 +10,10 @@ class CreateUniqueClicksTable extends Migration
     {
         Schema::create('unique_clicks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shortlink_id')
-                ->constrained()
+            $table->uuid('shortlink_id'); // Define as UUID to match the `id` type in `shortlinks` table
+            $table->foreign('shortlink_id')
+                ->references('id')
+                ->on('shortlinks')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->string('ip_address')->index();

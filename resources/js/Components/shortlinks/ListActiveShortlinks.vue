@@ -113,7 +113,7 @@ onMounted(fetchShortlinks);
                     :color="shortlink.is_active ? 'red' : 'green'"
                     @click="toggleActivation(shortlink)"
                     class="m-2">
-                    {{ shortlink.is_active ? 'Deactivate' : 'Activate' }}
+                    {{ shortlink.is_active ? 'Disable' : 'Activate' }}
                 </v-btn>
                 <v-btn
                     color="black"
