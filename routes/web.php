@@ -23,22 +23,16 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/shortlinks/new', function () {
-        return Inertia::render('CreateShortlink');
-    });
+        return Inertia::render('NewShortlink');
+    })->name('newShortlink');
 
-    Route::get('/shortlinks/update/{id}', function ($shortlink_id) {
-        return Inertia::render('UpdateShortlink', [
+    Route::get('/shortlinks/edit/{shortlink_id}', function ($shortlink_id) {
+        return Inertia::render('EditShortlink', [
             'shortlink_id' => $shortlink_id,
         ]);
     });
 
     Route::get('/shortlinks/show/all', function () {
-        return Inertia::render('ListAllShortlinks');
-    });
-
-    Route::get('/shortlinks/show/{shortlink_id}', function ($shortlink_id) {
-        return Inertia::render('ShortlinkDetails', [
-            'shortlink_id' => $shortlink_id,
-        ]);
-    });
+        return Inertia::render('ViewAllShortlinks');
+    })->name('showAllShortlinks');;
 });
