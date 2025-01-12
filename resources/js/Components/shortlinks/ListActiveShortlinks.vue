@@ -18,18 +18,6 @@ const editShortlink = (shortlink) => {
     window.location.href = `/shortlinks/edit/${shortlink.short_code}`
 };
 
-const addShortlink = async () => {
-    const originalUrl = prompt('Please enter the original URL:', 'https://example.com');
-    if (originalUrl) {
-        try {
-            const response = await axios.post('/api/shortlinks', { original_url: originalUrl });
-            window.location.reload();
-        } catch (error) {
-            console.error('Error adding shortlink:', error);
-        }
-    }
-};
-
 const deleteShortlink = async(shortlink) => {
     const confirmDelete = confirm('Are you sure you want to delete this shortlink?');
     if (confirmDelete) {
@@ -62,7 +50,7 @@ onMounted(fetchShortlinks);
 <template>
     <div>
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold my-2">{{ shortlinks.length ? "All Shortlinks" : "No Shortlinks" }}</h1>
+            <h1 class="text-2xl font-bold my-2">{{ shortlinks.length ? "Shortlinks" : "No Shortlinks" }}</h1>
 
             <div v-if="!shortlinks.length" class="my-2">
                 Create new shortlinks to get started!
@@ -76,7 +64,7 @@ onMounted(fetchShortlinks);
             </v-btn>
         </div>
 
-        <h2 class="my-2 font-bold">Active</h2>
+        <h2 class="my-2 font-bold">{{ shortlinks.filter(link => link.is_active).length }} Active</h2>
         <div
             v-for="shortlink in shortlinks.filter(link => link.is_active).reverse()"
             :key="shortlink.id"
@@ -127,55 +115,5 @@ onMounted(fetchShortlinks);
                 </v-btn>
         </div>
 
-        <h2 class="my-2 font-bold">Inactive</h2>
-        <div
-            v-for="shortlink in shortlinks.filter(link => !link.is_active).reverse()"
-            :key="shortlink.id"
-            class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
-                <a v-if="shortlink.is_active"
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank"
-                    class="text-green-500">
-                    <b>{{ shortlink.short_code }}</b>
-                </a>
-                <span v-else
-                    class="text-red-500">
-                    {{ shortlink.short_code }}
-                </span>
-
-                <small :class="shortlink.is_active ? 'text-green-500 font-bold' : 'text-red-500 font-bold'">
-                    {{ shortlink.is_active ? 'active' : 'disabled' }}
-                </small>
-                <small>{{ shortlink.total_clicks }}</small>
-                <small>{{ shortlink.unique_clicks }}</small>
-
-                <a v-if="shortlink.is_active"
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank">
-                    <b>{{ shortlink.original_url }}</b>
-                </a>
-                <span v-else>
-                    {{ shortlink.original_url }}
-                </span>
-
-                <small>{{ `localhost/api/shortlinks/redirect/${shortlink.short_code}` }}</small>
-
-                <v-btn
-                    color="blue"
-                    @click="toggleActivation(shortlink)"
-                    class="m-2">
-                    {{ shortlink.is_active ? 'Deactivate' : 'Activate' }}
-                </v-btn>
-                <v-btn
-                    color="black"
-                    @click="editShortlink(shortlink)">
-                    Edit
-                </v-btn>
-                <v-btn
-                    color="red"
-                    @click="deleteShortlink(shortlink)">
-                    X
-                </v-btn>
-        </div>
     </div>
 </template>
