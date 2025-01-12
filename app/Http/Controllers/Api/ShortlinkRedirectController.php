@@ -26,7 +26,14 @@ class ShortlinkRedirectController extends Controller
                     $shortlink->increment('unique_clicks');
                 }
 
-                return redirect($shortlink->original_url);
+                $props = [];
+                foreach ($shortlink->getAttributes() as $key => $value) {
+                    if ($key == "short_code") {
+                        $props[$key] = $value;
+                    }
+                }
+
+                return redirect($shortlink->original_url . '?' . http_build_query($props));
             } else {
                 return response()->json(['error' => 'Shortlink is not active'], 400);
             }
