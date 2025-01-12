@@ -1,6 +1,6 @@
-
 <script setup>
 import { ref } from 'vue';
+import { VForm, VContainer, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const originalUrl = ref('');
 const utmSource = ref('');
@@ -10,6 +10,7 @@ const utmTerm = ref('');
 const utmContent = ref('');
 const isActive = ref(true);
 const message = ref('');
+const valid = ref(false);
 
 const submitForm = async () => {
     try {
@@ -23,7 +24,6 @@ const submitForm = async () => {
             is_active: isActive.value,
         });
         message.value = 'Shortlink created successfully!';
-        // Reset form fields
         originalUrl.value = '';
         utmSource.value = '';
         utmMedium.value = '';
@@ -39,39 +39,70 @@ const submitForm = async () => {
 </script>
 
 <template>
-    <div>
-        <h1 class="text-2xl font-bold mb-4">Create Shortlink</h1>
-        <form @submit.prevent="submitForm">
-            <div>
-                <label for="originalUrl">Original URL:</label>
-                <input type="text" id="originalUrl" v-model="originalUrl" required />
-            </div>
-            <div>
-                <label for="utmSource">UTM Source:</label>
-                <input type="text" id="utmSource" v-model="utmSource" />
-            </div>
-            <div>
-                <label for="utmMedium">UTM Medium:</label>
-                <input type="text" id="utmMedium" v-model="utmMedium" />
-            </div>
-            <div>
-                <label for="utmCampaign">UTM Campaign:</label>
-                <input type="text" id="utmCampaign" v-model="utmCampaign" />
-            </div>
-            <div>
-                <label for="utmTerm">UTM Term:</label>
-                <input type="text" id="utmTerm" v-model="utmTerm" />
-            </div>
-            <div>
-                <label for="utmContent">UTM Content:</label>
-                <input type="text" id="utmContent" v-model="utmContent" />
-            </div>
-            <div>
-                <label for="isActive">Is Active:</label>
-                <input type="checkbox" id="isActive" v-model="isActive" />
-            </div>
-            <button type="submit">Create Shortlink</button>
-        </form>
-        <p v-if="message">{{ message }}</p>
-    </div>
+    <v-app>
+        <v-main>
+            <v-container>
+                <h1 class="text-2xl font-bold my-2">New Shortlink</h1>
+                <v-form v-model="valid" @submit.prevent="submitForm">
+                    <v-row>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="originalUrl"
+                                label="Original URL"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="utmSource"
+                                label="UTM Source"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="utmMedium"
+                                label="UTM Medium"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="utmCampaign"
+                                label="UTM Campaign"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="utmTerm"
+                                label="UTM Term"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="utmContent"
+                                label="UTM Content"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="4">
+                            <v-text-field
+                                v-model="isActive"
+                                label="Is Active"
+                                required
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-btn type="submit" color="primary" class="mt-4">Create Shortlink</v-btn>
+                </v-form>
+                <p v-if="message">{{ message }}</p>
+            </v-container>
+        </v-main>
+    </v-app>
 </template>

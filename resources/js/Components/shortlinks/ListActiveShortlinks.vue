@@ -14,6 +14,18 @@ const fetchShortlinks = async () => {
     }
 };
 
+const addShortlink = async () => {
+    const originalUrl = prompt('Please enter the original URL:', 'https://example.com');
+    if (originalUrl) {
+        try {
+            const response = await axios.post('/api/shortlinks', { original_url: originalUrl });
+            window.location.reload();
+        } catch (error) {
+            console.error('Error adding shortlink:', error);
+        }
+    }
+};
+
 const editShortlink = (shortlink) => {
     window.location.href = `/shortlinks/edit/${shortlink.short_code}`
 };
@@ -64,7 +76,7 @@ onMounted(fetchShortlinks);
             </v-btn>
         </div>
 
-        <h2 class="my-2 font-bold">{{ shortlinks.filter(link => link.is_active).length }} Active</h2>
+        <h2 class="my-2 font-bold">{{ shortlinks.filter(link => link.is_active).length }}/{{ shortlinks.length }} Active</h2>
         <div
             v-for="shortlink in shortlinks.filter(link => link.is_active).reverse()"
             :key="shortlink.id"
