@@ -28,12 +28,16 @@ const logout = () => {
 </script>
 
 <template>
-    <div>
+    <v-app>
         <Head :title="title" />
 
         <Banner />
 
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <v-navigation-drawer app>
+
+        </v-navigation-drawer>
+
+        <v-app-bar app>
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,6 +54,14 @@ const logout = () => {
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+
+                                <NavLink :href="route('showAllShortlinks')" :active="route().current('showAllShortlinks')">
+                                    All Shortlinks
+                                </NavLink>
+
+                                <NavLink :href="route('newShortlink')" :active="route().current('newShortlink')">
+                                    New Shortlink
                                 </NavLink>
                             </div>
                         </div>
@@ -272,18 +284,24 @@ const logout = () => {
                     </div>
                 </div>
             </nav>
+        </v-app-bar>
 
-            <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-white dark:bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
+        <!-- Sizes your content based upon application components -->
+        <v-main>
+
+            <!-- Provides the application the proper gutter -->
+            <v-container fluid>
+                <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+                    <slot />
                 </div>
-            </header>
 
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
-        </div>
-    </div>
+            <!-- <router-view></router-view> -->
+            </v-container>
+        </v-main>
+
+        <v-footer app>
+            <!-- -->
+        </v-footer>
+
+    </v-app>
 </template>
