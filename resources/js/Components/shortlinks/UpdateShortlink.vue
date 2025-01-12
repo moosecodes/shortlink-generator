@@ -4,7 +4,7 @@ import { VForm, VContainer, VRow, VCol, VTextField, VBtn } from 'vuetify/compone
 
 const { shortlink_id } = defineProps(['shortlink_id']);
 
-const shortlink = ref(null);
+const shortlink = ref([]);
 const originalUrl = ref('');
 const utmSource = ref('');
 const utmMedium = ref('');
@@ -47,6 +47,20 @@ const submitForm = async () => {
     }
 };
 
+const toggleActivation = async (shortlink) => {
+    try {
+        const route = shortlink.is_active
+            ? `/api/shortlinks/deactivate/${shortlink.short_code}`
+            : `/api/shortlinks/activate/${shortlink.short_code}`;
+
+        await axios.patch(route);
+
+        shortlink.is_active = !shortlink.is_active;
+    } catch (error) {
+        console.error('Error toggling activation:', error);
+    }
+};
+
 onMounted(fetchShortlink);
 </script>
 
@@ -55,7 +69,16 @@ onMounted(fetchShortlink);
         <h1 class="text-2xl font-bold my-2">
             Update Shortlink for <span :class="shortlink?.is_active ? 'text-green-500' : 'text-red-500'">{{ shortlink?.short_code }}</span>
         </h1>
+
+        <v-btn
+            :color="shortlink.is_active ? 'secondary' : 'green'"
+            @click="toggleActivation(shortlink)"
+            class="m-2">
+            {{ shortlink.is_active ? 'Disable' : 'Activate' }}
+        </v-btn>
     </div>
+
+
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
             <v-col cols="12" md="4">

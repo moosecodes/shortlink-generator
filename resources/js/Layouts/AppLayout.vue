@@ -14,6 +14,7 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
+
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
@@ -30,14 +31,9 @@ const logout = () => {
 <template>
     <v-app>
         <Head :title="title" />
-
         <Banner />
 
-        <v-navigation-drawer app>
-
-        </v-navigation-drawer>
-
-        <v-app-bar app>
+        <v-navigation-drawer>
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,6 +62,7 @@ const logout = () => {
                             </div>
                         </div>
 
+                        <!-- Manage Account Menu -->
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <div class="ms-3 relative">
                                 <!-- Teams Dropdown -->
@@ -206,6 +203,12 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('showAllShortlinks')" :active="route().current('showAllShortlinks')">
+                            Manage Shortlinks
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('newShortlink')" :active="route().current('newShortlink')">
+                            New Shortlink
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -284,24 +287,19 @@ const logout = () => {
                     </div>
                 </div>
             </nav>
+        </v-navigation-drawer>
+
+        <v-app-bar>
         </v-app-bar>
 
-        <!-- Sizes your content based upon application components -->
         <v-main>
-
-            <!-- Provides the application the proper gutter -->
             <v-container fluid>
-                <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-                    <slot />
-                </div>
-
-            <!-- <router-view></router-view> -->
+                <slot />
             </v-container>
         </v-main>
 
         <v-footer app>
-            <!-- -->
+            <!-- Footer content here -->
         </v-footer>
-
     </v-app>
 </template>
