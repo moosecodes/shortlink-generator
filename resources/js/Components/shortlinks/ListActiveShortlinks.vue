@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { VBtn } from 'vuetify/components';
+import { VBtn, VChip } from 'vuetify/components';
 
 const shortlinks = ref([]);
 
@@ -81,6 +81,10 @@ onMounted(fetchShortlinks);
             v-for="shortlink in shortlinks.filter(link => link.is_active).reverse()"
             :key="shortlink.id"
             class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
+
+                <v-chip v-if="shortlink.is_active" color="green">active</v-chip>
+                <v-chip v-else color="red">disabled</v-chip>
+
                 <a v-if="shortlink.is_active"
                     :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank"
@@ -92,9 +96,6 @@ onMounted(fetchShortlinks);
                     {{ shortlink.short_code }}
                 </span>
 
-                <small :class="shortlink.is_active ? 'text-green-500 font-bold' : 'text-red-500 font-bold'">
-                    {{ shortlink.is_active ? 'active' : 'disabled' }}
-                </small>
                 <small>{{ shortlink.total_clicks }}</small>
                 <small>{{ shortlink.unique_clicks }}</small>
 
@@ -106,8 +107,6 @@ onMounted(fetchShortlinks);
                 <span v-else>
                     {{ shortlink.original_url }}
                 </span>
-
-                <small>{{ `localhost/api/shortlinks/redirect/${shortlink.short_code}` }}</small>
 
                 <v-btn
                     :color="shortlink.is_active ? 'red' : 'green'"

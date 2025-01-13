@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { VBtn } from 'vuetify/components';
+import { VBtn, VChip } from 'vuetify/components';
 
 const shortlinks = ref([]);
 
@@ -81,32 +81,23 @@ onMounted(fetchShortlinks);
             v-for="shortlink in shortlinks.filter(link => link.is_active).reverse()"
             :key="shortlink.id"
             class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
-                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
-                <small>{{ shortlink.total_clicks }}</small>
-                <small>{{ shortlink.unique_clicks }}</small>
-                <a v-if="shortlink.is_active"
+                <v-chip v-if="shortlink.is_active" color="green">active</v-chip>
+                <v-chip v-else color="red">disabled</v-chip>
+                <a
                     :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank"
                     class="text-green-500">
                     <b>{{ shortlink.short_code }}</b>
                 </a>
-                <span v-else
-                    class="text-red-500">
-                    {{ shortlink.short_code }}
-                </span>
+                <small>{{ shortlink.total_clicks }}</small>
+                <small>{{ shortlink.unique_clicks }}</small>
 
-                <small :class="shortlink.is_active ? 'text-green-500 font-bold' : 'text-red-500 font-bold'">
-                    {{ shortlink.is_active ? 'active' : 'disabled' }}
-                </small>
-
-                <a v-if="shortlink.is_active"
+                <a
                     :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank">
                     <b>{{ shortlink.original_url }}</b>
                 </a>
-                <span v-else>
-                    {{ shortlink.original_url }}
-                </span>
+                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
 
                 <v-btn
                     :color="shortlink.is_active ? 'secondary' : 'green'"
@@ -131,33 +122,23 @@ onMounted(fetchShortlinks);
             v-for="shortlink in shortlinks.filter(link => !link.is_active).reverse()"
             :key="shortlink.id"
             class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
-                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
+                <v-chip color="red">disabled</v-chip>
+                <a
+                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
+                    target="_blank"
+                    class="text-gray-500">
+                    <b>{{ shortlink.short_code }}</b>
+                </a>
+
                 <small>{{ shortlink.total_clicks }}</small>
                 <small>{{ shortlink.unique_clicks }}</small>
 
-                <a v-if="shortlink.is_active"
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank"
-                    class="text-green-500">
-                    <b>{{ shortlink.short_code }}</b>
-                </a>
-                <span v-else
-                    class="text-gray-500">
-                    {{ shortlink.short_code }}
-                </span>
-
-                <small :class="shortlink.is_active ? 'text-green-500 font-bold' : 'text-red-500 font-bold'">
-                    {{ shortlink.is_active ? 'active' : 'disabled' }}
-                </small>
-
-                <a v-if="shortlink.is_active"
+                <a
                     :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank">
                     <b>{{ shortlink.original_url }}</b>
                 </a>
-                <span v-else>
-                    {{ shortlink.original_url }}
-                </span>
+                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
 
                 <v-btn
                     color="blue"

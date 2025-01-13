@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class ShortlinkController extends Controller
 {
@@ -18,7 +17,7 @@ class ShortlinkController extends Controller
         try {
             $validatedData = $this->validateRequest($request);
 
-            $shortCode = Str::random(6);
+            $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
 
             $shortlink = Shortlink::create(array_merge($validatedData, [
                 'short_code' => $shortCode,
