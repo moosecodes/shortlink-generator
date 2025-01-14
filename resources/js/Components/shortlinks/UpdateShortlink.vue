@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { VForm, VContainer, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
+import { VForm, VChip, VCardText, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const { shortlink_id } = defineProps(['shortlink_id']);
 
@@ -70,7 +70,17 @@ onMounted(fetchShortlink);
             Update Shortlink for <span :class="shortlink?.is_active ? 'text-green-500' : 'text-red-500'">{{ shortlink?.short_code }}</span>
         </h1>
 
+        <v-card-text class="d-flex justify-space-between">
+            <v-chip
+                :color="shortlink.is_active ? 'success' : 'error'"
+                variant="outline"
+            >
+            {{ shortlink.id }}
+            </v-chip>
+        </v-card-text>
+
         <v-btn
+            prepend-icon="mdi-pencil"
             :color="shortlink.is_active ? 'secondary' : 'green'"
             @click="toggleActivation(shortlink)"
             class="m-2">
