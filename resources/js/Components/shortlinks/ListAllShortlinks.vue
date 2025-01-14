@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { VBtn, VChip, VRow, VCol, VCard, VCardItem, VCardActions, VDataTableServer, VTextField, VContainer, VSelect } from 'vuetify/components';
+import { router } from '@inertiajs/vue3';
 
 const shortlinks = ref([]);
 const linkFilter = ref('All');
@@ -19,15 +20,16 @@ const editShortlink = (shortlink) => {
 };
 
 const addShortlink = async () => {
-    const originalUrl = prompt('Please enter the original URL:', 'https://example.com');
-    if (originalUrl) {
-        try {
-            const response = await axios.post('/api/shortlinks', { original_url: originalUrl });
-            window.location.reload();
-        } catch (error) {
-            console.error('Error adding shortlink:', error);
-        }
-    }
+    window.location.href = '/api/shortlinks';
+    // const originalUrl = prompt('Please enter the original URL:', 'https://example.com');
+    // if (originalUrl) {
+    //     try {
+    //         const response = await axios.post('/api/shortlinks', { original_url: originalUrl });
+    //         window.location.reload();
+    //     } catch (error) {
+    //         console.error('Error adding shortlink:', error);
+    //     }
+    // }
 };
 
 const deleteShortlink = async(shortlink) => {
@@ -66,11 +68,15 @@ const filteredShortlinks = computed(() => {
     }
 });
 
+const navigateTo = (routeName) => {
+    router.get(route(routeName));
+};
+
 onMounted(fetchShortlinks);
 </script>
 
 <template>
-        <v-row v-if="shortlinks.length">
+        <v-row>
             <v-col>
                 <h1 class="text-2xl font-bold">{{ shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
                 <div v-if="!shortlinks.length" class="">
@@ -82,7 +88,7 @@ onMounted(fetchShortlinks);
                     prepend-icon="mdi-plus"
                     color="indigo"
                     class=""
-                    @click="addShortlink()">
+                    @click="navigateTo('newShortlink')">
                     New Shortlink
                 </v-btn>
             </v-col>

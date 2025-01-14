@@ -1,10 +1,11 @@
 <script setup>
 import { ref } from 'vue';
-import { VForm, VContainer, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
-const shortlinks = ref([]);
+import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
-const originalUrl = ref('');
+const originalUrl = ref('https://www.google.com');
 const utmSource = ref('');
+const showUTMFields = ref(true);
+const customFields = ref([]);
 const utmMedium = ref('');
 const utmCampaign = ref('');
 const utmTerm = ref('');
@@ -25,81 +26,98 @@ const submitForm = async () => {
             is_active: isActive.value,
         });
         message.value = 'Shortlink created successfully!';
-        originalUrl.value = '';
-        utmSource.value = '';
-        utmMedium.value = '';
-        utmCampaign.value = '';
-        utmTerm.value = '';
-        utmContent.value = '';
-        isActive.value = true;
     } catch (error) {
         console.error('Error creating shortlink:', error);
         message.value = 'Error creating shortlink.';
     }
 };
+
+const toggleUTMFields = () => {
+    console.log(showUTMFields.value)
+    showUTMFields.value = !showUTMFields.value;
+}
+const addNewField = () => {
+    customFields.value.push({ label: '', value: '' });
+};
 </script>
 
 <template>
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold my-2">Create Shortlink</h1>
+        <h1 class="text-2xl font-bold my-2">New Shortlink</h1>
     </div>
-        <v-form v-model="valid" @submit.prevent="submitForm">
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="originalUrl"
-                        label="Original URL"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="utmSource"
-                        label="UTM Source"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="utmMedium"
-                        label="UTM Medium"
-                        required
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="utmCampaign"
-                        label="UTM Campaign"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="utmTerm"
-                        label="UTM Term"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="utmContent"
-                        label="UTM Content"
-                        required
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-text-field
-                        v-model="isActive"
-                        label="Is Active"
-                        required
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-btn type="submit" color="primary" class="mt-4">Create Shortlink</v-btn>
-        </v-form>
-        <p v-if="message">{{ message }}</p>
+    <v-form v-model="valid" @submit.prevent="submitForm">
+        <v-row>
+            <v-col cols="12" md="12">
+                <v-text-field
+                    v-model="originalUrl"
+                    label="Redirect to (URL)"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-btn color="secondary" @click="toggleUTMFields">{{ showUTMFields ? 'Hide' : 'Show' }} UTM Fields</v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="showUTMFields">
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmSource"
+                    label="UTM Source"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmMedium"
+                    label="UTM Medium"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmCampaign"
+                    label="UTM Campaign"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row v-if="showUTMFields">
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmTerm"
+                    label="UTM Term"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-text-field
+                    v-model="utmContent"
+                    label="UTM Content"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-btn color="secondary" @click="addNewField">Add Custom Field</v-btn>
+            </v-col>
+        </v-row>
+        <v-row >
+            <v-col v-for="(field, index) in customFields" :key="index" cols="12" md="4">
+                <v-text-field
+                    v-model="field.value"
+                    :label="`Custom Field ${index + 1}`"
+                    required
+                ></v-text-field>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-btn type="submit" color="primary">Create Shortlink</v-btn>
+            </v-col>
+        </v-row>
+    </v-form>
+    <p v-if="message">{{ message }}</p>
 </template>

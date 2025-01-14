@@ -23,8 +23,6 @@ class Shortlink extends Model
         'original_url',
         'total_clicks',
         'unique_clicks',
-        'geo_data',
-        'device_data',
     ];
 
     // Indicate that the primary key is not an incrementing integer

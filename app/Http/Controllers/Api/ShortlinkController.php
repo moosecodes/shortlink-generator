@@ -23,8 +23,8 @@ class ShortlinkController extends Controller
                 'short_code' => $shortCode,
             ]));
 
-            if (!$shortlink->metadata()->where('shortlink_id', $shortCode)->exists()) {
-                $shortlink->metadata()->create(['shortlink_id' => $shortCode]);
+            if (!$shortlink->metadata()->where('id', $shortCode)->exists()) {
+                $shortlink->metadata()->create(['id' => $shortCode]);
             }
 
             return response()->json($shortlink, 201);
@@ -107,8 +107,6 @@ class ShortlinkController extends Controller
             'utm_campaign' => 'nullable|string|max:255',
             'utm_term' => 'nullable|string|max:255',
             'utm_content' => 'nullable|string|max:255',
-            'geo_data' => 'nullable|json',
-            'device_data' => 'nullable|json',
         ]);
     }
 }
