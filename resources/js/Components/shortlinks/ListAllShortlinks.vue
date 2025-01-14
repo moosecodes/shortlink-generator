@@ -1,12 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { VBtn, VChip } from 'vuetify/components';
+import { ref, computed, onMounted } from 'vue';
+import { VBtn, VChip, VRow, VCol, VRadioGroup, VRadio, VCard, VCardItem, VCardActions, VDataTableServer, VTextField, VContainer, VSelect } from 'vuetify/components';
 
 const shortlinks = ref([]);
+const radio = ref('All');
 
 const fetchShortlinks = async () => {
     try {
-        console.log('Fetching shortlinks...');
         const response = await axios.get('/api/shortlinks/show/all');
         shortlinks.value = response.data;
     } catch (error) {
@@ -56,106 +56,118 @@ const toggleActivation = async (shortlink) => {
     }
 };
 
+const filteredShortlinks = computed(() => {
+    if (radio.value === 'All') {
+        return shortlinks.value.slice().reverse();
+    } else if (radio.value === 'Active') {
+        return shortlinks.value.filter(link => link.is_active);
+    } else {
+        return shortlinks.value.filter(link => !link.is_active);
+    }
+});
+
 onMounted(fetchShortlinks);
 </script>
 
 <template>
-    <div>
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold my-2">{{ shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
+        <v-row v-if="shortlinks.length">
+            <v-col>
+                <h1 class="text-2xl font-bold">{{ shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
+                <div v-if="!shortlinks.length" class="">
+                    Create new shortlinks to get started!
+                </div>
+            </v-col>
+            <v-col align="end">
+                <v-btn
+                    prepend-icon="mdi-plus"
+                    color="indigo"
+                    class=""
+                    @click="addShortlink()">
+                    New Shortlink
+                </v-btn>
+            </v-col>
+        </v-row>
 
-            <div v-if="!shortlinks.length" class="my-2">
-                Create new shortlinks to get started!
-            </div>
+        <v-row>
+            <v-col>
+                <h2 class="my-2 font-bold">{{ radio }} Shortlinks ({{ filteredShortlinks.length }}/{{ shortlinks.length }})</h2>
+            </v-col>
 
-            <v-btn
-                color="primary"
-                class="my-2"
-                @click="addShortlink()">
-                New Shortlink
-            </v-btn>
-        </div>
+            <v-col>
+                <v-select
+                    v-model="radio"
+                    :items="['All', 'Active', 'Inactive']"
+                    label="Filter Shortlinks"
+                    ></v-select>
+            </v-col>
+        </v-row>
 
-        <h2 class="my-2 font-bold">Active ({{ shortlinks.filter(link => link.is_active).length }}/{{ shortlinks.length }})</h2>
-        <div
-            v-for="shortlink in shortlinks.filter(link => link.is_active).reverse()"
-            :key="shortlink.id"
-            class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
-                <v-chip v-if="shortlink.is_active" color="green">active</v-chip>
-                <v-chip v-else color="red">disabled</v-chip>
-                <a
+        <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id" justify="center">
+            <v-col cols="12" md="12">
+                <v-card
+                    color="indigo"
+                    :variant="shortlink?.is_active ? 'elevated' : 'tonal'"
+                    class="mx-auto"
                     :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank"
-                    class="text-green-500">
-                    <b>{{ shortlink.short_code }}</b>
-                </a>
-                <small>{{ shortlink.total_clicks }}</small>
-                <small>{{ shortlink.unique_clicks }}</small>
+                >
+                    <v-card-item>
+                        <div>
+                            <div class="text-overline mb-1">
+                                {{ shortlink.short_code }} -
+                                {{ new Date(shortlink.updated_at).toLocaleString() }}
+                            </div>
+                            <p class="my-2">
+                                <b>{{ shortlink.is_active ? 'Active' : 'Inactive' }}</b>
+                            </p>
+                            <a
+                                target="_blank"
+                                class="text-caption">
+                                Redirects to: {{ shortlink.original_url }}
+                            </a>
 
-                <a
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank">
-                    <b>{{ shortlink.original_url }}</b>
-                </a>
-                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
+                            <div>
+                                <div>clicks: {{ shortlink.total_clicks }}</div>
+                                <div>uinque clicks: {{ shortlink.unique_clicks }}</div>
+                            </div>
+                        </div>
+                    </v-card-item>
 
-                <v-btn
-                    :color="shortlink.is_active ? 'secondary' : 'green'"
-                    @click="toggleActivation(shortlink)"
-                    class="m-2">
-                    {{ shortlink.is_active ? 'Disable' : 'Activate' }}
-                </v-btn>
-                <v-btn
-                    color="blue-grey"
-                    @click="editShortlink(shortlink)">
-                    Edit
-                </v-btn>
-                <v-btn
-                    color="red"
-                    @click="deleteShortlink(shortlink)">
-                    X
-                </v-btn>
-        </div>
+                    <v-card-actions>
+                        <v-btn
+                            variant="outlined"
+                            :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
+                            target="_blank"
+                            prepend-icon="mdi-eye"
+                            class="m-2">
+                            View
+                        </v-btn>
+                        <v-btn
+                            variant="outlined"
+                            prepend-icon="mdi-pencil"
+                            @click="editShortlink(shortlink)"
+                            class="m-2">
+                            Edit
+                        </v-btn>
+                        <v-btn
+                            variant="outlined"
+                            :prepend-icon="shortlink.is_active ? 'mdi-cancel' : 'mdi-check'"
+                            :color="shortlink.is_active ? 'red' : 'green'"
+                            @click="toggleActivation(shortlink)"
+                            class="m-2">
+                            {{ shortlink.is_active ? 'Disable' : 'Enable' }}
+                        </v-btn>
 
-        <h2 class="my-2 font-bold">Inactive ({{ shortlinks.filter(link => !link.is_active).length }}/{{ shortlinks.length }})</h2>
-        <div
-            v-for="shortlink in shortlinks.filter(link => !link.is_active).reverse()"
-            :key="shortlink.id"
-            class="flex align-center justify-between my-2 p-2 border border-gray-200 rounded-lg">
-                <v-chip color="red">disabled</v-chip>
-                <a
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank"
-                    class="text-gray-500">
-                    <b>{{ shortlink.short_code }}</b>
-                </a>
-
-                <small>{{ shortlink.total_clicks }}</small>
-                <small>{{ shortlink.unique_clicks }}</small>
-
-                <a
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                    target="_blank">
-                    <b>{{ shortlink.original_url }}</b>
-                </a>
-                <small>{{ new Date(shortlink.updated_at).toLocaleString() }}</small>
-
-                <v-btn
-                    color="blue"
-                    @click="toggleActivation(shortlink)"
-                    class="m-2">
-                    {{ shortlink.is_active ? 'Disable' : 'Activate' }}
-                </v-btn>
-                <v-btn
-                    color="blue-grey"
-                    @click="editShortlink(shortlink)">
-                    Edit
-                </v-btn>
-                <v-btn
-                    color="red"
-                    @click="deleteShortlink(shortlink)">
-                    X
-                </v-btn>
-        </div>
-    </div>
+                        <v-btn
+                            variant="outlined"
+                            prepend-icon="mdi-delete"
+                            color="red"
+                            @click="deleteShortlink(shortlink)"
+                            class="m-2">
+                            Delete
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-col>
+        </v-row>
 </template>
