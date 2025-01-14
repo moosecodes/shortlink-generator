@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { VBtn, VChip, VRow, VCol, VRadioGroup, VRadio, VCard, VCardItem, VCardActions, VDataTableServer, VTextField, VContainer, VSelect } from 'vuetify/components';
+import { VBtn, VChip, VRow, VCol, VlinkFilterGroup, VlinkFilter, VCard, VCardItem, VCardActions, VDataTableServer, VTextField, VContainer, VSelect } from 'vuetify/components';
 
 const shortlinks = ref([]);
-const radio = ref('All');
+const linkFilter = ref('All');
 
 const fetchShortlinks = async () => {
     try {
@@ -57,9 +57,9 @@ const toggleActivation = async (shortlink) => {
 };
 
 const filteredShortlinks = computed(() => {
-    if (radio.value === 'All') {
+    if (linkFilter.value === 'All') {
         return shortlinks.value.slice().reverse();
-    } else if (radio.value === 'Active') {
+    } else if (linkFilter.value === 'Active') {
         return shortlinks.value.filter(link => link.is_active).reverse();
     } else {
         return shortlinks.value.filter(link => !link.is_active).reverse();
@@ -90,12 +90,12 @@ onMounted(fetchShortlinks);
 
         <v-row>
             <v-col>
-                <h2 class="my-2 font-bold">{{ radio }} Shortlinks ({{ filteredShortlinks.length }}/{{ shortlinks.length }})</h2>
+                <h2 class="my-2 font-bold">{{ linkFilter }} Shortlinks ({{ filteredShortlinks.length }}/{{ shortlinks.length }})</h2>
             </v-col>
 
             <v-col>
                 <v-select
-                    v-model="radio"
+                    v-model="linkFilter"
                     :items="['All', 'Active', 'Inactive']"
                     label="Filter Shortlinks"
                     ></v-select>
