@@ -23,6 +23,10 @@ class ShortlinkController extends Controller
                 'short_code' => $shortCode,
             ]));
 
+            if (!$shortlink->metadata()->where('shortlink_id', $shortCode)->exists()) {
+                $shortlink->metadata()->create(['shortlink_id' => $shortCode]);
+            }
+
             return response()->json($shortlink, 201);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
