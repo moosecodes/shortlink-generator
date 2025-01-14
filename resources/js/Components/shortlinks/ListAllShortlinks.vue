@@ -102,70 +102,72 @@ onMounted(fetchShortlinks);
             </v-col>
         </v-row>
 
-        <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id" justify="center">
+        <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
             <v-col cols="12" md="12">
                 <v-card
                     color="indigo"
                     :variant="shortlink?.is_active ? 'elevated' : 'tonal'"
                     class="mx-auto"
-                    :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
                     target="_blank"
                 >
                     <v-card-item>
-                        <div>
-                            <div class="text-overline mb-1">
-                                {{ shortlink.short_code }} -
-                                {{ new Date(shortlink.updated_at).toLocaleString() }}
-                            </div>
-                            <p class="my-2">
-                                <b>{{ shortlink.is_active ? 'Active' : 'Inactive' }}</b>
-                            </p>
-                            <a
-                                target="_blank"
-                                class="text-caption">
-                                Redirects to: {{ shortlink.original_url }}
-                            </a>
-
+                        <div class="text-overline mb-1 flex justify-between">
+                            <b>{{ shortlink.short_code }}</b>
                             <div>
-                                <div>clicks: {{ shortlink.total_clicks }}</div>
-                                <div>uinque clicks: {{ shortlink.unique_clicks }}</div>
+                                <v-chip class="my-2 mr-2">{{ shortlink.total_clicks }} Clicks</v-chip>
+                                <v-chip class="my-2">{{ shortlink.unique_clicks }} Unique Clicks</v-chip>
                             </div>
+                        </div>
+
+                        <small>Updated: {{ new Date(shortlink.updated_at).toLocaleString() }}</small>
+                    </v-card-item>
+
+                    <v-card-item>
+                        <div class="my-2">
+                            <b>{{ shortlink.is_active ? 'Active' : 'Inactive' }}</b>
+                        </div>
+
+                        <div class="text-caption my-2">
+                            Redirects to: {{ shortlink.original_url }}
                         </div>
                     </v-card-item>
 
-                    <v-card-actions>
-                        <v-btn
-                            variant="outlined"
-                            :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
-                            target="_blank"
-                            prepend-icon="mdi-eye"
-                            class="m-2">
-                            View
-                        </v-btn>
-                        <v-btn
-                            variant="outlined"
-                            prepend-icon="mdi-pencil"
-                            @click="editShortlink(shortlink)"
-                            class="m-2">
-                            Edit
-                        </v-btn>
-                        <v-btn
-                            variant="outlined"
-                            :prepend-icon="shortlink.is_active ? 'mdi-cancel' : 'mdi-check'"
-                            :color="shortlink.is_active ? 'red' : 'green'"
-                            @click="toggleActivation(shortlink)"
-                            class="m-2">
-                            {{ shortlink.is_active ? 'Disable' : 'Enable' }}
-                        </v-btn>
+                    <v-card-actions class="justify-end">
+                            <v-btn
+                                variant="outlined"
+                                :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
+                                target="_blank"
+                                prepend-icon="mdi-eye"
+                                class="m-2">
+                                View
+                            </v-btn>
 
-                        <v-btn
-                            variant="outlined"
-                            prepend-icon="mdi-delete"
-                            color="red"
-                            @click="deleteShortlink(shortlink)"
-                            class="m-2">
-                            Delete
-                        </v-btn>
+                            <v-btn
+                                variant="outlined"
+                                prepend-icon="mdi-pencil"
+                                @click="editShortlink(shortlink)"
+                                class="m-2">
+                                Edit
+                            </v-btn>
+
+                            <v-btn
+                                variant="outlined"
+                                :prepend-icon="shortlink.is_active ? 'mdi-cancel' : 'mdi-check'"
+                                :color="shortlink.is_active ? 'red' : 'green'"
+                                @click="toggleActivation(shortlink)"
+                                class="m-2">
+                                {{ shortlink.is_active ? 'Disable' : 'Enable' }}
+                            </v-btn>
+
+                            <v-btn
+                                variant="outlined"
+                                prepend-icon="mdi-delete"
+                                color="red"
+                                @click="deleteShortlink(shortlink)"
+                                class="m-2">
+                                Delete
+                            </v-btn>
+
                     </v-card-actions>
                 </v-card>
             </v-col>
