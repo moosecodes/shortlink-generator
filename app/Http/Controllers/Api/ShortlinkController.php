@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
+use App\Models\ShortlinkMetadata;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -15,16 +16,25 @@ class ShortlinkController extends Controller
     public function create(Request $request)
     {
         try {
+            // Validate request
             $validatedData = $this->validateRequest($request);
 
+            // Generate a unique short code
             $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
 
+            // Create the shortlink
             $shortlink = Shortlink::create(array_merge($validatedData, [
-                'short_code' => $shortCode,
+                'short_code' => $shortCode
             ]));
 
-            foreach ($request->metadata as $key => $value) {
-                $shortlink->metadata()->create(["meta_key" => $key, "meta_value" => $value]);
+            // Create the shortlink metadata
+            if (isset($validatedData['metadata'])) {
+                foreach ($validatedData['metadata'] as $key => $value) {
+                    $shortlink->metadata()->create([
+                        'meta_key' => $validatedData['metadata'][$key]['key'],
+                        'meta_value' => $validatedData['metadata'][$key]['value'],
+                    ]);
+                }
             }
 
             return response()->json($shortlink, 201);
@@ -32,7 +42,7 @@ class ShortlinkController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while creating shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -40,13 +50,14 @@ class ShortlinkController extends Controller
     {
         try {
             $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $metadata = $shortlink->metadata;
 
-            return response()->json($shortlink);
+            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while retrieving shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -68,10 +79,26 @@ class ShortlinkController extends Controller
     {
         try {
             $validatedData = $this->validateRequest($request);
+            dd($validatedData);
+            // Find the shortlink
             $shortlink = Shortlink::where('short_code', $request->id)->firstOrFail();
 
+            // Update the shortlink
             $shortlink->update($validatedData);
 
+            // Update the shortlink metadata
+            if (isset($validatedData['metadata'])) {
+                // Delete existing metadata
+                $shortlink->metadata()->delete();
+
+                // Create new metadata
+                foreach ($validatedData['metadata'] as $key => $value) {
+                    $shortlink->metadata()->create([
+                        'meta_key' => $key,
+                        'meta_value' => $value,
+                    ]);
+                }
+            }
             return response()->json($shortlink);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
@@ -79,7 +106,7 @@ class ShortlinkController extends Controller
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while updating shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -94,7 +121,7 @@ class ShortlinkController extends Controller
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while deleting shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -102,11 +129,7 @@ class ShortlinkController extends Controller
     {
         return $request->validate([
             'original_url' => 'required|url',
-            'utm_source' => 'nullable|string|max:255',
-            'utm_medium' => 'nullable|string|max:255',
-            'utm_campaign' => 'nullable|string|max:255',
-            'utm_term' => 'nullable|string|max:255',
-            'utm_content' => 'nullable|string|max:255',
+            'metadata' => 'array',
         ]);
     }
 }

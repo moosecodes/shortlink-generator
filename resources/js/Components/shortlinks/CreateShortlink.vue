@@ -18,12 +18,14 @@ const submitForm = async () => {
     try {
         const response = await axios.post('/api/shortlinks', {
             original_url: originalUrl.value,
-            utm_source: utmSource.value,
-            utm_medium: utmMedium.value,
-            utm_campaign: utmCampaign.value,
-            utm_term: utmTerm.value,
-            utm_content: utmContent.value,
-            metadata: customFields.value,
+            metadata: [
+                { key: 'utm_source', value: utmSource.value },
+                { key: 'utm_medium', value: utmMedium.value },
+                { key: 'utm_campaign', value: utmCampaign.value },
+                { key: 'utm_term', value: utmTerm.value },
+                { key: 'utm_content', value: utmContent.value },
+                ...customFields.value,
+            ],
             is_active: isActive.value,
         });
         message.value = 'Shortlink created successfully!';
@@ -34,11 +36,10 @@ const submitForm = async () => {
 };
 
 const toggleUTMFields = () => {
-    console.log(showUTMFields.value)
     showUTMFields.value = !showUTMFields.value;
 }
 const addNewField = () => {
-    customFields.value.push({ label: '', value: '' });
+    customFields.value.push({ key: '', value: '' });
 };
 </script>
 

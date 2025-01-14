@@ -12,13 +12,7 @@ class Shortlink extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'id',
         'short_code',
-        'utm_source',
-        'utm_medium',
-        'utm_campaign',
-        'utm_term',
-        'utm_content',
         'is_active',
         'original_url',
         'total_clicks',

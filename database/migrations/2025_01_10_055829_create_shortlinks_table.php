@@ -12,11 +12,6 @@ class CreateShortlinksTable extends Migration
             $table->uuid('id')->primary();
             $table->string('original_url');
             $table->string('short_code')->unique();
-            $table->string('utm_source')->nullable();
-            $table->string('utm_medium')->nullable();
-            $table->string('utm_campaign')->nullable();
-            $table->string('utm_term')->nullable();
-            $table->string('utm_content')->nullable();
             $table->unsignedBigInteger('total_clicks')->default(0);
             $table->unsignedBigInteger('unique_clicks')->default(0);
             $table->boolean('is_active')->default(true);
