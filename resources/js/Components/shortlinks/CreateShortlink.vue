@@ -53,6 +53,9 @@ const addNewField = () => {
             <v-col>
                 <v-btn type="submit" color="primary">Create Shortlink</v-btn>
             </v-col>
+            <v-col>
+                <p v-if="message">{{ message }}</p>
+            </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" md="12">
@@ -122,5 +125,4 @@ const addNewField = () => {
             </v-col>
         </v-row>
     </v-form>
-    <p v-if="message">{{ message }}</p>
 </template>

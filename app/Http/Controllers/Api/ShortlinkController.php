@@ -17,7 +17,10 @@ class ShortlinkController extends Controller
     {
         try {
             // Validate request
-            $validatedData = $this->validateRequest($request);
+            $validatedData = $request->validate([
+                'original_url' => 'required|url',
+                'metadata' => 'array',
+            ]);
 
             // Generate a unique short code
             $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
@@ -50,7 +53,7 @@ class ShortlinkController extends Controller
     {
         try {
             $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
-            $metadata = $shortlink->metadata;
+            $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
 
             return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
         } catch (ModelNotFoundException $e) {
@@ -79,9 +82,9 @@ class ShortlinkController extends Controller
     {
         try {
             $validatedData = $this->validateRequest($request);
-            dd($validatedData);
+
             // Find the shortlink
-            $shortlink = Shortlink::where('short_code', $request->id)->firstOrFail();
+            $shortlink = Shortlink::where('id', $request->id)->firstOrFail();
 
             // Update the shortlink
             $shortlink->update($validatedData);
@@ -94,16 +97,23 @@ class ShortlinkController extends Controller
                 // Create new metadata
                 foreach ($validatedData['metadata'] as $key => $value) {
                     $shortlink->metadata()->create([
-                        'meta_key' => $key,
-                        'meta_value' => $value,
+                        'meta_key' => $validatedData['metadata'][$key]['key'],
+                        'meta_value' => $validatedData['metadata'][$key]['value'],
                     ]);
                 }
             }
-            return response()->json($shortlink);
+
+            $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
+
+            foreach ($metadata as $meta) {
+                // dd($meta->meta_key);
+            }
+
+            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Shortlink not found'], 404);
+            return response()->json(['error' => 'Shortlink not found: ' . $e->getMessage()], 404);
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while updating shortlink: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
@@ -128,6 +138,7 @@ class ShortlinkController extends Controller
     private function validateRequest(Request $request)
     {
         return $request->validate([
+            'id' => 'required|uuid',
             'original_url' => 'required|url',
             'metadata' => 'array',
         ]);
