@@ -23,6 +23,7 @@ const submitForm = async () => {
             utm_campaign: utmCampaign.value,
             utm_term: utmTerm.value,
             utm_content: utmContent.value,
+            metadata: customFields.value,
             is_active: isActive.value,
         });
         message.value = 'Shortlink created successfully!';
@@ -45,7 +46,13 @@ const addNewField = () => {
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold my-2">New Shortlink</h1>
     </div>
+
     <v-form v-model="valid" @submit.prevent="submitForm">
+        <v-row>
+            <v-col>
+                <v-btn type="submit" color="primary">Create Shortlink</v-btn>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col cols="12" md="12">
                 <v-text-field
@@ -65,21 +72,18 @@ const addNewField = () => {
                 <v-text-field
                     v-model="utmSource"
                     label="UTM Source"
-                    required
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
                 <v-text-field
                     v-model="utmMedium"
                     label="UTM Medium"
-                    required
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
                 <v-text-field
                     v-model="utmCampaign"
                     label="UTM Campaign"
-                    required
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -88,14 +92,12 @@ const addNewField = () => {
                 <v-text-field
                     v-model="utmTerm"
                     label="UTM Term"
-                    required
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
                 <v-text-field
                     v-model="utmContent"
                     label="UTM Content"
-                    required
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -105,17 +107,17 @@ const addNewField = () => {
             </v-col>
         </v-row>
         <v-row >
-            <v-col v-for="(field, index) in customFields" :key="index" cols="12" md="4">
+            <v-col v-for="(field, index) in customFields" :key="index" cols="12" md="6">
                 <v-text-field
-                    v-model="field.value"
-                    :label="`Custom Field ${index + 1}`"
+                    v-model="field.key"
+                    :label="`Custom Key ${index + 1}`"
                     required
                 ></v-text-field>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>
-                <v-btn type="submit" color="primary">Create Shortlink</v-btn>
+                <v-text-field
+                    v-model="field.value"
+                    :label="`Custom Value ${index + 1}`"
+                    required
+                ></v-text-field>
             </v-col>
         </v-row>
     </v-form>

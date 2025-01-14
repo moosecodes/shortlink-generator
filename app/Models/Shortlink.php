@@ -38,6 +38,6 @@ class Shortlink extends Model
 
     public function metadata()
     {
-        return $this->hasMany(ShortlinkMetadata::class);
+        return $this->hasMany(ShortlinkMetadata::class, 'shortlink_id');
     }
 }

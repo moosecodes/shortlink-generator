@@ -23,8 +23,8 @@ class ShortlinkController extends Controller
                 'short_code' => $shortCode,
             ]));
 
-            if (!$shortlink->metadata()->where('id', $shortCode)->exists()) {
-                $shortlink->metadata()->create(['id' => $shortCode]);
+            foreach ($request->metadata as $key => $value) {
+                $shortlink->metadata()->create(["meta_key" => $key, "meta_value" => $value]);
             }
 
             return response()->json($shortlink, 201);

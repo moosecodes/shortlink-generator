@@ -9,7 +9,7 @@ class CreateShortlinksMetadataTable extends Migration
     public function up()
     {
         Schema::create('shortlinks_metadata', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('shortlink_id'); // Foreign key to shortlinks table
             $table->string('meta_key')->nullable(); // Parameter key (e.g., "utm_source")
             $table->text('meta_value')->nullable(); // Parameter value (e.g., "google")
