@@ -4,37 +4,37 @@ import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const props = defineProps({
     shortlink_id: {
-        type: Number,
+        type: Object,
         required: true,
     },
 });
 
-const originalUrl = ref('');
-const customFields = ref([]);
-const isActive = ref(0);
-const message = ref('');
-const valid = ref(false);
 const shortlink = ref({});
+const isActive = ref(0);
 const showUTMFields = ref(true);
 const utmValues = ref({});
+const message = ref('');
+const valid = ref(false);
 
 const fetchShortlink = async () => {
     try {
         const response = await axios.get(`/api/shortlinks/show/${props.shortlink_id.shortlink_id}`);
-        shortlink.value = response.data;
-        originalUrl.value = shortlink.value.original_url;
 
-        shortlink.metadata = shortlink.value.metadata.reduce((acc, item) => {
-            if (item.meta_key) {
-                acc[item.meta_key] = item.meta_value;
-            } else {
-                acc.customFields.push({ key: item.meta_key, value: item.meta_value });
+        shortlink.value = response.data;
+        shortlink.value.customFields = [];
+        shortlink.value.metadata.forEach(item => {
+            if (!item.meta_key.includes('utm_')) {
+                shortlink.value.customFields.push({ meta_key: item.meta_key, meta_value: item.meta_value });
             }
-            return acc;
-        }, { customFields: [] });
-        response.data.metadata.forEach((item) => {
+        });
+
+        console.log("Shortlink metadata: ", shortlink.value.metadata);
+        console.log("customFields variable: ", shortlink.value.customFields);
+
+        shortlink.value.metadata.forEach((item) => {
             utmValues.value[item.meta_key] = item.meta_value;
         });
+
     } catch (error) {
         console.error('Error fetching shortlink:', error);
     }
@@ -44,14 +44,14 @@ const submitForm = async () => {
     try {
         const response = await axios.patch('/api/shortlinks/update', {
             id: shortlink.value.id,
-            original_url: originalUrl.value,
+            original_url: shortlink.value.original_url,
             metadata: [
-                { key: 'utm_source', value: utmValues.value.utm_source },
-                { key: 'utm_medium', value: utmValues.value.utm_medium },
-                { key: 'utm_campaign', value: utmValues.value.utm_campaign },
-                { key: 'utm_term', value: utmValues.value.utm_term },
-                { key: 'utm_content', value: utmValues.value.utm_content },
-                ...customFields.value,
+                { meta_key: 'utm_source', meta_value: utmValues.value.utm_source },
+                { meta_key: 'utm_medium', meta_value: utmValues.value.utm_medium },
+                { meta_key: 'utm_campaign', meta_value: utmValues.value.utm_campaign },
+                { meta_key: 'utm_term', meta_value: utmValues.value.utm_term },
+                { meta_key: 'utm_content', meta_value: utmValues.value.utm_content },
+                ...shortlink.value.customFields,
             ],
             is_active: isActive.value,
         });
@@ -67,7 +67,7 @@ const toggleUTMFields = () => {
     showUTMFields.value = !showUTMFields.value;
 }
 const addNewField = () => {
-    customFields.value.push({ key: '', value: '' });
+    shortlink.value.customFields.push({ meta_key: '', meta_value: '' });
 };
 
 onMounted(fetchShortlink)
@@ -75,7 +75,7 @@ onMounted(fetchShortlink)
 
 <template>
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold my-2">Edit Shortlink</h1>
+        <h1 class="text-2xl font-bold my-2">Edit Shortlink {{ props.shortlink_id.shortlink_id }}</h1>
     </div>
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
@@ -88,7 +88,7 @@ onMounted(fetchShortlink)
         </v-row>
         <v-row>
             <v-text-field
-                v-model="originalUrl"
+                v-model="shortlink.original_url"
                 label="Original URL"
                 disabled>
             </v-text-field>
@@ -138,14 +138,14 @@ onMounted(fetchShortlink)
             </v-col>
         </v-row>
         <v-row>
-            <v-col v-for="(field, index) in shortlink.metadata" :key="index" cols="12" md="6">
+            <v-col v-for="(field, index) in shortlink.customFields" :key="index" cols="12" md="6">
                 <v-text-field
-                    v-model="field.key"
+                    v-model="field.meta_key"
                     :label="`Custom Key ${index + 1}`"
                     required
                 ></v-text-field>
                 <v-text-field
-                    v-model="field.value"
+                    v-model="field.meta_value"
                     :label="`Custom Value ${index + 1}`"
                     required
                 ></v-text-field>

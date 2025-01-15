@@ -97,19 +97,15 @@ class ShortlinkController extends Controller
                 // Create new metadata
                 foreach ($validatedData['metadata'] as $key => $value) {
                     $shortlink->metadata()->create([
-                        'meta_key' => $validatedData['metadata'][$key]['key'],
-                        'meta_value' => $validatedData['metadata'][$key]['value'],
+                        'meta_key' => $validatedData['metadata'][$key]['meta_key'],
+                        'meta_value' => $validatedData['metadata'][$key]['meta_value'],
                     ]);
                 }
             }
 
             $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
 
-            foreach ($metadata as $meta) {
-                // dd($meta->meta_key);
-            }
-
-            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
+            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata->toArray()]));
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {

@@ -19,11 +19,11 @@ const submitForm = async () => {
         const response = await axios.post('/api/shortlinks', {
             original_url: originalUrl.value,
             metadata: [
-                { key: 'utm_source', value: utmSource.value },
-                { key: 'utm_medium', value: utmMedium.value },
-                { key: 'utm_campaign', value: utmCampaign.value },
-                { key: 'utm_term', value: utmTerm.value },
-                { key: 'utm_content', value: utmContent.value },
+                { meta_key: 'utm_source', meta_value: utmSource.value },
+                { meta_key: 'utm_medium', meta_value: utmMedium.value },
+                { meta_key: 'utm_campaign', meta_value: utmCampaign.value },
+                { meta_key: 'utm_term', meta_value: utmTerm.value },
+                { meta_key: 'utm_content', meta_value: utmContent.value },
                 ...customFields.value,
             ],
             is_active: isActive.value,
@@ -39,7 +39,7 @@ const toggleUTMFields = () => {
     showUTMFields.value = !showUTMFields.value;
 }
 const addNewField = () => {
-    customFields.value.push({ key: '', value: '' });
+    customFields.value.push({ meta_key: '', meta_value: '' });
 };
 </script>
 
