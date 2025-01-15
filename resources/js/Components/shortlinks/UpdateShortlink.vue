@@ -2,6 +2,13 @@
 import { onMounted, ref } from 'vue';
 import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
+const props = defineProps({
+    shortlink_id: {
+        type: Number,
+        required: true,
+    },
+});
+
 const originalUrl = ref('');
 const customFields = ref([]);
 const isActive = ref(0);
@@ -9,17 +16,11 @@ const message = ref('');
 const valid = ref(false);
 const shortlink = ref({});
 const showUTMFields = ref(true);
-const utmValues = ref({
-    utmSource: '',
-    utmMedium: '',
-    utmCampaign: '',
-    utmTerm: '',
-    utmContent: '',
-});
+const utmValues = ref({});
 
 const fetchShortlink = async () => {
     try {
-        const response = await axios.get(`/api/shortlinks/show/3b910d2e`);
+        const response = await axios.get(`/api/shortlinks/show/${props.shortlink_id.shortlink_id}`);
         shortlink.value = response.data;
         originalUrl.value = shortlink.value.original_url;
 
@@ -76,8 +77,6 @@ onMounted(fetchShortlink)
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold my-2">Edit Shortlink</h1>
     </div>
-{{ shortlink }}
-{{  utmValues }}
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
             <v-col>
@@ -138,8 +137,8 @@ onMounted(fetchShortlink)
                 <v-btn color="secondary" @click="addNewField">Add Custom Field</v-btn>
             </v-col>
         </v-row>
-        <v-row >
-            <v-col v-for="(field, index) in customFields" :key="index" cols="12" md="6">
+        <v-row>
+            <v-col v-for="(field, index) in shortlink.metadata" :key="index" cols="12" md="6">
                 <v-text-field
                     v-model="field.key"
                     :label="`Custom Key ${index + 1}`"
