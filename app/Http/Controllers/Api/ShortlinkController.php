@@ -34,8 +34,8 @@ class ShortlinkController extends Controller
             if (isset($validatedData['metadata'])) {
                 foreach ($validatedData['metadata'] as $key => $value) {
                     $shortlink->metadata()->create([
-                        'meta_key' => $validatedData['metadata'][$key]['key'],
-                        'meta_value' => $validatedData['metadata'][$key]['value'],
+                        'meta_key' => $validatedData['metadata'][$key]['meta_key'],
+                        'meta_value' => $validatedData['metadata'][$key]['meta_value'],
                     ]);
                 }
             }
