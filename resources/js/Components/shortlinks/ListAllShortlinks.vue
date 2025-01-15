@@ -79,7 +79,7 @@ onMounted(fetchShortlinks);
         <v-row>
             <v-col>
                 <h1 class="text-2xl font-bold">{{ shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
-                <div v-if="!shortlinks.length" class="">
+                <div v-if="!shortlinks.length">
                     Create new shortlinks to get started!
                 </div>
             </v-col>
@@ -117,8 +117,7 @@ onMounted(fetchShortlinks);
                     target="_blank"
                 >
                     <v-card-item>
-                        <small class="mx-2">{{ new Date(shortlink.updated_at).toLocaleDateString() }}</small>
-                        <div class="text-overline mb-1 flex justify-between">
+                        <div class="text-overline mb-1 flex justify-between align-center">
                             <div>
                                 <v-chip class="my-2 mr-2"><b>{{ shortlink.short_code }}</b></v-chip>
                                 <v-chip class="my-2">
@@ -127,21 +126,21 @@ onMounted(fetchShortlinks);
                             </div>
 
                             <div>
-                                <small class="mx-2">{{ new Date(shortlink.updated_at).toLocaleTimeString() }}</small>
                                 <v-chip class="my-2 mr-2">{{ shortlink.total_clicks }} Clicks</v-chip>
-                                <!-- <v-chip class="my-2 mr-2">{{ shortlink.unique_clicks }} Unique Clicks</v-chip> -->
+                                <v-chip class="my-2 mr-2">{{ shortlink.unique_clicks }} Unique Clicks</v-chip>
                             </div>
                         </div>
 
-                    </v-card-item>
-
-                    <v-card-item>
-                        <v-chip class="text-caption">
-                            {{ shortlink.original_url }}
-                        </v-chip>
+                        <div class="text-overline mb-1 flex justify-end align-center">
+                            <v-chip class="text-caption my-2 mr-2 item-justify-start">
+                                {{ shortlink.original_url }}
+                            </v-chip>
+                        </div>
                     </v-card-item>
 
                     <v-card-actions class="justify-end">
+                        <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
+                        <small class="mx-2">Updated: <b>{{ new Date(shortlink.updated_at).toLocaleString() }}</b></small>
                         <v-btn
                             variant="outlined"
                             :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
