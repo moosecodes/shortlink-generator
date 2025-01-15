@@ -2,26 +2,29 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ShortlinkController;
-use App\Http\Controllers\Api\ShortlinkStatusController;
-use App\Http\Controllers\Api\ShortlinkRedirectController;
-use App\Http\Controllers\Api\CreateNewLinkController;
+use App\Http\Controllers\Api\CreateLinkController;
+use App\Http\Controllers\Api\DeleteLinkController;
+use App\Http\Controllers\Api\RedirectLinkController;
+use App\Http\Controllers\Api\ShowLinkController;
+use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\UpdateLinkController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 
-Route::post('/shortlinks/create', [CreateNewLinkController::class, 'index']);
+Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
 
-Route::get('/shortlinks/show/all', [ShortlinkController::class, 'showAll']);
-Route::get('/shortlinks/show/active', [ShortlinkController::class, 'showActive']);
-Route::get('/shortlinks/show/{id}', [ShortlinkController::class, 'show']);
-Route::get('/shortlinks/redirect/{short_code}', [ShortlinkRedirectController::class, 'index']);
+Route::get('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
+Route::get('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);
+Route::get('/shortlinks/show/{id}', [ShowLinkController::class, 'index']);
 
-Route::patch('/shortlinks/update', [ShortlinkController::class, 'update']);
+Route::get('/shortlinks/redirect/{short_code}', [RedirectLinkController::class, 'index']);
 
-Route::patch('/shortlinks/activate/{id}', [ShortlinkStatusController::class, 'activate']);
-Route::patch('/shortlinks/deactivate/{id}', [ShortlinkStatusController::class, 'deactivate']);
+Route::patch('/shortlinks/update', [UpdateLinkController::class, 'index']);
 
-Route::delete('/shortlinks/delete/{id}', [ShortlinkController::class, 'delete']);
+Route::patch('/shortlinks/activate/{id}', [StatusController::class, 'activate']);
+Route::patch('/shortlinks/deactivate/{id}', [StatusController::class, 'deactivate']);
+
+Route::delete('/shortlinks/delete/{id}', [DeleteLinkController::class, 'delete']);

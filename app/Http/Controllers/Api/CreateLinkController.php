@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Shortlink;
 use Illuminate\Validation\ValidationException;
 
-class CreateNewLinkController extends Controller
+class CreateLinkController extends Controller
 {
     public function index(Request $request)
     {

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Shortlink;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Models\Shortlink;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ShortlinkStatusController extends Controller
+class StatusController extends Controller
 {
     public function activate($id)
     {

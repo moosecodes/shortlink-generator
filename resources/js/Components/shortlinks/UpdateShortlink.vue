@@ -18,8 +18,7 @@ const state = reactive({
         is_active: 0,
         metadata: [],
     },
-    isActive: 0,
-    showUTMFields: true,
+    showUTMFields: false,
     message: '',
     valid: false,
 });
@@ -73,6 +72,7 @@ onMounted(fetchShortlink);
 <template>
     <div>
         <h1 class="text-2xl font-bold mb-4">Update Shortlink</h1>
+
         <v-form v-model="state.valid" @submit.prevent="submitForm">
             <v-row>
                 <v-col cols="12" md="12">
@@ -84,53 +84,44 @@ onMounted(fetchShortlink);
                         <v-card-text>
                             Active: {{ state.shortlink.is_active ? 'Yes' : 'No' }}
                         </v-card-text>
+                        <div class="flex justify-between mb-4">
+                            <div>
+                                <v-btn class="mx-4" color="secondary" @click="addNewField">Add Custom Field</v-btn>
+                                <v-btn class="mx-4" color="secondary" @click="toggleUTMFields">{{ state.showUTMFields ? 'Hide' : 'Edit' }} Fields</v-btn>
+                            </div>
+                            <v-btn class="mx-4" type="submit" color="primary">{{state.message ? state.message : 'Update Shortlink' }}</v-btn>
+                        </div>
                     </v-card>
                 </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn color="secondary" @click="toggleUTMFields">{{ state.showUTMFields ? 'Hide' : 'Show' }} UTM Fields</v-btn>
-                </v-col>
+
             </v-row>
 
-            <v-row>
-                <v-col>
-                    <v-btn color="secondary" @click="addNewField">Add Custom Field</v-btn>
-                </v-col>
-            </v-row>
-
-            <div v-if="state.showUTMFields">
-                <v-row v-for="(field, i) in sortedMetadata" :key="i" cols="12" md="4">
-                    <v-col>
-                        <v-label v-if="field.meta_key.includes('utm_')">
-                            <b>UTM Parameter</b>
-                        </v-label>
-                        <v-label v-else>
-                            <b>Custom Parameter</b>
-                        </v-label>
-
+            <div>
+                <v-row v-for="(field, i) in sortedMetadata" :key="i">
+                    <v-col cols="12" md="12">
+                        <div v-if="!field.meta_key.includes('utm_')"><b>Custom Parameter {{ i - 4 }}</b></div>
+                        <div v-else><b>UTM Parameter</b></div>
+                        <div>Key: {{ field.meta_key }}</div>
+                        <div>Value: {{ field.meta_value }}</div>
                         <v-text-field
+                            v-if="state.showUTMFields && !field.meta_key.includes('utm_')"
                             v-model="field.meta_key"
                             label="Key"
                             required
-                            :disabled="field.meta_key.includes('utm_')"
                             class=""
                         ></v-text-field>
                         <v-text-field
+                            v-if="state.showUTMFields"
                             v-model="field.meta_value"
                             label="Value"
                             required
                         ></v-text-field>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-btn class="mx-4" type="submit" color="primary">{{state.message ? state.message : 'Update Shortlink' }}</v-btn>
+                </v-row>
             </div>
-
-            <v-row>
-                <v-col>
-                    <v-btn type="submit" color="primary">Update Shortlink</v-btn>
-                </v-col>
-            </v-row>
         </v-form>
-        <p v-if="state.message">{{ state.message }}</p>
     </div>
 </template>
