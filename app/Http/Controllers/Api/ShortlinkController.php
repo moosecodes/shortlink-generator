@@ -13,41 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class ShortlinkController extends Controller
 {
-    public function create(Request $request)
-    {
-        try {
-            // Validate request
-            $validatedData = $request->validate([
-                'original_url' => 'required|url',
-                'metadata' => 'array',
-            ]);
-
-            // Generate a unique short code
-            $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
-
-            // Create the shortlink
-            $shortlink = Shortlink::create(array_merge($validatedData, [
-                'short_code' => $shortCode
-            ]));
-
-            // Create the shortlink metadata
-            if (isset($validatedData['metadata'])) {
-                foreach ($validatedData['metadata'] as $key => $value) {
-                    $shortlink->metadata()->create([
-                        'meta_key' => $validatedData['metadata'][$key]['meta_key'],
-                        'meta_value' => $validatedData['metadata'][$key]['meta_value'],
-                    ]);
-                }
-            }
-
-            return response()->json($shortlink, 201);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 422);
-        } catch (Exception $e) {
-            Log::error('Unexpected error occurred while creating shortlink: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
 
     public function show($id)
     {
@@ -105,7 +70,7 @@ class ShortlinkController extends Controller
 
             $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
 
-            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata->toArray()]));
+            return response()->json(array_merge(['shortlink' => $shortlink->toArray()], ['metadata' => $metadata->toArray()]));
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {
@@ -137,6 +102,7 @@ class ShortlinkController extends Controller
             'id' => 'required|uuid',
             'original_url' => 'required|url',
             'metadata' => 'array',
+            'utmFields' => 'array',
         ]);
     }
 }

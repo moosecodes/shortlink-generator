@@ -5,13 +5,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ShortlinkController;
 use App\Http\Controllers\Api\ShortlinkStatusController;
 use App\Http\Controllers\Api\ShortlinkRedirectController;
+use App\Http\Controllers\Api\CreateNewLinkController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 
-Route::post('/shortlinks', [ShortlinkController::class, 'create']);
+Route::post('/shortlinks/create', [CreateNewLinkController::class, 'index']);
 
 Route::get('/shortlinks/show/all', [ShortlinkController::class, 'showAll']);
 Route::get('/shortlinks/show/active', [ShortlinkController::class, 'showActive']);

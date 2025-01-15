@@ -16,7 +16,7 @@ const valid = ref(false);
 
 const submitForm = async () => {
     try {
-        const response = await axios.post('/api/shortlinks', {
+        const response = await axios.post('/api/shortlinks/create', {
             original_url: originalUrl.value,
             metadata: [
                 { meta_key: 'utm_source', meta_value: utmSource.value },
