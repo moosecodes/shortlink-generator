@@ -1,6 +1,6 @@
 <script setup>
-import { onMounted, reactive } from 'vue';
-import { VForm, VRow, VCol, VTextField, VBtn, VCard, VCardTitle, VCardSubtitle, VCardText, VCardItem, VExpansionPanels, VExpansionPanel } from 'vuetify/components';
+import { onMounted, reactive, computed } from 'vue';
+import { VLabel, VForm, VRow, VCol, VTextField, VBtn, VCard, VCardTitle, VCardSubtitle, VCardText, VCardItem, VExpansionPanels, VExpansionPanel } from 'vuetify/components';
 import axios from 'axios';
 
 const props = defineProps({
@@ -54,12 +54,19 @@ const submitForm = async () => {
 };
 const toggleUTMFields = () => {
     state.showUTMFields = !state.showUTMFields;
-
 }
 const addNewField = () => {
-    console.log(state.shortlink);
     state.shortlink.metadata.push({ meta_key: '', meta_value: '' });
 };
+const sortedMetadata = computed(() => {
+    return state.shortlink.metadata.slice().sort((a, b) => {
+        const aHasUtm = a.meta_key.startsWith('utm_');
+        const bHasUtm = b.meta_key.startsWith('utm_');
+        if (aHasUtm && !bHasUtm) return -1;
+        if (!aHasUtm && bHasUtm) return 1;
+        return 0;
+    });
+});
 onMounted(fetchShortlink);
 </script>
 
@@ -92,21 +99,32 @@ onMounted(fetchShortlink);
                 </v-col>
             </v-row>
 
-            <v-row v-if="state.showUTMFields">
-                <v-col v-for="field in state.shortlink.metadata" cols="12" md="4">
-                    <v-text-field
-                        v-model="field.meta_key"
-                        label="Key"
-                        required
-                        :disabled="field.meta_key.includes('utm_')"
-                    ></v-text-field>
-                    <v-text-field
-                        v-model="field.meta_value"
-                        label="Value"
-                        required
-                    ></v-text-field>
-                </v-col>
-            </v-row>
+            <div v-if="state.showUTMFields">
+                <v-row v-for="(field, i) in sortedMetadata" :key="i" cols="12" md="4">
+                    <v-col>
+                        <v-label v-if="field.meta_key.includes('utm_')">
+                            <b>UTM Parameter</b>
+                        </v-label>
+                        <v-label v-else>
+                            <b>Custom Parameter</b>
+                        </v-label>
+
+                        <v-text-field
+                            v-model="field.meta_key"
+                            label="Key"
+                            required
+                            :disabled="field.meta_key.includes('utm_')"
+                            class=""
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="field.meta_value"
+                            label="Value"
+                            required
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+            </div>
+
             <v-row>
                 <v-col>
                     <v-btn type="submit" color="primary">Update Shortlink</v-btn>

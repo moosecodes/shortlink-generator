@@ -31,10 +31,12 @@ class CreateNewLinkController extends Controller
             // Create the shortlink metadata
             if (isset($validatedData['metadata'])) {
                 foreach ($validatedData['metadata'] as $key => $value) {
-                    $shortlink->metadata()->create([
-                        'meta_key' => $validatedData['metadata'][$key]['meta_key'],
-                        'meta_value' => $validatedData['metadata'][$key]['meta_value'],
-                    ]);
+                    if (isset($value['meta_key']) && isset($value['meta_value'])) {
+                        $shortlink->metadata()->create([
+                            'meta_key' => $validatedData['metadata'][$key]['meta_key'],
+                            'meta_value' => $validatedData['metadata'][$key]['meta_value'],
+                        ]);
+                    }
                 }
             }
 
