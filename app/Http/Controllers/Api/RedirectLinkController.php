@@ -11,6 +11,27 @@ use Illuminate\Support\Facades\Log;
 
 class RedirectLinkController extends Controller
 {
+    public function getUrls(Request $request)
+    {
+        $shortlinks = Shortlink::all();
+        $urls = [];
+        foreach ($shortlinks as $shortlink) {
+            $props = [];
+            foreach ($shortlink->getAttributes() as $key => $value) {
+                if ($key == "short_code") {
+                    $props[$key] = $value;
+                }
+            }
+            $urls[] = [
+                'id' => $shortlink->id,
+                'short_code' => $shortlink->short_code,
+                'url' => $shortlink->original_url . '?' . http_build_query($props)
+            ];
+        }
+
+        return response()->json(['shortlink_redirect_urls' => $urls]);
+    }
+
     public function index($short_code, Request $request)
     {
         try {

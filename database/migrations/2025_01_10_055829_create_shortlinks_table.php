@@ -14,7 +14,7 @@ class CreateShortlinksTable extends Migration
             $table->string('short_code')->unique();
             $table->unsignedBigInteger('total_clicks')->default(0);
             $table->unsignedBigInteger('unique_clicks')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
 
             $table->index('short_code');

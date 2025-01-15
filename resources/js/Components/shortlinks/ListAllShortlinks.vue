@@ -4,32 +4,11 @@ import { VBtn, VChip, VRow, VCol, VCard, VCardItem, VCardActions, VDataTableServ
 import { router } from '@inertiajs/vue3';
 
 const shortlinks = ref([]);
+const redirectedUrls = ref([]);
 const linkFilter = ref('All');
-
-const fetchShortlinks = async () => {
-    try {
-        const response = await axios.get('/api/shortlinks/show/all');
-        shortlinks.value = response.data;
-    } catch (error) {
-        console.error('Error fetching shortlinks:', error);
-    }
-};
 
 const editShortlink = (shortlink) => {
     window.location.href = `/shortlinks/edit/${shortlink.short_code}`
-};
-
-const addShortlink = async () => {
-    window.location.href = '/api/shortlinks';
-    // const originalUrl = prompt('Please enter the original URL:', 'https://example.com');
-    // if (originalUrl) {
-    //     try {
-    //         const response = await axios.post('/api/shortlinks', { original_url: originalUrl });
-    //         window.location.reload();
-    //     } catch (error) {
-    //         console.error('Error adding shortlink:', error);
-    //     }
-    // }
 };
 
 const deleteShortlink = async(shortlink) => {
@@ -72,7 +51,33 @@ const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
 
-onMounted(fetchShortlinks);
+const fetchShortlinks = async () => {
+    try {
+        const response = await axios.get('/api/shortlinks/show/all');
+        shortlinks.value = response.data;
+        redirectedUrls.value = await fetchRedirectedUrls(shortlinks);
+    } catch (error) {
+        console.error('Error fetching shortlinks:', error);
+    }
+};
+
+const fetchRedirectedUrls = async () => {
+            console.log(shortlinks.value)
+
+        try {
+            const response = await axios.post(`/api/shortlinks/redirect/urls`, { shortlinks: shortlinks.value });
+            console.log(response.data)
+            redirectedUrls.value.push({redirect: response.data.shortlink_redirect_url});
+        } catch (error) {
+            console.error('Error fetching redirected URL:', error);
+        }
+
+    return redirectedUrls.value
+};
+
+onMounted(() => {
+    fetchShortlinks();
+});
 </script>
 
 <template>

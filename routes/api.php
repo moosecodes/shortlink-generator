@@ -21,6 +21,7 @@ Route::get('/shortlinks/show/active', [ShowLinkController::class, 'showActive'])
 Route::get('/shortlinks/show/{id}', [ShowLinkController::class, 'index']);
 
 Route::get('/shortlinks/redirect/{short_code}', [RedirectLinkController::class, 'index']);
+Route::post('/shortlinks/redirect/urls', [RedirectLinkController::class, 'getUrls']);
 
 Route::patch('/shortlinks/update', [UpdateLinkController::class, 'index']);
 

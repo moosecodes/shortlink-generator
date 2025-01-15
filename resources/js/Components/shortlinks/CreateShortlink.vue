@@ -1,13 +1,14 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const state = reactive({
     shortlink: {
         shortlink: '',
-        original_url: 'https://www.potty.com',
+        original_url: 'https://www.google.com',
         metadata: [
-            { meta_key: 'utm_source', meta_value: 'potty' },
+            { meta_key: 'utm_source', meta_value: 'milky way' },
             { meta_key: 'utm_medium', meta_value: 'email' },
             { meta_key: 'utm_campaign', meta_value: 'newsletter' },
             { meta_key: 'utm_term', meta_value: 'spring_sale' },
@@ -42,6 +43,9 @@ const toggleUTMFields = () => {
 const addNewField = () => {
     state.shortlink.metadata.push({ meta_key: '', meta_value: '' });
 };
+const navigateTo = (routeName) => {
+    router.get(route(routeName));
+};
 </script>
 
 <template>
@@ -52,7 +56,7 @@ const addNewField = () => {
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
             <v-col>
-                <v-btn type="submit" color="primary">Create Shortlink</v-btn>
+                <v-btn type="submit" color="primary" @click="navigateTo('dashboard')">Create Shortlink</v-btn>
             </v-col>
             <v-col>
                 <p v-if="message">{{ message }}</p>
