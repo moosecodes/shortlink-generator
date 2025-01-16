@@ -2,52 +2,47 @@
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-# Shortlink App
+## Laravel Shortlink App
 
-## Overview
+A Laravel application for creating, managing, and tracking shortlinks.
 
-The Shortlink App is a web application that allows users to create, manage, and track shortlinks. It provides features such as creating new shortlinks, updating existing ones, tracking clicks, and viewing analytics. The app is built using Laravel for the backend and Vue.js with Vuetify for the frontend.
+### Features
 
-## Features
+-   Create shortlinks
+-   Manage shortlinks (edit, delete)
+-   Track unique clicks
+-   View detailed analytics (device, browser, country, referrer, user agent)
+-   Toggle activation status of shortlinks
 
--   Create new shortlinks
--   Update existing shortlinks
--   Track total and unique clicks
--   View analytics for each shortlink
--   User authentication and authorization
--   Dark mode support
+### Requirements
 
-## Installation
-
-### Prerequisites
-
--   PHP >= 8.0
+-   PHP 8.0 or higher
 -   Composer
--   Node.js >= 14.x
--   npm or yarn
+-   Node.js and npm
 -   MySQL or any other supported database
 
-### Backend Setup
+### Installation
 
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/shortlink-app.git
+    git clone https://github.com/your-username/shortlink-app.git
     cd shortlink-app
     ```
 
-2. Install PHP dependencies:
+2. Install dependencies:
 
     ```sh
     composer install
+    npm install
+    npm run buil
+    bpm run dev
     ```
 
-3. Copy the [.env.example](http://_vscodecontentref_/3) file to [.env](http://_vscodecontentref_/4) and update the environment variables:
+3. Copy the [.env.example](http://_vscodecontentref_/2) file to [.env](http://_vscodecontentref_/3) and configure your environment variables:
 
     ```sh
     cp .env.example .env
@@ -59,7 +54,7 @@ The Shortlink App is a web application that allows users to create, manage, and 
     php artisan key:generate
     ```
 
-5. Set up the database and run migrations:
+5. Run the database migrations:
 
     ```sh
     php artisan migrate
@@ -71,56 +66,43 @@ The Shortlink App is a web application that allows users to create, manage, and 
     php artisan db:seed
     ```
 
-### Frontend Setup
-
-1. Install Node.js dependencies:
-
-    ```sh
-    npm install
-    ```
-
-2. Build the frontend assets:
+7. Build the frontend assets:
 
     ```sh
     npm run dev
     ```
 
-## Usage
-
-1. Start the Laravel development server:
+8. Start the development server:
 
     ```sh
     php artisan serve
     ```
 
-2. Open your browser and navigate to `http://localhost:8000`.
+### Usage
 
-3. Register a new user or log in with existing credentials.
+1. Access the application in your browser at `http://localhost`.
 
-4. Use the dashboard to create, update, and manage shortlinks.
+2. Use the interface to create, manage, and track shortlinks.
 
-## API Endpoints
+### API Endpoints
 
--   `POST /api/shortlinks` - Create a new shortlink
--   `PATCH /api/shortlinks/{id}` - Update an existing shortlink
--   `GET /api/shortlinks/all` - Get all shortlinks
--   `GET /api/shortlinks/active` - Get all active shortlinks
--   `GET /api/shortlinks/{id}` - Get a specific shortlink
--   `DELETE /api/shortlinks/{id}` - Delete a shortlink
--   `GET /shortlinks/redirect/{short_code}` - Redirect to the original URL
+-   `GET /api/shortlinks/show/all` - Fetch all shortlinks
+-   `POST /api/shortlinks/create` - Create a new shortlink
+-   `PATCH /api/shortlinks/update/{shortlink_id}` - Update a shortlink
+-   `DELETE /api/shortlinks/delete/{shortlink_id}` - Delete a shortlink
+-   `PATCH /api/shortlinks/activate/{shortlink_id}` - Activate a shortlink
+-   `PATCH /api/shortlinks/deactivate/{shortlink_id}` - Deactivate a shortlink
+-   `POST /api/shortlinks/redirect/urls` - Fetch redirected URLs
 
-## Contributing
+### Contributing
 
-Contributions are welcome! Please read the contributing guidelines for more information.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add new feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Create a new Pull Request.
 
-## License
+### License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
-## Acknowledgements
-
--   [Laravel](https://laravel.com/)
--   [Vue.js](https://vuejs.org/)
--   [Vuetify](https://vuetifyjs.com/)
--   [Inertia.js](https://inertiajs.com/)
--   [Jetstream](https://jetstream.laravel.com/)
