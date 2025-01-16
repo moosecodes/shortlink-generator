@@ -13,7 +13,7 @@ import QRCodeStyling from '@/Components/shortlinks/QRCodeStyling.vue';
         </template>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-            <QRCodeStyling qRText="" />
+            <QRCodeStyling input="mustafa" />
         </div>
     </AppLayout>
 </template>

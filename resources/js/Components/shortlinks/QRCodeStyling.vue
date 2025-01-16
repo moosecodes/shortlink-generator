@@ -14,7 +14,16 @@ const state = reactive({
 const generateQRCode = async (input) => {
     try {
         if (input) {
-            state.base64QRCode = await QRCode.toDataURL(input);
+            state.base64QRCode = await QRCode.toDataURL(input, {
+                errorCorrectionLevel: 'H',
+                type: 'image/jpeg',
+                margin: 4,
+                scale: 4,
+                color: {
+                    dark:"#000000ff",
+                    light:"#ffffffff"
+                }
+            });
         }
     } catch (error) {
         console.error('Error generating QR code:', error);
@@ -28,12 +37,13 @@ watch(() => props.input, (newInput) => {
 </script>
 
 <template>
-<div>
+<div class="flex flex-col items-center">
     <v-img
         :width="100"
         aspect-ratio="16/9"
         cover
         :src="state.base64QRCode"
     ></v-img>
+    <p>QR Code</p>
 </div>
 </template>
