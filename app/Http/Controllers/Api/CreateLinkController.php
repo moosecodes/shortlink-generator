@@ -25,7 +25,8 @@ class CreateLinkController extends Controller
 
             // Create the shortlink
             $shortlink = Shortlink::create(array_merge($validatedData, [
-                'short_code' => $shortCode
+                'short_code' => $shortCode,
+                'short_url' => config('app.url') . '/shortlinks/redirect/' . $shortCode,
             ]));
 
             // Create the shortlink metadata

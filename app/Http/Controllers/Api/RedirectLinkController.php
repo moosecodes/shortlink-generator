@@ -70,7 +70,8 @@ class RedirectLinkController extends Controller
             $urls[] = [
                 'id' => $shortlink->id,
                 'short_code' => $shortlink->short_code,
-                'url' => $shortlink->original_url . '?' . http_build_query($props)
+                'url' => $shortlink->original_url . '?' . http_build_query($props),
+                'short_url' => $shortlink->short_url,
             ];
         }
 

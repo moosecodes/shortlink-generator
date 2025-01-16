@@ -34,5 +34,9 @@ Route::middleware([
 
     Route::get('/shortlinks/show/all', function () {
         return Inertia::render('ViewAllShortlinks');
-    })->name('showAllShortlinks');;
+    })->name('showAllShortlinks');
+
+    Route::get('/shortlinks/redirect/{id}', function ($id) {
+        return redirect(url('api/shortlinks/redirect/' . $id));
+    });
 });

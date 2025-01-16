@@ -142,7 +142,17 @@ onMounted(() => {
                     <v-card-item>
                         <div class="d-flex flex-wrap">
                             <v-chip  class="text-caption my-2 mr-2 item-justify-start">
-                                <a :href="state.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect" target="_blank">{{ state.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect }}</a>
+                                {{
+                                    state.redirects?.
+                                        filter(redirect => shortlink.short_code === redirect.short_code)
+                                        [0]
+                                        ?.redirect
+                                }}
+                            </v-chip>
+                            <v-chip  class="text-caption my-2 mr-2 item-justify-start">
+                                <a :href="shortlink.short_url" target="_blank">
+                                    {{ shortlink.short_url }}
+                                </a>
                             </v-chip>
                         </div>
                     </v-card-item>

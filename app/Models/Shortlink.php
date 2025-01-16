@@ -13,6 +13,7 @@ class Shortlink extends Model
 
     protected $fillable = [
         'short_code',
+        'short_url',
         'is_active',
         'original_url',
         'total_clicks',
