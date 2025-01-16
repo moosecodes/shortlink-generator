@@ -82,9 +82,9 @@ const submitForm = async () => {
                 <main class="mt-6">
                     <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                         <div class=" justify-center gap-6 rounded-lg bg-white p-6 md:row-span-3 lg:p-10 lg:pb-10">
-<div class="flex gap-6 lg:flex-col">
+                            <div class="flex gap-6 lg:flex-col">
                                     <div class="pt-3 sm:pt-5 lg:pt-0">
-                                        <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink</h2>
+                                        <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink & QR Code</h2>
                                             <v-form fast-fail @submit.prevent>
                                                 <v-text-field
                                                     v-model="state.original_url"
