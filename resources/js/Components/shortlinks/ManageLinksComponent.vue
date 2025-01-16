@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted } from 'vue';
 import { VBtn, VChip, VRow, VCol, VCard, VCardItem, VCardActions, VSelect } from 'vuetify/components';
 import { router } from '@inertiajs/vue3';
+import dayjs from 'dayjs';
 
 const state = reactive({
     shortlinks: [],
@@ -75,6 +76,14 @@ const redirectedUrls = async () => {
     }
 }
 
+const isRecent = (shortlink) => {
+    const now = dayjs();
+    const createdAt = dayjs(shortlink.created_at);
+    const updatedAt = dayjs(shortlink.updated_at);
+
+    return now.diff(createdAt, 'minute') < 15 || now.diff(updatedAt, 'minute') < 15;
+};
+
 onMounted(() => {
     fetchShortlinks();
     redirectedUrls();
@@ -116,11 +125,10 @@ onMounted(() => {
         </v-row>
 
         <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
-            <v-col cols="12" md="12">
+            <v-col cols="12" md="12" :class="{ 'border-green-500 border-4 mb-4': isRecent(shortlink) }">
                 <v-card
                     :color="shortlink?.is_active ? 'indigo' : 'indigo darken-4'"
                     :variant="shortlink?.is_active ? 'elevated' : 'tonal'"
-                    class="mx-auto"
                     target="_blank"
                 >
                     <v-card-item>
