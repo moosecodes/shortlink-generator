@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, reactive, onMounted } from 'vue';
-import { VBtn, VChip, VRow, VCol, VCard, VCardItem, VCardActions, VDataTableServer, VTextField, VContainer, VSelect } from 'vuetify/components';
+import { VBtn, VChip, VRow, VCol, VCard, VCardItem, VCardActions, VSelect } from 'vuetify/components';
 import { router } from '@inertiajs/vue3';
 
 const state = reactive({

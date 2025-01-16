@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 

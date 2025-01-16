@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, reactive, computed } from 'vue';
-import { VLabel, VForm, VRow, VCol, VTextField, VBtn, VCard, VCardTitle, VCardSubtitle, VCardText, VCardItem, VExpansionPanels, VExpansionPanel } from 'vuetify/components';
+import { VForm, VRow, VCol, VTextField, VBtn, VCard, VCardTitle, VCardSubtitle, VCardText, VCardItem } from 'vuetify/components';
 import axios from 'axios';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     shortlink_id: {
@@ -66,6 +67,9 @@ const sortedMetadata = computed(() => {
         return 0;
     });
 });
+const navigateTo = (routeName) => {
+    router.get(route(routeName));
+};
 onMounted(fetchShortlink);
 </script>
 
@@ -89,7 +93,7 @@ onMounted(fetchShortlink);
                                 <v-btn class="mx-4" color="secondary" @click="addNewField">Add Custom Field</v-btn>
                                 <v-btn class="mx-4" color="secondary" @click="toggleUTMFields">{{ state.showUTMFields ? 'Hide' : 'Edit' }} Fields</v-btn>
                             </div>
-                            <v-btn class="mx-4" type="submit" color="primary">{{state.message ? state.message : 'Update Shortlink' }}</v-btn>
+                            <v-btn class="mx-4" type="submit" color="primary" @click="navigateTo('dashboard')">{{state.message ? state.message : 'Update Shortlink' }}</v-btn>
                         </div>
                     </v-card>
                 </v-col>
