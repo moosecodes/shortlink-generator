@@ -12,6 +12,11 @@ class UniqueClick extends Model
     protected $fillable = [
         'shortlink_id',
         'ip_address',
+        'device',
+        'browser',
+        'country',
+        'referrer',
+        'user_agent',
     ];
 
     public function shortlink()

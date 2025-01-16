@@ -147,12 +147,12 @@ onMounted(() => {
                         </div>
                     </v-card-item>
 
-                    <v-card-actions class="d-flex flex-wrap bg-indigo-darken-3">
+                    <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap bg-indigo-darken-2' : 'd-flex flex-wrap bg-black'">
                         <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
                         <small class="mx-2">Updated: <b>{{ new Date(shortlink.updated_at).toLocaleString() }}</b></small>
                     </v-card-actions>
 
-                    <v-card-actions class="d-flex justify-end bg-indigo-darken-3">
+                    <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-end bg-indigo-darken-3' : 'd-flex justify-end flex-wrap bg-black'">
                         <div class="d-flex flex-wrap">
                             <v-btn
                                 variant="outlined"
