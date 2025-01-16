@@ -85,8 +85,8 @@ onMounted(() => {
 <template>
         <v-row>
             <v-col>
-                <h1 class="text-2xl font-bold">{{ shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
-                <div v-if="!shortlinks.length">
+                <h1 class="text-2xl font-bold">{{ state.shortlinks.length ? "Manage Shortlinks" : "No Shortlinks" }}</h1>
+                <div v-if="!state.shortlinks.length">
                     Create new shortlinks to get started!
                 </div>
             </v-col>
@@ -140,7 +140,12 @@ onMounted(() => {
                     </v-card-item>
 
                     <v-card-item>
-                        <div class="d-flex flex-wrap">
+                        <div class="d-flex flex-wrap flex-column">
+                            <v-chip  class="text-caption my-2 mr-2 item-justify-start">
+                                <a :href="shortlink.short_url" target="_blank">
+                                    {{ shortlink.short_url }}
+                                </a>
+                            </v-chip>
                             <v-chip  class="text-caption my-2 mr-2 item-justify-start">
                                 {{
                                     state.redirects?.
@@ -148,11 +153,6 @@ onMounted(() => {
                                         [0]
                                         ?.redirect
                                 }}
-                            </v-chip>
-                            <v-chip  class="text-caption my-2 mr-2 item-justify-start">
-                                <a :href="shortlink.short_url" target="_blank">
-                                    {{ shortlink.short_url }}
-                                </a>
                             </v-chip>
                         </div>
                     </v-card-item>
