@@ -13,6 +13,7 @@ A Laravel application for creating, managing, and tracking shortlinks.
 
 -   Create shortlinks
 -   Manage shortlinks (edit, delete)
+-   Track clicks
 -   Track unique clicks
 -   View detailed analytics (device, browser, country, referrer, user agent)
 -   Toggle activation status of shortlinks
