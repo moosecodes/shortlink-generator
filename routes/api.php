@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\Api\ShowLinkController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UpdateLinkController;
+use App\Http\Controllers\Api\LocationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,3 +30,5 @@ Route::patch('/shortlinks/activate/{id}', [StatusController::class, 'activate'])
 Route::patch('/shortlinks/deactivate/{id}', [StatusController::class, 'deactivate']);
 
 Route::delete('/shortlinks/delete/{id}', [DeleteLinkController::class, 'index']);
+
+Route::get('location/{ip}', [LocationController::class, 'index']);
