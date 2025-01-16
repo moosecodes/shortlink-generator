@@ -15,6 +15,7 @@ class Shortlink extends Model
         'short_code',
         'short_url',
         'is_active',
+        'is_premium',
         'original_url',
         'total_clicks',
         'unique_clicks',

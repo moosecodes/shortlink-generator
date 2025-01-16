@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
+Route::post('/shortlinks/free', [CreateLinkController::class, 'freeLink']);
 
 Route::get('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
 Route::get('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);

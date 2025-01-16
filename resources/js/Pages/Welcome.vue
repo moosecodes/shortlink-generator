@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import { reactive } from 'vue';
-import { VSheet, VForm, VTextField, VBtn } from 'vuetify/components';
+import { VForm, VTextField, VBtn, VChip } from 'vuetify/components';
 
 defineProps({
     canLogin: {
@@ -21,10 +21,24 @@ defineProps({
 });
 
 const state = reactive({
-    url: '',
-    urlRules: []
+    original_url: '',
+    urlRules: [],
+    short_url: '',
 });
 
+const submitForm = async () => {
+    try {
+        const response = await axios.post('/api/shortlinks/free', {
+            original_url: state.original_url,
+            free_metadata: state.metadata,
+        });
+        state.short_url = response.data.short_url;
+        state.message = response;
+    } catch (error) {
+        console.error('Error creating shortlink:', error);
+        state.message = error;
+    }
+};
 </script>
 
 <template>
@@ -67,27 +81,23 @@ const state = reactive({
 
                 <main class="mt-6">
                     <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
-                        <div class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
-                            <div class="relative flex items-center gap-6 lg:items-end">
-                                <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
+                        <div class=" justify-center gap-6 rounded-lg bg-white p-6 md:row-span-3 lg:p-10 lg:pb-10">
+<div class="flex gap-6 lg:flex-col">
                                     <div class="pt-3 sm:pt-5 lg:pt-0">
-                                        <h2 class="text-xl font-semibold text-black dark:text-white">Create Free Shortlink</h2>
-
-                                        <v-sheet class="mx-auto" width="100%">
+                                        <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink</h2>
                                             <v-form fast-fail @submit.prevent>
                                                 <v-text-field
-                                                    v-model="state.url"
+                                                    v-model="state.original_url"
                                                     :rules="state.urlRules"
                                                     label="Enter URL"
                                                 ></v-text-field>
-                                                <v-btn class="mt-2" type="submit" variant="flat" color="indigo" block>Create Shortlink</v-btn>
+                                                <v-btn class="mt-2" type="submit" @click="submitForm" variant="flat" color="indigo" block>Create Shortlink</v-btn>
                                             </v-form>
-                                        </v-sheet>
                                     </div>
                                 </div>
-
-                                <svg class="size-6 shrink-0 stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
-                            </div>
+                            <v-chip>
+                                <a :href="state.short_url" target="_blank">{{ state.short_url }}</a>
+                            </v-chip>
                         </div>
 
                         <a
