@@ -9,17 +9,16 @@ const state = reactive({
     linkFilter: 'All',
 });
 
-const shortlinks = ref([]);
-
-const editShortlink = (shortlink) => {
-    window.location.href = `/shortlinks/edit/${shortlink.short_code}`
+const updateShortlink = (shortlink) => {
+    window.location.href = `/shortlink/update/${shortlink.short_code}`
 };
 
-const deleteShortlink = async(shortlink) => {
-    const confirmDelete = confirm(`Are you sure you want to delete this shortlink ${shortlink.short_code}?`);
+const deleteShortlink = async({ short_code }) => {
+    const confirmDelete = confirm(`Are you sure you want to delete this shortlink ${short_code}?`);
+
     if (confirmDelete) {
         try {
-            await axios.delete(`/api/shortlinks/delete/${shortlink.short_code}`);
+            await axios.delete(`/api/shortlinks/delete/${short_code}`);
             window.location.reload();
         } catch (error) {
             console.error('Error deleting shortlink:', error);
@@ -128,7 +127,10 @@ onMounted(() => {
                         <div class="text-overline mb-1 flex justify-between align-center">
                             <div>
                                 <v-chip class="my-2 mr-2"><b>{{ shortlink.short_code }}</b></v-chip>
-                                <v-chip class="my-2">
+                                <v-chip
+                                    class="my-2"
+                                    :color="shortlink?.is_active ? 'green' : 'red'"
+                                    variant="flat">
                                     {{ shortlink.is_active ? 'Active' : 'Inactive' }}
                                 </v-chip>
                             </div>
@@ -176,7 +178,7 @@ onMounted(() => {
                             <v-btn
                                 variant="outlined"
                                 prepend-icon="mdi-link"
-                                @click="editShortlink(shortlink)"
+                                @click="updateShortlink(shortlink)"
                                 class="m-2">
                                 Edit Link
                             </v-btn>

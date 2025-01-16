@@ -13,7 +13,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
 
 Route::get('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
@@ -23,9 +22,9 @@ Route::get('/shortlinks/show/{id}', [ShowLinkController::class, 'index']);
 Route::get('/shortlinks/redirect/{short_code}', [RedirectLinkController::class, 'index']);
 Route::post('/shortlinks/redirect/urls', [RedirectLinkController::class, 'getUrls']);
 
-Route::patch('/shortlinks/update', [UpdateLinkController::class, 'index']);
+Route::patch('/shortlink/update', [UpdateLinkController::class, 'index']);
 
 Route::patch('/shortlinks/activate/{id}', [StatusController::class, 'activate']);
 Route::patch('/shortlinks/deactivate/{id}', [StatusController::class, 'deactivate']);
 
-Route::delete('/shortlinks/delete/{id}', [DeleteLinkController::class, 'delete']);
+Route::delete('/shortlinks/delete/{id}', [DeleteLinkController::class, 'index']);

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CreateShortlink from '@/Components/shortlinks/CreateShortlink.vue';
+import CreateShortlinkComponent from '@/Components/shortlinks/CreateShortlinkComponent.vue';
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import CreateShortlink from '@/Components/shortlinks/CreateShortlink.vue';
         </template>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-            <CreateShortlink />
+            <CreateShortlinkComponent />
         </div>
     </AppLayout>
 </template>
