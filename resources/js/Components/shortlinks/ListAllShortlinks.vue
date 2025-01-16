@@ -90,6 +90,7 @@ onMounted(() => {
                     Create new shortlinks to get started!
                 </div>
             </v-col>
+
             <v-col align="end">
                 <v-btn
                     prepend-icon="mdi-plus"
@@ -131,7 +132,6 @@ onMounted(() => {
                                     {{ shortlink.is_active ? 'Active' : 'Inactive' }}
                                 </v-chip>
                             </div>
-
                             <div>
                                 <v-chip class="my-2 mr-2">{{ shortlink.total_clicks }} Clicks</v-chip>
                                 <v-chip class="my-2 mr-2">{{ shortlink.unique_clicks }} Unique Clicks</v-chip>
@@ -139,19 +139,20 @@ onMounted(() => {
                         </div>
                     </v-card-item>
 
-                    <v-card-actions class="d-flex justify-between bg-grey-darken-4">
+                    <v-card-item>
                         <div class="d-flex flex-wrap">
                             <v-chip  class="text-caption my-2 mr-2 item-justify-start">
                                 <a :href="state.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect" target="_blank">{{ state.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect }}</a>
                             </v-chip>
                         </div>
+                    </v-card-item>
+
+                    <v-card-actions class="d-flex flex-wrap bg-indigo-darken-3">
+                        <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
+                        <small class="mx-2">Updated: <b>{{ new Date(shortlink.updated_at).toLocaleString() }}</b></small>
                     </v-card-actions>
 
-                    <v-card-actions class="d-flex justify-between bg-grey-darken-4">
-                        <div class="d-flex flex-wrap">
-                            <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
-                            <small class="mx-2">Updated: <b>{{ new Date(shortlink.updated_at).toLocaleString() }}</b></small>
-                        </div>
+                    <v-card-actions class="d-flex justify-end bg-indigo-darken-3">
                         <div class="d-flex flex-wrap">
                             <v-btn
                                 variant="outlined"
