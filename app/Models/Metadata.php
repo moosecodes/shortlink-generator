@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class ShortlinkMetadata extends Model
+class Metadata extends Model
 {
     use HasFactory, HasUuids;
 
@@ -15,8 +15,6 @@ class ShortlinkMetadata extends Model
         'meta_key',
         'meta_value',
     ];
-
-    protected $table = 'shortlinks_metadata';
 
     public function shortlink()
     {

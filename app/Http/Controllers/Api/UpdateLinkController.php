@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Shortlink;
-use App\Models\ShortlinkMetadata;
+use App\Models\Metadata;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -49,7 +49,7 @@ class UpdateLinkController extends Controller
                 }
             }
 
-            $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
+            $metadata = Metadata::where('shortlink_id', $shortlink->id)->get();
 
             return response()->json(array_merge(['shortlink' => $shortlink->toArray()], ['metadata' => $metadata->toArray()]));
         } catch (ValidationException $e) {

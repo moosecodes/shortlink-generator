@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
-use App\Models\ShortlinkMetadata;
+use App\Models\Metadata;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +16,7 @@ class ShowLinkController extends Controller
     {
         try {
             $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
-            $metadata = ShortlinkMetadata::where('shortlink_id', $shortlink->id)->get();
+            $metadata = Metadata::where('shortlink_id', $shortlink->id)->get();
 
             return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
         } catch (ModelNotFoundException $e) {

@@ -8,7 +8,7 @@ class CreateShortlinksMetadataTable extends Migration
 {
     public function up()
     {
-        Schema::create('shortlinks_metadata', function (Blueprint $table) {
+        Schema::create('metadatas', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('shortlink_id');
             $table->string('meta_key')->nullable();
@@ -29,6 +29,6 @@ class CreateShortlinksMetadataTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('shortlinks_metadata');
+        Schema::dropIfExists('metadatas');
     }
 }
