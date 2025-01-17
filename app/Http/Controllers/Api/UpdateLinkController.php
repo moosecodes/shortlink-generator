@@ -18,7 +18,7 @@ class UpdateLinkController extends Controller
         return $request->validate([
             'id' => 'required|uuid',
             'original_url' => 'required|url',
-            'metadata' => 'array',
+            'metadatas' => 'array',
         ]);
     }
 
@@ -34,24 +34,24 @@ class UpdateLinkController extends Controller
             $shortlink->update($validatedData);
 
             // Update the shortlink metadata
-            if (isset($validatedData['metadata'])) {
+            if (isset($validatedData['metadatas'])) {
                 // Delete existing metadata
-                $shortlink->metadata()->delete();
+                $shortlink->metadatas()->delete();
 
                 // Create new metadata
-                foreach ($validatedData['metadata'] as $key => $value) {
+                foreach ($validatedData['metadatas'] as $key => $value) {
                     if (isset($value['meta_key']) && isset($value['meta_value'])) {
-                        $shortlink->metadata()->create([
-                            'meta_key' => $validatedData['metadata'][$key]['meta_key'],
-                            'meta_value' => $validatedData['metadata'][$key]['meta_value'],
+                        $shortlink->metadatas()->create([
+                            'meta_key' => $validatedData['metadatas'][$key]['meta_key'],
+                            'meta_value' => $validatedData['metadatas'][$key]['meta_value'],
                         ]);
                     }
                 }
             }
 
-            $metadata = Metadata::where('shortlink_id', $shortlink->id)->get();
+            $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 
-            return response()->json(array_merge(['shortlink' => $shortlink->toArray()], ['metadata' => $metadata->toArray()]));
+            return response()->json(array_merge(['shortlink' => $shortlink->toArray()], ['metadatas' => $metadatas->toArray()]));
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {

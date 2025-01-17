@@ -7,7 +7,7 @@ const state = reactive({
     shortlink: {
         shortlink: '',
         original_url: 'https://www.google.com',
-        metadata: [
+        metadatas: [
             { meta_key: 'utm_source', meta_value: 'milky way' },
             { meta_key: 'utm_medium', meta_value: 'email' },
             { meta_key: 'utm_campaign', meta_value: 'newsletter' },
@@ -27,7 +27,7 @@ const submitForm = async () => {
     try {
         const response = await axios.post('/api/shortlinks/create', {
             original_url: state.shortlink.original_url,
-            metadata: state.shortlink.metadata,
+            metadatas: state.shortlink.metadatas,
         });
         state.message = response;
     } catch (error) {
@@ -41,7 +41,7 @@ const toggleUTMFields = () => {
     state.showUTMFields = !state.showUTMFields;
 }
 const addNewField = () => {
-    state.shortlink.metadata.push({ meta_key: '', meta_value: '' });
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
 };
 const navigateTo = (routeName) => {
     router.get(route(routeName));
@@ -78,7 +78,7 @@ const navigateTo = (routeName) => {
         </v-row>
         <div v-if="state.showUTMFields">
             <v-row>
-                <v-col v-for="(field, i) in state.shortlink.metadata" :key="i" cols="12" md="4">
+                <v-col v-for="(field, i) in state.shortlink.metadatas" :key="i" cols="12" md="4">
                     <v-text-field
                         v-model="field.meta_key"
                         label="Key"

@@ -17,7 +17,7 @@ class CreateLinkController extends Controller
             // Validate request
             $validatedData = $request->validate([
                 'original_url' => 'required|url',
-                'metadata' => 'array',
+                'metadatas' => 'array',
             ]);
 
             // Generate a unique short code
@@ -30,13 +30,13 @@ class CreateLinkController extends Controller
                 'is_premium' => true,
             ]));
 
-            // Create the shortlink metadata
-            if (isset($validatedData['metadata'])) {
-                foreach ($validatedData['metadata'] as $key => $value) {
+            // Create the shortlink metadatas
+            if (isset($validatedData['metadatas'])) {
+                foreach ($validatedData['metadatas'] as $key => $value) {
                     if (isset($value['meta_key']) && isset($value['meta_value'])) {
-                        $shortlink->metadata()->create([
-                            'meta_key' => $validatedData['metadata'][$key]['meta_key'],
-                            'meta_value' => $validatedData['metadata'][$key]['meta_value'],
+                        $shortlink->metadatas()->create([
+                            'meta_key' => $validatedData['metadatas'][$key]['meta_key'],
+                            'meta_value' => $validatedData['metadatas'][$key]['meta_value'],
                         ]);
                     }
                 }

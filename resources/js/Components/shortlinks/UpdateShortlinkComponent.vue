@@ -16,7 +16,7 @@ const state = reactive({
         id: 0,
         original_url: '',
         is_active: 0,
-        metadata: [],
+        metadatas: [],
     },
     showUTMFields: false,
     message: '',
@@ -27,7 +27,7 @@ const fetchShortlink = async () => {
     try {
         const response = await axios.get(`/api/shortlinks/show/${props.shortlink_id.shortlink_id}`);
         state.shortlink = response.data;
-        state.shortlink.metadata = response.data.metadata;
+        state.shortlink.metadatas = response.data.metadatas;
     } catch (error) {
         console.error('Error fetching shortlink:', error);
     }
@@ -39,7 +39,7 @@ const submitForm = async () => {
             id: state.shortlink.id,
             short_code: state.shortlink.short_code,
             original_url: state.shortlink.original_url,
-            metadata: state.shortlink.metadata,
+            metadatas: state.shortlink.metadatas,
         });
         state.message = 'Shortlink updated successfully!';
     } catch (error) {
@@ -53,11 +53,11 @@ const toggleUTMFields = () => {
 }
 
 const addNewField = () => {
-    state.shortlink.metadata.push({ meta_key: '', meta_value: '' });
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
 };
 
-const sortedMetadata = computed(() => {
-    return state.shortlink.metadata.slice().sort((a, b) => {
+const sortedMetadatas = computed(() => {
+    return state.shortlink.metadatas.slice().sort((a, b) => {
         const aHasUtm = a.meta_key.startsWith('utm_');
         const bHasUtm = b.meta_key.startsWith('utm_');
         if (aHasUtm && !bHasUtm) return -1;
@@ -101,7 +101,7 @@ onMounted(fetchShortlink);
 </script>
 
 <template>
-    <div>{{ sortedMetadata }}
+    <div>{{ sortedMetadatas }}
         <h1 class="text-2xl font-bold mb-4">Update Shortlink</h1>
 
         <v-form
@@ -213,7 +213,7 @@ onMounted(fetchShortlink);
             </v-row>
 
             <div>
-                <v-row v-for="(field, i) in sortedMetadata" :key="i">
+                <v-row v-for="(field, i) in sortedMetadatas" :key="i">
                     <v-col cols="12" md="12">
                         <div v-if="!field.meta_key.includes('utm_')"><b>Custom Parameter {{ i - 4 }}</b></div>
                         <div v-else><b>UTM Parameter</b></div>

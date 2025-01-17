@@ -24,13 +24,14 @@ const state = reactive({
     original_url: '',
     urlRules: [],
     short_url: '',
+    metadatas: [],
 });
 
 const submitForm = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
             original_url: state.original_url,
-            free_metadata: state.metadata,
+            free_metadatas: state.metadatas,
         });
         state.short_url = response.data.short_url;
         state.message = response;

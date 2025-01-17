@@ -16,9 +16,9 @@ class ShowLinkController extends Controller
     {
         try {
             $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
-            $metadata = Metadata::where('shortlink_id', $shortlink->id)->get();
+            $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 
-            return response()->json(array_merge($shortlink->toArray(), ['metadata' => $metadata]));
+            return response()->json(array_merge($shortlink->toArray(), ['metadatas' => $metadatas]));
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {

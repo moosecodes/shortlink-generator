@@ -15,7 +15,7 @@ class CreateShortlinksMetadataTable extends Migration
             $table->text('meta_value')->nullable();
             $table->timestamps();
 
-            // Foreign key constraint
+            // Foreign key cons  traint
             $table->foreign('shortlink_id')
                 ->references('id')
                 ->on('shortlinks')

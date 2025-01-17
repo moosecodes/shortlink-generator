@@ -10,6 +10,8 @@ class Metadata extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $table = 'metadatas';
+
     protected $fillable = [
         'shortlink_id',
         'meta_key',

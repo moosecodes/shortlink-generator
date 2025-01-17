@@ -32,7 +32,7 @@ class Shortlink extends Model
         return $this->hasMany(UniqueClick::class);
     }
 
-    public function metadata()
+    public function metadatas()
     {
         return $this->hasMany(Metadata::class, 'shortlink_id');
     }
