@@ -2,8 +2,13 @@
 import { Head, Link } from '@inertiajs/vue3';
 import { reactive } from 'vue';
 import { VForm, VTextField, VBtn, VChip } from 'vuetify/components';
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
 
 defineProps({
+    auth: Object,
+    flash: Object,
     canLogin: {
         type: Boolean,
     },
@@ -21,6 +26,7 @@ defineProps({
 });
 
 const state = reactive({
+    userId: page.props.auth.user.id,
     original_url: '',
     urlRules: [],
     short_url: '',
@@ -30,6 +36,7 @@ const state = reactive({
 const submitForm = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
+            userId: state.userId,
             original_url: state.original_url,
             free_metadatas: state.metadatas,
         });
