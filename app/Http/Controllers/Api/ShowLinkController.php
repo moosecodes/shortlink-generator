@@ -8,14 +8,17 @@ use App\Models\Metadata;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class ShowLinkController extends Controller
 {
 
-    public function index($id)
+    public function index($id, Request $request)
     {
         try {
-            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink = Shortlink::where('user_id', $request->userId)
+                ->where('short_code', $id)
+                ->firstOrFail();
             $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 
             return response()->json(array_merge($shortlink->toArray(), ['metadatas' => $metadatas]));
@@ -27,17 +30,17 @@ class ShowLinkController extends Controller
         }
     }
 
-    public function showAll()
+    public function showAll(Request $request)
     {
-        $shortlinks = Shortlink::all();
-
+        $shortlinks = Shortlink::where('user_id', $request->userId)->get();
         return response()->json($shortlinks);
     }
 
-    public function showActive()
+    public function showActive(Request $request)
     {
-        $shortlinks = Shortlink::where('is_active', true)->get();
-
+        $shortlinks = Shortlink::where('user_id', $request->userId)
+            ->where('is_active', true)
+            ->get();
         return response()->json($shortlinks);
     }
 

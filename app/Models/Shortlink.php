@@ -12,6 +12,7 @@ class Shortlink extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'user_id',
         'short_code',
         'short_url',
         'is_active',
@@ -26,6 +27,11 @@ class Shortlink extends Model
 
     // Specify the primary key type
     protected $keyType = 'string';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function uniqueClicks()
     {

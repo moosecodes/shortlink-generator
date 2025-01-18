@@ -3,8 +3,17 @@ import { computed, reactive, onMounted } from 'vue';
 import { VBtn, VRow, VCol, VSelect } from 'vuetify/components';
 import { router } from '@inertiajs/vue3';
 import ShortlinkCardComponent from './ShortlinkCardComponent.vue';
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+
+const props = defineProps({
+    auth: Object,
+    flash: Object,
+});
 
 const state = reactive({
+    userId: page.props.auth.user.id,
     shortlinks: [],
     redirects: [],
     linkFilter: 'All',
@@ -16,7 +25,10 @@ const navigateTo = (routeName) => {
 
 const fetchShortlinks = async () => {
     try {
-        const response = await axios.get('/api/shortlinks/show/all');
+        const response = await axios.post('/api/shortlinks/show/all' , {
+            userId: state.userId,
+        });
+        console.log(response.data);
         state.shortlinks = response.data;
     } catch (error) {
         console.error('Error fetching shortlinks:', error);

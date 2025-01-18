@@ -2,8 +2,17 @@
 import { ref, reactive } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+
+const props = defineProps({
+    auth: Object,
+    flash: Object,
+});
 
 const state = reactive({
+    userId: page.props.auth.user.id,
     shortlink: {
         shortlink: '',
         original_url: 'https://www.google.com',
@@ -26,6 +35,7 @@ const valid = ref(false);
 const submitForm = async () => {
     try {
         const response = await axios.post('/api/shortlinks/create', {
+            userId: state.userId,
             original_url: state.shortlink.original_url,
             metadatas: state.shortlink.metadatas,
         });

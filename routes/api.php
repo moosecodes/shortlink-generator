@@ -17,8 +17,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
 Route::post('/shortlinks/free', [CreateLinkController::class, 'freeLink']);
 
-Route::get('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
-Route::get('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);
+Route::post('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
+Route::post('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);
 Route::get('/shortlinks/show/{id}', [ShowLinkController::class, 'index']);
 
 Route::get('/shortlinks/redirect/{short_code}', [RedirectLinkController::class, 'index']);
