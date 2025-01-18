@@ -84,24 +84,24 @@ const submitForm = async () => {
                     <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                         <div class=" justify-center gap-6 rounded-lg bg-white p-6 md:row-span-3 lg:p-10 lg:pb-10">
                             <div class="flex gap-6 lg:flex-col">
-                                    <div class="pt-3 sm:pt-5 lg:pt-0">
-                                        <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink & QR Code</h2>
-                                        <v-form fast-fail @submit.prevent>
-                                            <v-text-field
-                                                v-model="state.original_url"
-                                                :rules="state.urlRules"
-                                                label="Enter URL"
-                                            ></v-text-field>
-                                            <v-btn
-                                                class="mt-2"
-                                                type="submit"
-                                                @click="submitForm"
-                                                variant="flat"
-                                                color="indigo"
-                                                block>Create Shortlink</v-btn>
-                                        </v-form>
-                                    </div>
+                                <div class="pt-3 sm:pt-5 lg:pt-0">
+                                    <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink & QR Code</h2>
+                                    <v-form fast-fail @submit.prevent>
+                                        <v-text-field
+                                            v-model="state.original_url"
+                                            :rules="state.urlRules"
+                                            label="Enter URL"
+                                        ></v-text-field>
+                                        <v-btn
+                                            class="mt-2"
+                                            type="submit"
+                                            @click="submitForm"
+                                            variant="flat"
+                                            color="indigo"
+                                            block>Create Shortlink</v-btn>
+                                    </v-form>
                                 </div>
+                            </div>
                             <v-chip class="my-4 block" v-if="state.short_url">
                                 <a :href="state.short_url" target="_blank">{{ state.short_url }}</a>
                             </v-chip>
