@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
 use App\Models\Location;
+use Stevebauman\Location\Facades\Location as LocationService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -21,9 +22,13 @@ class RedirectLinkController extends Controller
 
             $shortlink->increment('total_clicks');
 
-            if (!$shortlink->uniqueClicks()->where('ip_address', $request->ip())->exists()) {
+            $ipAddress = $request->ip();
+
+            $location = LocationService::get('98.220.20.182');
+
+            if (!$shortlink->uniqueClicks()->where('ip_address', $ipAddress)->exists()) {
                 $shortlink->uniqueClicks()->create([
-                    'ip_address' => $request->ip(),
+                    'ip_address' => $ipAddress,
                     'device' => 'Unknown',
                     'browser' => 'Unknown',
                     'referrer' => $request->header('referer'),
@@ -32,21 +37,21 @@ class RedirectLinkController extends Controller
 
                 // Create a new record in the locations table with default string values
                 $location = Location::create([
-                    'ip_address' => $request->ip(),
-                    'driver' => 'default_driver',
-                    'country_name' => 'default_country_name',
-                    'country_code' => 'default_country_code',
-                    'region_code' => 'default_region_code',
-                    'region_name' => 'default_region_name',
-                    'city_name' => 'default_city_name',
-                    'zip_code' => 'default_zip_code',
-                    'iso_code' => 'default_iso_code',
-                    'postal_code' => 'default_postal_code',
-                    'latitude' => 0.0000000,
-                    'longitude' => 0.0000000,
-                    'metro_code' => 'default_metro_code',
-                    'area_code' => 'default_area_code',
-                    'timezone' => 'default_timezone',
+                    'ip_address' => $ipAddress,
+                    'driver' => $location->driver,
+                    'country_name' => $location->countryName,
+                    'country_code' => $location->countryCode,
+                    'region_code' => $location->regionCode,
+                    'region_name' => $location->regionName,
+                    'city_name' => $location->cityName,
+                    'zip_code' => $location->zipCode,
+                    'iso_code' => $location->isoCode,
+                    'postal_code' => $location->postalCode,
+                    'latitude' => $location->latitude,
+                    'longitude' => $location->longitude,
+                    'metro_code' => $location->metroCode,
+                    'area_code' => $location->areaCode,
+                    'timezone' => $location->timezone,
                 ]);
 
                 $shortlink->increment('unique_clicks');
