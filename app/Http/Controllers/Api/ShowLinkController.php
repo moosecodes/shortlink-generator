@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 class ShowLinkController extends Controller
 {
 
-    public function index($id, Request $request)
+    public function index(Request $request)
     {
         try {
             $shortlink = Shortlink::where('user_id', $request->userId)
-                ->where('short_code', $id)
+                ->where('short_code', $request->id)
                 ->firstOrFail();
             $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 

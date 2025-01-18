@@ -26,7 +26,7 @@ defineProps({
 });
 
 const state = reactive({
-    userId: page.props.auth.user.id,
+    userId: page.props.auth.user?.id || 999,
     original_url: '',
     urlRules: [],
     short_url: '',
@@ -34,9 +34,10 @@ const state = reactive({
 });
 
 const submitForm = async () => {
+    console.log(page.props.auth.user?.id)
     try {
         const response = await axios.post('/api/shortlinks/free', {
-            userId: state.userId,
+            user_id: state.userId,
             original_url: state.original_url,
             free_metadatas: state.metadatas,
         });

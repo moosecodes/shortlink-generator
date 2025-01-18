@@ -1,10 +1,16 @@
 <script setup>
 import { onMounted, reactive, computed } from 'vue';
-import { VForm, VChip, VRow, VCol, VTextField, VBtn, VCard, VCardActions, VCardItem } from 'vuetify/components';
+import ShortlinkCardDetailsComponent from './ShortlinkCardDetailsComponent.vue';
+import { VForm, VRow, VCol, VTextField, VBtn, VCard } from 'vuetify/components';
 import axios from 'axios';
 import { router } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
 
 const props = defineProps({
+    auth: Object,
+    flash: Object,
     shortlink_id: {
         type: Object,
         required: true,
@@ -12,12 +18,14 @@ const props = defineProps({
 });
 
 const state = reactive({
+    userId: page.props.auth.user?.id,
     shortlink: {
         id: 0,
         original_url: '',
         is_active: 0,
         metadatas: [],
     },
+    redirects: [],
     showUTMFields: false,
     message: '',
     valid: false,
@@ -25,7 +33,10 @@ const state = reactive({
 
 const fetchShortlink = async () => {
     try {
-        const response = await axios.get(`/api/shortlinks/show/${props.shortlink_id.shortlink_id}`);
+        const response = await axios.post(`/api/shortlinks/show`, {
+            id: props.shortlink_id.shortlink_id,
+            userId: state.userId,
+        });
         state.shortlink = response.data;
         state.shortlink.metadatas = response.data.metadatas;
     } catch (error) {
@@ -70,128 +81,18 @@ const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
 
-const deleteShortlink = async({ short_code }) => {
-    const confirmDelete = confirm(`Are you sure you want to delete this shortlink ${short_code}?`);
-
-    if (confirmDelete) {
-        try {
-            await axios.delete(`/api/shortlinks/delete/${short_code}`);
-            window.location.reload();
-        } catch (error) {
-            console.error('Error deleting shortlink:', error);
-        }
-    }
-}
-
-const toggleActivation = async (shortlink) => {
-    try {
-        const route = shortlink.is_active
-            ? `/api/shortlinks/deactivate/${shortlink.short_code}`
-            : `/api/shortlinks/activate/${shortlink.short_code}`;
-
-        await axios.patch(route);
-
-        shortlink.is_active = !shortlink.is_active;
-    } catch (error) {
-        console.error('Error toggling activation:', error);
-    }
-};
-
 onMounted(fetchShortlink);
 </script>
 
 <template>
-    <div>{{ sortedMetadatas }}
+    <div>
         <h1 class="text-2xl font-bold mb-4">Update Shortlink</h1>
 
         <v-form
             v-model="state.valid"
             @submit.prevent="submitForm">
 
-            <v-card
-                class="mx-auto"
-                :color="state.shortlink?.is_active ? 'indigo' : 'indigo darken-4'"
-                :variant="state.shortlink?.is_active ? 'elevated' : 'tonal'">
-
-                <v-card-item>
-                    <div class="text-overline mb-1 flex justify-between align-center">
-                        <div>
-                            <v-chip class="my-2 mr-2"><b>{{ state.shortlink.short_code }}</b></v-chip>
-                            <v-chip
-                                class="my-2"
-                                :color="state.shortlink?.is_active ? 'green' : 'red'"
-                                variant="flat">
-                                {{ state.shortlink.is_active ? 'Active' : 'Inactive' }}</v-chip>
-                        </div>
-                        <div>
-                            <v-chip class="my-2 mr-2">{{ state.shortlink.total_clicks }} Clicks</v-chip>
-                            <v-chip class="my-2 mr-2">{{ state.shortlink.unique_clicks }} Unique Clicks</v-chip>
-                        </div>
-                    </div>
-                </v-card-item>
-
-                <v-card-item>
-                    <div class="d-flex flex-wrap flex-column">
-                        <v-chip class="text-caption my-2 mr-2 item-justify-start">
-                            <a :href="state.shortlink.short_url"
-                                target="_blank">
-                                {{ state.shortlink.short_url }}
-                            </a>
-                        </v-chip>
-                        <v-chip class="text-caption my-2 mr-2 item-justify-start">
-                            {{
-                                state.redirects?.
-                                    filter(redirect => state.shortlink.short_code === redirect.short_code)
-                                    [0]
-                                    ?.redirect
-                            }}
-                        </v-chip>
-                    </div>
-                </v-card-item>
-
-                <v-card-actions
-                    :class="state.shortlink.is_active
-                        ? 'd-flex flex-wrap bg-indigo-darken-2'
-                        : 'd-flex flex-wrap bg-black'">
-                    <small class="mx-2">Created: <b>{{ new Date(state.shortlink.created_at).toLocaleString() }}</b></small>
-                    <small class="mx-2">Updated: <b>{{ new Date(state.shortlink.updated_at).toLocaleString() }}</b></small>
-                </v-card-actions>
-
-                <v-card-actions
-                    :class="state.shortlink.is_active
-                        ? 'd-flex flex-wrap justify-end bg-indigo-darken-3'
-                        : 'd-flex justify-end flex-wrap bg-black'">
-                    <div class="d-flex flex-wrap">
-                        <v-btn
-                            variant="outlined"
-                            :href="`/api/shortlinks/redirect/${state.shortlink.short_code}`"
-                            target="_blank"
-                            prepend-icon="mdi-eye"
-                            class="m-2">
-                            View Link
-                        </v-btn>
-
-                        <v-btn
-                            variant="flat"
-                            :prepend-icon="state.shortlink.is_active ? 'mdi-cancel' : 'mdi-connection'"
-                            :color="state.shortlink.is_active ? 'error' : 'success'"
-                            @click="toggleActivation(state.shortlink)"
-                            class="m-2">
-                            {{ state.shortlink.is_active ? 'Disable' : 'Enable' }}
-                        </v-btn>
-
-                        <v-btn
-                            v-if="!state.shortlink.is_active"
-                            variant="flat"
-                            prepend-icon="mdi-delete"
-                            color="error"
-                            @click="deleteShortlink(state.shortlink)"
-                            class="m-2">
-                            Delete
-                        </v-btn>
-                    </div>
-                </v-card-actions>
-            </v-card>
+            <ShortlinkCardDetailsComponent :shortlink="state.shortlink" :redirects="state.redirects" />
 
             <v-row class="my-4">
                 <v-col cols="12" md="12">

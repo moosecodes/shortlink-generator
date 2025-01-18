@@ -12,7 +12,7 @@ const props = defineProps({
 });
 
 const state = reactive({
-    userId: page.props.auth.user.id,
+    userId: page.props.auth.user?.id,
     shortlink: {
         shortlink: '',
         original_url: 'https://www.google.com',

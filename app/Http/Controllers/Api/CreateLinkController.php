@@ -29,6 +29,7 @@ class CreateLinkController extends Controller
                 'user_id' => $request->userId,
                 'short_code' => $shortCode,
                 'short_url' => config('app.url') . '/shortlinks/redirect/' . $shortCode,
+                'is_active' => false,
                 'is_premium' => true,
             ]));
 
@@ -58,7 +59,7 @@ class CreateLinkController extends Controller
         try {
             // Validate request
             $validatedData = $request->validate([
-                'userId' => 'required|integer',
+                'user_id' => 'required|integer',
                 'original_url' => 'required|url',
                 'metadata_free' => 'array',
             ]);
@@ -68,7 +69,7 @@ class CreateLinkController extends Controller
 
             // Create the shortlink
             $shortlink = Shortlink::create(array_merge($validatedData, [
-                'user_id' => $request->userId,
+                'user_id' => $request->user_id,
                 'short_code' => $shortCode,
                 'short_url' => config('app.url') . '/shortlinks/redirect/' . $shortCode,
                 'is_active' => true,

@@ -13,7 +13,7 @@ const props = defineProps({
 });
 
 const state = reactive({
-    userId: page.props.auth.user.id,
+    userId: page.props.auth.user?.id,
     shortlinks: [],
     redirects: [],
     linkFilter: 'All',
