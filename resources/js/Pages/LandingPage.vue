@@ -86,17 +86,23 @@ const submitForm = async () => {
                             <div class="flex gap-6 lg:flex-col">
                                     <div class="pt-3 sm:pt-5 lg:pt-0">
                                         <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Create Free Shortlink & QR Code</h2>
-                                            <v-form fast-fail @submit.prevent>
-                                                <v-text-field
-                                                    v-model="state.original_url"
-                                                    :rules="state.urlRules"
-                                                    label="Enter URL"
-                                                ></v-text-field>
-                                                <v-btn class="mt-2" type="submit" @click="submitForm" variant="flat" color="indigo" block>Create Shortlink</v-btn>
-                                            </v-form>
+                                        <v-form fast-fail @submit.prevent>
+                                            <v-text-field
+                                                v-model="state.original_url"
+                                                :rules="state.urlRules"
+                                                label="Enter URL"
+                                            ></v-text-field>
+                                            <v-btn
+                                                class="mt-2"
+                                                type="submit"
+                                                @click="submitForm"
+                                                variant="flat"
+                                                color="indigo"
+                                                block>Create Shortlink</v-btn>
+                                        </v-form>
                                     </div>
                                 </div>
-                            <v-chip>
+                            <v-chip class="my-4 block" v-if="state.short_url">
                                 <a :href="state.short_url" target="_blank">{{ state.short_url }}</a>
                             </v-chip>
                         </div>

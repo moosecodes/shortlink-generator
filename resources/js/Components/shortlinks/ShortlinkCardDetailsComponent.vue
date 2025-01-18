@@ -118,7 +118,7 @@ onMounted(() => {
             </v-card-actions>
 
             <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-between bg-indigo-darken-3' : 'd-flex justify-between flex-wrap bg-black'">
-                <v-chip variant="flat" :class="shortlink.is_premium ? 'text-lime-lighten-2' : 'text-white'" class="mx-2">{{ shortlink.is_premium ? 'PREMIUM' : 'FREE' }}</v-chip>
+                <v-chip variant="flat" class="mx-2">{{ shortlink.is_premium ? 'PREMIUM' : 'FREE' }}</v-chip>
                 <div class="d-flex flex-wrap">
                     <v-btn
                         variant="outlined"
