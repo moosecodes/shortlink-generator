@@ -83,7 +83,7 @@ const navigateTo = (routeName) => {
             <v-col cols="12" md="12">
                 <v-text-field
                     v-model="state.shortlink.custom_short_code"
-                    label="Custom back-half of shortlink"
+                    label="Custom back-half (optional)"
                 ></v-text-field>
             </v-col>
         </v-row>
