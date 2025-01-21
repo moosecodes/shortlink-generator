@@ -17,6 +17,7 @@ class CreateShortlinksTable extends Migration
             $table->unsignedBigInteger('unique_clicks')->default(0)->index();
             $table->boolean('is_active')->default(false)->index();
             $table->boolean('is_premium')->default(false)->index();
+            $table->timestamp('expires_at')->nullable()->index();
             $table->timestamps();
         });
     }

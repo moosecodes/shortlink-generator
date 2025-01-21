@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\CheckShortlinkExpiration;
+use App\Http\Controllers\Api\RedirectLinkController;
 
 Route::get('/', function () {
     return Inertia::render('LandingPage', [
@@ -35,8 +37,8 @@ Route::middleware([
     Route::get('/shortlinks/show/all', function () {
         return Inertia::render('ManageShortlinks');
     })->name('showAllShortlinks');
-
-    Route::get('/shortlinks/redirect/{id}', function ($id) {
-        return redirect(url('api/shortlinks/redirect/' . $id));
-    });
 });
+
+Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
+    ->middleware(CheckShortlinkExpiration::class)
+    ->name('shortlink.redirect');

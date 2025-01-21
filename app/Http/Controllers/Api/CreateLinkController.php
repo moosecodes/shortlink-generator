@@ -28,9 +28,10 @@ class CreateLinkController extends Controller
             $shortlink = Shortlink::create(array_merge($validatedData, [
                 'user_id' => $request->userId,
                 'short_code' => $shortCode,
-                'short_url' => config('app.url') . '/shortlinks/redirect/' . $shortCode,
+                'short_url' => config('app.url') . '/' . $shortCode,
                 'is_active' => false,
                 'is_premium' => true,
+                'expires_at' => now()->addDays(30),
             ]));
 
             // Create the shortlink metadatas
@@ -71,9 +72,10 @@ class CreateLinkController extends Controller
             $shortlink = Shortlink::create(array_merge($validatedData, [
                 'user_id' => $request->user_id,
                 'short_code' => $shortCode,
-                'short_url' => config('app.url') . '/shortlinks/redirect/' . $shortCode,
+                'short_url' => config('app.url') . '/' . $shortCode,
                 'is_active' => true,
                 'is_premium' => false,
+                'expires_at' => now()->addDays(30),
             ]));
 
             // Create the shortlink metadata

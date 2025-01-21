@@ -36,7 +36,7 @@ const fetchShortlinks = async () => {
 
 const redirectedUrls = async () => {
     try {
-        const response = await axios.post(`/api/shortlinks/redirect/urls`, { shortlinks: state.shortlinks });
+        const response = await axios.post(`/api/urls`, { shortlinks: state.shortlinks });
         const urls = response.data.shortlink_redirect_urls;
         urls.forEach(url => {
             state.redirects?.push({short_code: url.short_code, redirect: url.url});

@@ -42,7 +42,7 @@ const toggleActivation = async (shortlink) => {
 
 const redirectedUrls = async () => {
     try {
-        const response = await axios.post(`/api/shortlinks/redirect/urls`, { shortlinks: props.shortlinks });
+        const response = await axios.post(`/api/urls`, { shortlinks: props.shortlinks });
         const urls = response.data.shortlink_redirect_urls;
         urls.forEach(url => {
             props.redirects?.push({short_code: url.short_code, redirect: url.url});
@@ -114,7 +114,7 @@ onMounted(() => {
 
             <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-end bg-indigo-darken-2' : 'd-flex flex-wrap justify-end bg-black'">
                 <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
-                <small class="mx-2">Updated: <b>{{ new Date(shortlink.updated_at).toLocaleString() }}</b></small>
+                <small class="mx-2">Expires: <b>{{ new Date(shortlink.expires_at).toLocaleString() }}</b></small>
             </v-card-actions>
 
             <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-between bg-indigo-darken-3' : 'd-flex justify-between flex-wrap bg-black'">
@@ -122,7 +122,7 @@ onMounted(() => {
                 <div class="d-flex flex-wrap">
                     <v-btn
                         variant="outlined"
-                        :href="`/api/shortlinks/redirect/${shortlink.short_code}`"
+                        :href="`/api/${shortlink.short_code}`"
                         target="_blank"
                         prepend-icon="mdi-eye"
                         class="m-2">
