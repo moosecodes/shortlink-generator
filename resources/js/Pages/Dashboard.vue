@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import ManageLinksComponent from '@/Components/shortlinks/ManageLinksComponent.vue';
 import QRCodeStyling from '@/Components/shortlinks/QRCodeStyling.vue';
 </script>
 
@@ -13,7 +12,7 @@ import QRCodeStyling from '@/Components/shortlinks/QRCodeStyling.vue';
         </template>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-            <QRCodeStyling input="mustafa" />
+            Dashboard: <QRCodeStyling input="mustafa" />
         </div>
     </AppLayout>
 </template>

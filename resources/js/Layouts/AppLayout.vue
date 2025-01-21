@@ -28,7 +28,6 @@ import {
 
 defineProps({
     title: String,
-
 });
 
 const drawer = ref(true);

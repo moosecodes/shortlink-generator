@@ -28,7 +28,6 @@ const fetchShortlinks = async () => {
         const response = await axios.post('/api/shortlinks/show/all' , {
             userId: state.userId,
         });
-        console.log(response.data);
         state.shortlinks = response.data;
     } catch (error) {
         console.error('Error fetching shortlinks:', error);
