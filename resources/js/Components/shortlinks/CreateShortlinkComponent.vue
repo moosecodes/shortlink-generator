@@ -14,7 +14,7 @@ const props = defineProps({
 const state = reactive({
     userId: page.props.auth.user?.id,
     shortlink: {
-        shortlink: '',
+        custom_short_code: '',
         original_url: 'https://www.google.com',
         metadatas: [
             { meta_key: 'utm_source', meta_value: 'milky way' },
@@ -38,6 +38,7 @@ const submitForm = async () => {
             userId: state.userId,
             original_url: state.shortlink.original_url,
             metadatas: state.shortlink.metadatas,
+            custom_short_code: state.shortlink.custom_short_code,
         });
         state.message = response;
     } catch (error) {
@@ -47,7 +48,6 @@ const submitForm = async () => {
 };
 
 const toggleUTMFields = () => {
-    console.log(state.showUTMFields)
     state.showUTMFields = !state.showUTMFields;
 }
 const addNewField = () => {
@@ -78,6 +78,12 @@ const navigateTo = (routeName) => {
                     v-model="state.shortlink.original_url"
                     label="Redirect to (URL)"
                     required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="12">
+                <v-text-field
+                    v-model="state.shortlink.custom_short_code"
+                    label="Custom back-half of shortlink"
                 ></v-text-field>
             </v-col>
         </v-row>

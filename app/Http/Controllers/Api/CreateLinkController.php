@@ -19,10 +19,13 @@ class CreateLinkController extends Controller
                 'userId' => 'required|integer',
                 'original_url' => 'required|url',
                 'metadatas' => 'array',
+                'custom_short_code' => 'string|nullable',
             ]);
 
             // Generate a unique short code
-            $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
+            $shortCode = isset($request->custom_short_code)
+                ? $request->custom_short_code
+                : substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
 
             // Create the shortlink
             $shortlink = Shortlink::create(array_merge($validatedData, [
