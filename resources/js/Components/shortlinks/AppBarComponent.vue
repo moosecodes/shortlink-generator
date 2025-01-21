@@ -35,7 +35,8 @@ import {
                 </v-btn>
                 <v-btn
                     :href="route('register')"
-                    variant="outlined" class="mr-4">
+                    color="success"
+                    variant="flat" class="mr-4">
                     Sign up Free
                 </v-btn>
             </div>
