@@ -87,28 +87,16 @@ onMounted(() => {
                         <v-chip class="my-2 mr-2">{{ shortlink.unique_clicks }} Unique Clicks</v-chip>
                     </div>
                 </div>
+                <v-chip class="text-caption my-2 mr-2 item-justify-start">
+                    <a :href="shortlink.short_url" target="_blank">
+                        {{ shortlink.short_url }}
+                    </a>
+                </v-chip>
             </v-card-item>
 
             <v-card-item>
                 <div class="d-flex justify-between">
-                    <div class="d-flex flex-column justify-around">
-                        <v-chip class="text-caption my-2 mr-2 item-justify-start">
-                            <a :href="props.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect" target="_blank">
-                                {{ props.redirects?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect }}
-                            </a>
-                        </v-chip>
-
-                        <v-chip  class="text-caption my-2 mr-2 item-justify-start">
-                            <a :href="shortlink.short_url" target="_blank">
-                                {{ shortlink.short_url }}
-                            </a>
-                        </v-chip>
-                    </div>
-
-                    <QRCodeStyling
-                        class="mx-2"
-                        :input="props.redirects
-                            ?.filter(redirect => shortlink.short_code === redirect.short_code)[0]?.redirect" />
+                    <QRCodeStyling class="mx-2" :input="shortlink.short_url" />
                 </div>
             </v-card-item>
 
@@ -122,7 +110,7 @@ onMounted(() => {
                 <div class="d-flex flex-wrap">
                     <v-btn
                         variant="outlined"
-                        :href="`/api/${shortlink.short_code}`"
+                        :href="shortlink.short_url"
                         target="_blank"
                         prepend-icon="mdi-eye"
                         class="m-2">

@@ -21,6 +21,11 @@ class RedirectLinkController extends Controller
             if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink is not active!'], 400);
 
             $shortlink->increment('total_clicks');
+            $shortlink->clicksOverTime()->create([
+                'ip_address' => $request->ip(),
+                'referrer' => $request->header('referer'),
+                'clicked_at' => now(),
+            ]);
 
             $ipAddress = $request->ip();
 

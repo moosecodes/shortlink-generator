@@ -32,7 +32,22 @@ class Shortlink extends Model
 
     protected $casts = [
         'expires_at' => 'datetime',
+        'clicked_at' => 'datetime',
     ];
+
+    // public static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::created(function ($shortlink) {
+    //         $shortlink->clicksOverTime()->create([
+    //             'ip_address' => request()->ip(),
+    //             'referrer' => request()->header('referer'),
+    //             'clicked_at' => now(),
+    //         ]);
+    //     });
+    // }
+
     /**
      * Check if the shortlink is expired.
      */
@@ -66,5 +81,10 @@ class Shortlink extends Model
     public function metadatas()
     {
         return $this->hasMany(Metadata::class, 'shortlink_id');
+    }
+
+    public function clicksOverTime()
+    {
+        return $this->hasMany(ClicksOverTime::class);
     }
 }
