@@ -35,19 +35,6 @@ class Shortlink extends Model
         'clicked_at' => 'datetime',
     ];
 
-    // public static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::created(function ($shortlink) {
-    //         $shortlink->clicksOverTime()->create([
-    //             'ip_address' => request()->ip(),
-    //             'referrer' => request()->header('referer'),
-    //             'clicked_at' => now(),
-    //         ]);
-    //     });
-    // }
-
     /**
      * Check if the shortlink is expired.
      */
