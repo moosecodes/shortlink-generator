@@ -34,7 +34,7 @@ Route::middleware([
         ]);
     });
 
-    Route::get('/shortlinks/show/all', function () {
+    Route::get('/manage/shortlinks', function () {
         return Inertia::render('ManageShortlinks');
     })->name('showAllShortlinks');
 });

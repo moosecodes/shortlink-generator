@@ -24,7 +24,7 @@ Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
 Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
 Route::post('/shortlinks/free', [CreateLinkController::class, 'freeLink']);
 
-Route::post('/shortlinks/show/all', [ShowLinkController::class, 'showAll']);
+Route::post('/manage/shortlinks', [ShowLinkController::class, 'showAll']);
 Route::post('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);
 Route::post('/shortlinks/show', [ShowLinkController::class, 'index']);
 

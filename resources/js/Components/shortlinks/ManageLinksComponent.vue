@@ -25,7 +25,7 @@ const navigateTo = (routeName) => {
 
 const fetchShortlinks = async () => {
     try {
-        const response = await axios.post('/api/shortlinks/show/all' , {
+        const response = await axios.post('/api/manage/shortlinks' , {
             userId: state.userId,
         });
         state.shortlinks = response.data;
