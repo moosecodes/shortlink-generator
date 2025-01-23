@@ -24,18 +24,18 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/shortlink/new', function () {
-        return Inertia::render('NewShortlink');
-    })->name('newShortlink');
+    Route::get('/link/new', function () {
+        return Inertia::render('NewLinkPage');
+    })->name('NewLinkPage');
 
-    Route::get('/shortlink/update/{shortlink_id}', function ($shortlink_id) {
+    Route::get('/link/update/{shortlink_id}', function ($shortlink_id) {
         return Inertia::render('UpdateShortlink', [
             'shortlink_id' => $shortlink_id,
         ]);
     });
 
-    Route::get('/manage/shortlinks', function () {
-        return Inertia::render('ManageShortlinks');
+    Route::get('/links/manage', function () {
+        return Inertia::render('ManageLinksPage');
     })->name('showAllShortlinks');
 });
 

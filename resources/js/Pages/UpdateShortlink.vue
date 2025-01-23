@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import UpdateShortlinkComponent from '@/Components/shortlinks/UpdateShortlinkComponent.vue';
+import UpdateLinkComponent from '@/Components/shortlinks/UpdateLinkComponent.vue';
 
 const shortlink_id = defineProps(['shortlink_id']);
 </script>
@@ -15,7 +15,7 @@ const shortlink_id = defineProps(['shortlink_id']);
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <UpdateShortlinkComponent :shortlink_id="shortlink_id"/>
+                <UpdateLinkComponent :shortlink_id="shortlink_id"/>
             </div>
         </div>
     </AppLayout>

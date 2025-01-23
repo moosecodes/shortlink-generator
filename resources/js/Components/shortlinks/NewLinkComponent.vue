@@ -34,7 +34,7 @@ const valid = ref(false);
 
 const submitForm = async () => {
     try {
-        const response = await axios.post('/api/shortlinks/create', {
+        const response = await axios.post('/api/manage/new', {
             userId: state.userId,
             original_url: state.shortlink.original_url,
             metadatas: state.shortlink.metadatas,

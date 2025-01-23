@@ -1,8 +1,7 @@
 <script setup>
-import { onMounted } from 'vue';
 import { VBtn, VChip, VCol, VCard, VCardItem, VCardActions } from 'vuetify/components';
 import dayjs from 'dayjs';
-import QRCodeStyling from './QRCodeStyling.vue';
+import QrCodeComponent from './QrCodeComponent.vue';
 
 const props = defineProps({
     shortlink: Object,
@@ -10,7 +9,7 @@ const props = defineProps({
 });
 
 const updateShortlink = (shortlink) => {
-    window.location.href = `/shortlink/update/${shortlink.short_code}`
+    window.location.href = `/link/update/${shortlink.short_code}`
 };
 
 const deleteShortlink = async({ short_code }) => {
@@ -18,7 +17,7 @@ const deleteShortlink = async({ short_code }) => {
 
     if (confirmDelete) {
         try {
-            await axios.delete(`/api/shortlinks/delete/${short_code}`);
+            await axios.delete(`/api/link/delete/${short_code}`);
             window.location.reload();
         } catch (error) {
             console.error('Error deleting shortlink:', error);
@@ -29,8 +28,8 @@ const deleteShortlink = async({ short_code }) => {
 const toggleActivation = async (shortlink) => {
     try {
         const route = shortlink.is_active
-            ? `/api/shortlinks/deactivate/${shortlink.short_code}`
-            : `/api/shortlinks/activate/${shortlink.short_code}`;
+            ? `/api/link/deactivate/${shortlink.short_code}`
+            : `/api/link/activate/${shortlink.short_code}`;
 
         await axios.patch(route);
 
@@ -40,18 +39,6 @@ const toggleActivation = async (shortlink) => {
     }
 };
 
-const redirectedUrls = async () => {
-    try {
-        const response = await axios.post(`/api/urls`, { shortlinks: props.shortlinks });
-        const urls = response.data.shortlink_redirect_urls;
-        urls.forEach(url => {
-            props.redirects?.push({short_code: url.short_code, redirect: url.url});
-        });
-    } catch (error) {
-        console.error('Error fetching redirected URLs:', error);
-    }
-}
-
 const isRecent = (shortlink) => {
     const now = dayjs();
     const createdAt = dayjs(shortlink.created_at);
@@ -59,10 +46,6 @@ const isRecent = (shortlink) => {
 
     return now.diff(createdAt, 'minute') < 15 || now.diff(updatedAt, 'minute') < 15;
 };
-
-onMounted(() => {
-    redirectedUrls();
-});
 </script>
 
 <template>
@@ -96,7 +79,7 @@ onMounted(() => {
 
             <v-card-item>
                 <div class="d-flex justify-between">
-                    <QRCodeStyling class="mx-2" :input="shortlink.short_url" />
+                    <QrCodeComponent class="mx-2" :input="shortlink.short_url" />
                 </div>
             </v-card-item>
 

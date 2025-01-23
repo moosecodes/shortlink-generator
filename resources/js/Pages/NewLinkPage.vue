@@ -1,18 +1,18 @@
 <script setup>
-import LandingPageLayout from '@/Layouts/LandingPageLayout.vue';
-import ManageLinksComponent from '@/Components/shortlinks/ManageLinksComponent.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import NewLinkComponent from '@/Components/shortlinks/NewLinkComponent.vue';
 </script>
 
 <template>
-    <LandingPageLayout title="Dashboard">
+    <AppLayout title="New Shortlink">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Dashboard
+                New Shortlink
             </h2>
         </template>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-            <ManageLinksComponent />
+            <NewLinkComponent />
         </div>
-    </LandingPageLayout>
+    </AppLayout>
 </template>

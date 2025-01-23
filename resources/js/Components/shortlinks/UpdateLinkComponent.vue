@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, reactive, computed } from 'vue';
-import ShortlinkCardDetailsComponent from './ShortlinkCardDetailsComponent.vue';
+import CardDetails from './CardDetails.vue';
 import { VForm, VRow, VCol, VTextField, VBtn, VCard } from 'vuetify/components';
 import axios from 'axios';
 import { router } from '@inertiajs/vue3';
@@ -33,7 +33,7 @@ const state = reactive({
 
 const fetchShortlink = async () => {
     try {
-        const response = await axios.post(`/api/shortlinks/show`, {
+        const response = await axios.post(`/api/link/details`, {
             id: props.shortlink_id.shortlink_id,
             userId: state.userId,
         });
@@ -46,7 +46,7 @@ const fetchShortlink = async () => {
 
 const submitForm = async () => {
     try {
-        const response = await axios.patch(`/api/shortlink/update`, {
+        const response = await axios.patch(`/api/link/update`, {
             id: state.shortlink.id,
             short_code: state.shortlink.short_code,
             original_url: state.shortlink.original_url,
@@ -92,7 +92,7 @@ onMounted(fetchShortlink);
             v-model="state.valid"
             @submit.prevent="submitForm">
 
-            <ShortlinkCardDetailsComponent :shortlink="state.shortlink" :redirects="state.redirects" />
+            <CardDetails :shortlink="state.shortlink" :redirects="state.redirects" />
 
             <v-row class="my-4">
                 <v-col cols="12" md="12">

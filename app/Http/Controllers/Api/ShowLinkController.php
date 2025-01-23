@@ -35,19 +35,4 @@ class ShowLinkController extends Controller
         $shortlinks = Shortlink::where('user_id', $request->userId)->get();
         return response()->json($shortlinks);
     }
-
-    public function showActive(Request $request)
-    {
-        $shortlinks = Shortlink::where('user_id', $request->userId)
-            ->where('is_active', true)
-            ->get();
-        return response()->json($shortlinks);
-    }
-
-    public function showNotActive()
-    {
-        $shortlinks = Shortlink::where('is_active', false)->get();
-
-        return response()->json($shortlinks);
-    }
 }

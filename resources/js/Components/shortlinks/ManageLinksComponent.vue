@@ -2,7 +2,7 @@
 import { computed, reactive, onMounted } from 'vue';
 import { VBtn, VRow, VCol, VSelect } from 'vuetify/components';
 import { router } from '@inertiajs/vue3';
-import ShortlinkCardComponent from './ShortlinkCardComponent.vue';
+import CardListComponent from './CardListComponent.vue';
 import { usePage } from '@inertiajs/vue3'
 
 const page = usePage()
@@ -25,7 +25,7 @@ const navigateTo = (routeName) => {
 
 const fetchShortlinks = async () => {
     try {
-        const response = await axios.post('/api/manage/shortlinks' , {
+        const response = await axios.post('/api/links/manage' , {
             userId: state.userId,
         });
         state.shortlinks = response.data;
@@ -33,18 +33,6 @@ const fetchShortlinks = async () => {
         console.error('Error fetching shortlinks:', error);
     }
 };
-
-const redirectedUrls = async () => {
-    try {
-        const response = await axios.post(`/api/urls`, { shortlinks: state.shortlinks });
-        const urls = response.data.shortlink_redirect_urls;
-        urls.forEach(url => {
-            state.redirects?.push({short_code: url.short_code, redirect: url.url});
-        });
-    } catch (error) {
-        console.error('Error fetching redirected URLs:', error);
-    }
-}
 
 const filteredShortlinks = computed(() => {
     if (state.linkFilter === 'All') {
@@ -55,10 +43,8 @@ const filteredShortlinks = computed(() => {
         return state.shortlinks.filter(link => !link.is_active).reverse();
     }
 });
-
 onMounted(() => {
     fetchShortlinks();
-    redirectedUrls();
 });
 </script>
 
@@ -76,7 +62,7 @@ onMounted(() => {
                     prepend-icon="mdi-plus"
                     color="indigo"
                     class=""
-                    @click="navigateTo('newShortlink')">
+                    @click="navigateTo('NewLinkPage')">
                     New Shortlink
                 </v-btn>
             </v-col>
@@ -96,5 +82,5 @@ onMounted(() => {
             </v-col>
         </v-row>
 
-            <ShortlinkCardComponent :filteredShortlinks="filteredShortlinks" />
+        <CardListComponent :filteredShortlinks="filteredShortlinks" />
 </template>

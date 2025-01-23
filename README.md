@@ -87,13 +87,13 @@ A Laravel application for creating, managing, and tracking shortlinks.
 
 ### API Endpoints
 
--   `GET /api/manage/shortlinks` - Fetch all shortlinks
--   `POST /api/shortlinks/create` - Create a new shortlink
--   `PATCH /api/shortlink/update/{shortlink_id}` - Update a shortlink
--   `DELETE /api/shortlinks/delete/{shortlink_id}` - Delete a shortlink
--   `PATCH /api/shortlinks/activate/{shortlink_id}` - Activate a shortlink
--   `PATCH /api/shortlinks/deactivate/{shortlink_id}` - Deactivate a shortlink
--   `POST /api/urls` - Fetch redirected URLs
+-   `GET /api/links/manage` - Fetch all shortlinks
+-   `POST /api/manage/new` - Create a new shortlink
+-   `PATCH /api/link/update/{shortlink_id}` - Update a shortlink
+-   `DELETE /api/link/delete/{shortlink_id}` - Delete a shortlink
+-   `PATCH /api/link/activate/{shortlink_id}` - Activate a shortlink
+-   `PATCH /api/link/deactivate/{shortlink_id}` - Deactivate a shortlink
+-   `POST /api/redirects` - Fetch redirected URLs
 
 ### Contributing
 

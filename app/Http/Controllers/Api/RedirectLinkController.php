@@ -78,7 +78,7 @@ class RedirectLinkController extends Controller
         }
     }
 
-    public function getUrls(Request $request)
+    public function getRedirects(Request $request)
     {
         $shortlinks = Shortlink::all();
         $urls = [];

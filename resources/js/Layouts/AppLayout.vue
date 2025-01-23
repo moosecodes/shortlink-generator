@@ -192,8 +192,8 @@ const navigateTo = (routeName) => {
 
                     <v-list-item
                         link
-                        @click="navigateTo('newShortlink')"
-                        :active="route().current('newShortlink')"
+                        @click="navigateTo('NewLinkPage')"
+                        :active="route().current('NewLinkPage')"
                         prepend-icon="mdi-plus"
                         title="New Shortlink"
                         value="new-shortlink"

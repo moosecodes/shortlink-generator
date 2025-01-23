@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\Api\ShowLinkController;
 use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UpdateLinkController;
-use App\Http\Controllers\Api\LocationController;
+// use App\Http\Controllers\Api\LocationController;
 use App\Http\Middleware\CheckShortlinkExpiration;
 
 Route::get('/user', function (Request $request) {
@@ -20,21 +20,20 @@ Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
     ->middleware(CheckShortlinkExpiration::class)
     ->name('shortlink.redirect');
 
-// Other API routes
-Route::post('/shortlinks/create', [CreateLinkController::class, 'index']);
+Route::post('/redirects', [RedirectLinkController::class, 'getRedirects']);
+
 Route::post('/shortlinks/free', [CreateLinkController::class, 'freeLink']);
 
-Route::post('/manage/shortlinks', [ShowLinkController::class, 'showAll']);
-Route::post('/shortlinks/show/active', [ShowLinkController::class, 'showActive']);
-Route::post('/shortlinks/show', [ShowLinkController::class, 'index']);
+Route::post('/manage/new', [CreateLinkController::class, 'index']);
+Route::post('/links/manage', [ShowLinkController::class, 'showAll']);
 
-Route::post('/urls', [RedirectLinkController::class, 'getUrls']);
+Route::post('/link/details', [ShowLinkController::class, 'index']);
 
-Route::patch('/shortlink/update', [UpdateLinkController::class, 'index']);
+Route::patch('/link/update', [UpdateLinkController::class, 'index']);
 
-Route::patch('/shortlinks/activate/{id}', [StatusController::class, 'activate']);
-Route::patch('/shortlinks/deactivate/{id}', [StatusController::class, 'deactivate']);
+Route::patch('/link/activate/{id}', [StatusController::class, 'activate']);
+Route::patch('/link/deactivate/{id}', [StatusController::class, 'deactivate']);
 
-Route::delete('/shortlinks/delete/{id}', [DeleteLinkController::class, 'index']);
+Route::delete('/link/delete/{id}', [DeleteLinkController::class, 'index']);
 
-Route::get('location/{ip}', [LocationController::class, 'index']);
+// Route::get('location/{ip}', [LocationController::class, 'index']);
