@@ -56,7 +56,7 @@ const toggleFeature = () => {
 </script>
 
 <template>
-    <v-container>
+    <v-container :max-width="780">
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h3">Transform Your Links into Powerful Connections</p>
 
@@ -132,26 +132,23 @@ const toggleFeature = () => {
             </v-card>
         </v-row>
 
-        <v-row class="flex justify-evenly">
-            <div class="mx-1">
-                <v-img src="https://placehold.co/100x50" />
-                <v-card-text>Customer</v-card-text>
-            </div>
-            <div class="mx-1">
-                <v-img src="https://placehold.co/100x50" />
-                <v-card-text>Customer</v-card-text>
-            </div>
-            <div class="mx-1">
-                <v-img src="https://placehold.co/100x50" />
-                <v-card-text>Customer</v-card-text>
-            </div>
-            <div class="mx-1">
-                <v-img src="https://placehold.co/100x50" />
-                <v-card-text>Customer</v-card-text>
-            </div>
-            <div class="mx-1">
-                <v-img src="https://placehold.co/100x50" />
-                <v-card-text>Customer</v-card-text>
+        <v-row class="flex flex-column justify-center text-center my-4">
+            <div class="flex justify-between">
+                <v-card>
+                    <v-img src="https://placehold.co/400" />
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
+                <v-card>
+                    <v-img src="https://placehold.co/400" />
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
+                <v-card>
+                    <v-img src="https://placehold.co/400" />
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
             </div>
         </v-row>
 
@@ -162,18 +159,18 @@ const toggleFeature = () => {
                 <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2 my-4">Start now for free</v-btn>
             </div>
 
-            <div class="flex justify-center">
-                <v-card class="mx-2">
+            <div class="flex justify-between">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
@@ -183,47 +180,43 @@ const toggleFeature = () => {
 
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h4">Trusted by Millions Worldwide for Over a Decade</p>
-            <div class="flex justify-center">
-                <v-card class="mx-2">
+
+            <div class="flex justify-between">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Customer</v-card-title>
-                    <v-card-text>Customer</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Customer</v-card-title>
-                    <v-card-text>Customer</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Customer</v-card-title>
-                    <v-card-text>Customer</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
             </div>
         </v-row>
 
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h4">Hear What Our Customers Have to Say</p>
-            <div class="flex justify-center">
-                <v-card class="mx-2">
+            <div class="flex justify-between">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Testimonial</v-card-title>
-                    <v-card-text>Testimonial</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Testimonial</v-card-title>
-                    <v-card-text>Testimonial</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
-                <v-card class="mx-2">
+                <v-card>
                     <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Testimonial</v-card-title>
-                    <v-card-text>Testimonial</v-card-text>
-                </v-card>
-                <v-card class="mx-2">
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Testimonial</v-card-title>
-                    <v-card-text>Testimonial</v-card-text>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
                 </v-card>
             </div>
         </v-row>

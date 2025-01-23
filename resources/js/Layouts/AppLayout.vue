@@ -65,7 +65,7 @@ const navigateTo = (routeName) => {
     <v-app>
         <Head :title="title" />
 
-            <Banner />
+        <Banner />
 
         <!-- Rest of the template remains the same -->
         <v-app-bar elevation="2">
@@ -201,7 +201,7 @@ const navigateTo = (routeName) => {
                     @click="navigateTo('showAllShortlinks')"
                     :active="route().current('showAllShortlinks')"
                     prepend-icon="mdi-link"
-                    title="Manage Shortlinks"
+                    title="Manage Links"
                     value="shortlinks"
                 ></v-list-item>
 
@@ -210,7 +210,7 @@ const navigateTo = (routeName) => {
                     @click="navigateTo('NewLinkPage')"
                     :active="route().current('NewLinkPage')"
                     prepend-icon="mdi-plus"
-                    title="New Shortlink"
+                    title="New Link"
                     value="new-shortlink"
                 ></v-list-item>
                 <v-list-item

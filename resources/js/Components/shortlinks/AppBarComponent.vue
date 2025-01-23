@@ -18,7 +18,7 @@ const toggleTheme = () => {
 </script>
 
 <template>
-    <v-app-bar elevation="2" color="primary">
+    <v-app-bar elevation="2" color="white">
         <v-app-bar-title>
             <div class="d-flex align-center mx-4">
                 <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">

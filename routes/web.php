@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\CheckShortlinkExpiration;
 use App\Http\Controllers\Api\RedirectLinkController;
+use Laravel\Fortify\Fortify;
 
 Route::get('/', function () {
     return Inertia::render('LandingPage', [

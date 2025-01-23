@@ -68,7 +68,7 @@ const showParameterPreview = computed(() => {
 
 <template>
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold my-2">New Shortlink</h1>
+        <h1 class="text-2xl font-bold my-2">New Link</h1>
     </div>
 
     <v-form v-model="valid" @submit.prevent="submitForm">

@@ -63,7 +63,7 @@ onMounted(() => {
                     color="indigo"
                     class=""
                     @click="navigateTo('NewLinkPage')">
-                    New Shortlink
+                    New Link
                 </v-btn>
             </v-col>
         </v-row>

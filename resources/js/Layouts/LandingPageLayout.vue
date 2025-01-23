@@ -1,6 +1,7 @@
 <script setup>
 import AppBarComponent from '@/Components/shortlinks/AppBarComponent.vue';
-
+import { Head } from '@inertiajs/vue3';
+import Banner from '@/Components/Banner.vue';
 import {
     VApp,
     VContainer,
@@ -18,6 +19,9 @@ defineProps({
 <template>
     <v-app>
         <v-layout>
+            <Head :title="title" />
+
+            <Banner />
 
             <AppBarComponent />
 
