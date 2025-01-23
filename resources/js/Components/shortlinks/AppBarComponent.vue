@@ -1,15 +1,24 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
+
 import {
     VBtn,
     VAppBar,
     VAppBarTitle,
 } from 'vuetify/lib/components/index.mjs';
+
+import { useTheme } from 'vuetify';
+
+const theme = useTheme()
+
+const toggleTheme = () => {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+}
 </script>
 
 <template>
-    <v-app-bar elevation="2" color="black">
+    <v-app-bar elevation="2" color="primary">
         <v-app-bar-title>
             <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
                 <ApplicationMark class="d-inline-block" style="height: 36px;" />
@@ -40,6 +49,8 @@ import {
                     Sign up Free
                 </v-btn>
             </div>
+
+            <v-btn @click="toggleTheme">toggle theme</v-btn>
         </nav>
     </v-app-bar>
 </template>
