@@ -20,18 +20,19 @@ const toggleTheme = () => {
 <template>
     <v-app-bar elevation="2" color="primary">
         <v-app-bar-title>
-            <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
-                <ApplicationMark class="d-inline-block" style="height: 36px;" />
-            </Link>
-            <v-btn @click="toggleTheme" class="mx-4">toggle theme</v-btn>
-
+            <div class="d-flex align-center mx-4">
+                <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
+                    <ApplicationMark style="height: 36px;" />
+                </Link>
+                <v-btn variant="plain" @click="toggleTheme"><small>Toggle Theme</small></v-btn>
+            </div>
         </v-app-bar-title>
 
         <nav class="flex justify-between">
             <v-btn variant="text" class="mr-4">Platform</v-btn>
-            <v-btn variant="text" class="mr-4">Solutions</v-btn>
             <v-btn variant="text" class="mr-4">Pricing</v-btn>
-            <v-btn variant="text" class="mr-4">Resources</v-btn>
+
+
             <v-btn
                 v-if="$page.props.auth.user"
                 :href="route('dashboard')"
@@ -41,17 +42,16 @@ const toggleTheme = () => {
             <div v-else>
                 <v-btn
                     :href="route('login')"
-                    variant="elevated" class="mr-4">
+                    variant="plain" class="mr-4">
                     Login
                 </v-btn>
                 <v-btn
                     :href="route('register')"
                     color="success"
-                    variant="flat" class="mr-4">
+                    variant="elevated" class="mr-4">
                     Sign up Free
                 </v-btn>
             </div>
-
         </nav>
     </v-app-bar>
 </template>

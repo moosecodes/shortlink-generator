@@ -6,7 +6,9 @@
     display: none;
 }
 
-.custom-container {
-    max-width: var(--v-theme-max-width);
-    margin: 0 auto;
+.v-field__input {
+    background-color: inherit;
+}
+.v-field-label {
+    color: inherit;
 }

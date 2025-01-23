@@ -17,7 +17,7 @@ class UpdateLinkController extends Controller
     {
         return $request->validate([
             'id' => 'required|uuid',
-            'original_url' => 'required|url',
+            'user_url' => 'required|url',
             'metadatas' => 'array',
         ]);
     }

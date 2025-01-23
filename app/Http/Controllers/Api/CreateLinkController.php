@@ -17,7 +17,7 @@ class CreateLinkController extends Controller
             // Validate request
             $validatedData = $request->validate([
                 'userId' => 'required|integer',
-                'original_url' => 'required|url',
+                'user_url' => 'required|url',
                 'metadatas' => 'array',
                 'custom_short_code' => 'string|nullable',
             ]);
@@ -64,7 +64,7 @@ class CreateLinkController extends Controller
             // Validate request
             $validatedData = $request->validate([
                 'user_id' => 'required|integer',
-                'original_url' => 'required|url',
+                'user_url' => 'required|url',
                 'metadata_free' => 'array',
             ]);
 

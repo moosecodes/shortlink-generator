@@ -10,7 +10,7 @@ class CreateShortlinksTable extends Migration
     {
         Schema::create('shortlinks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('original_url')->index();
+            $table->string('user_url')->index();
             $table->string('short_code')->unique()->index();
             $table->string('short_url')->unique()->index();
             $table->unsignedBigInteger('total_clicks')->default(0)->index();

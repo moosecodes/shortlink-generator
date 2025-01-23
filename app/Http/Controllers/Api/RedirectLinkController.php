@@ -69,7 +69,7 @@ class RedirectLinkController extends Controller
                 }
             }
 
-            return redirect($shortlink->original_url . '?' . http_build_query($props));
+            return redirect($shortlink->user_url . '?' . http_build_query($props));
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
@@ -92,7 +92,7 @@ class RedirectLinkController extends Controller
             $urls[] = [
                 'id' => $shortlink->id,
                 'short_code' => $shortlink->short_code,
-                'url' => $shortlink->original_url . '?' . http_build_query($props),
+                'url' => $shortlink->user_url . '?' . http_build_query($props),
                 'short_url' => $shortlink->short_url,
             ];
         }

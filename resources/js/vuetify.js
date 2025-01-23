@@ -29,7 +29,7 @@ const vuetify = createVuetify({
             dark: {
                 colors: {
                     primary: colors.red.darken4,
-                    secondary: colors.blueGrey.lighten5,
+                    secondary: colors.blue.lighten5,
                     accent: colors.blue.accent1,
                     error: colors.red.base,
                     info: colors.amber.base,

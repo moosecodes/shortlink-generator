@@ -21,7 +21,7 @@ const state = reactive({
     userId: page.props.auth.user?.id,
     shortlink: {
         id: 0,
-        original_url: '',
+        user_url: '',
         is_active: 0,
         metadatas: [],
     },
@@ -49,7 +49,7 @@ const submitForm = async () => {
         const response = await axios.patch(`/api/link/update`, {
             id: state.shortlink.id,
             short_code: state.shortlink.short_code,
-            original_url: state.shortlink.original_url,
+            user_url: state.shortlink.user_url,
             metadatas: state.shortlink.metadatas,
         });
         state.message = 'Shortlink updated successfully!';

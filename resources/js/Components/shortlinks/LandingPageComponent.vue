@@ -26,7 +26,7 @@ defineProps({
 
 const state = reactive({
     userId: 999,
-    original_url: '',
+    user_url: '',
     urlRules: [],
     short_url: '',
     metadata: [],
@@ -38,7 +38,7 @@ const createFreeLink = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
             user_id: state.userId,
-            original_url: state.original_url,
+            user_url: state.user_url,
             free_metadata: state.metadata,
         });
         state.short_url = response.data.short_url;
@@ -72,13 +72,13 @@ const toggleFeature = () => {
                     <v-form @submit.prevent>
                         <v-card-title>Link Shortener</v-card-title>
                         <v-text-field
-                            v-model="state.original_url"
+                            v-model="state.user_url"
                             variant="solo-filled"
                             :rules="state.urlRules"
-                            label="Enter URL"
+                            label="Paste your URL here"
                         ></v-text-field>
-                        <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Shorten Link</v-btn>
-                        <v-btn class="my-2"><a :href="state.short_url" target="_blank">{{ state.short_url }}</a></v-btn>
+                        <v-btn v-if="!state.short_url" class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Shorten Link</v-btn>
+                        <v-btn v-else :href="state.short_url" target="_blank" class="my-4" color="success">{{ state.short_url }}</v-btn>
                     </v-form>
                 </v-card-text>
             </v-card>
@@ -87,7 +87,8 @@ const toggleFeature = () => {
                     <v-form @submit.prevent>
                         <v-card-title>Generate Free QR Code</v-card-title>
                         <v-text-field
-                            v-model="state.original_url"
+                            v-model="state.user_url"
+                            variant="solo-filled"
                             :rules="state.urlRules"
                             label="Paste your long link here"
                         ></v-text-field>
