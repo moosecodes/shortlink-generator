@@ -9,6 +9,8 @@ import {
     VTextField,
     VContainer,
     VCard,
+    VCardTitle,
+    VCardText,
     VList,
     VListItem,
     VListItemTitle,
@@ -107,20 +109,68 @@ const createFreeLink = async () => {
                 <!-- <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2">Get a quote</v-btn> -->
             </div>
 
-            <v-img></v-img>
-            <v-img></v-img>
-            <v-img></v-img>
+            <div class="flex justify-center">
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Link Management</v-card-title>
+                    <v-card-text>Link Management</v-card-text>
+                </v-card>
+            </div>
         </v-row>
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h4">Adopted and loved by millions of users for over a decade</p>
-            <p>box box box box</p>
+            <div class="flex justify-center">
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Customer</v-card-title>
+                    <v-card-text>Customer</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Customer</v-card-title>
+                    <v-card-text>Customer</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Customer</v-card-title>
+                    <v-card-text>Customer</v-card-text>
+                </v-card>
+            </div>
         </v-row>
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h4">What our customers are saying</p>
-            <p>testimonials</p>
-            <p>testimonials</p>
-            <p>testimonials</p>
-            <p>testimonials</p>
+            <div class="flex justify-center">
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Testimonial</v-card-title>
+                    <v-card-text>Testimonial</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Testimonial</v-card-title>
+                    <v-card-text>Testimonial</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Testimonial</v-card-title>
+                    <v-card-text>Testimonial</v-card-text>
+                </v-card>
+                <v-card class="mx-2">
+                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-card-title>Testimonial</v-card-title>
+                    <v-card-text>Testimonial</v-card-text>
+                </v-card>
+            </div>
         </v-row>
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-8 text-h4">More than a link shortener</p>
