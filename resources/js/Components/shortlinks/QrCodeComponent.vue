@@ -39,11 +39,9 @@ watch(() => props.input, (newInput) => {
 <template>
 <div class="flex flex-col items-center">
     <v-img
-        :width="100"
-        aspect-ratio="16/9"
-        cover
+        :width="200"
         :src="state.base64QRCode"
     ></v-img>
-    <p>QR Code</p>
+    <p class="my-4">QR Code for {{ props.input }}</p>
 </div>
 </template>

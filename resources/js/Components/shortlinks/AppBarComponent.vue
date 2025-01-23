@@ -23,6 +23,8 @@ const toggleTheme = () => {
             <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
                 <ApplicationMark class="d-inline-block" style="height: 36px;" />
             </Link>
+            <v-btn @click="toggleTheme" class="mx-4">toggle theme</v-btn>
+
         </v-app-bar-title>
 
         <nav class="flex justify-between">
@@ -50,7 +52,6 @@ const toggleTheme = () => {
                 </v-btn>
             </div>
 
-            <v-btn @click="toggleTheme">toggle theme</v-btn>
         </nav>
     </v-app-bar>
 </template>

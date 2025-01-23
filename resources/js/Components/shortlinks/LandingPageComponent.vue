@@ -16,6 +16,7 @@ import {
     VListItemTitle,
     VListSubheader,
 } from 'vuetify/lib/components/index.mjs';
+import QrCodeComponent from './QrCodeComponent.vue';
 
 defineProps({
     auth: Object,
@@ -30,6 +31,7 @@ const state = reactive({
     short_url: '',
     metadata: [],
     message: '',
+    status: false,
 });
 
 const createFreeLink = async () => {
@@ -46,27 +48,56 @@ const createFreeLink = async () => {
         state.message = error;
     }
 };
+
+const toggleFeature = () => {
+    state.status = !state.status;
+    return state.status ? 'shortlink' : 'qr';
+};
 </script>
 
 <template>
     <v-container>
-        <v-row class="flex flex-column justify-center text-center mb-4">
-            <p class="my-8 text-h4">Build stronger digital connections</p>
+        <v-row class="flex flex-column justify-center text-center my-4">
+            <p class="my-8 text-h3">Transform Your Links into Powerful Connections</p>
+
             <div class="flex justify-center my-4">
-                <v-btn color="primary" variant="flat" class="mx-2">Short link</v-btn>
-                <v-btn color="primary" variant="flat" class="mx-2">QR Code</v-btn>
+                <v-btn color="primary" :variant="state.status ? 'outlined' : 'elevated'" class="mx-2" @click="toggleFeature">Short link</v-btn>
+                <v-btn color="primary" :variant="!state.status ? 'outlined' : 'elevated'" class="mx-2" @click="toggleFeature">QR Code</v-btn>
             </div>
-            <p>Use our URL shortener, QR Codes, and landing pages to engage your audience and connect them to the right information. Build, edit, and track everything inside the Bitly Connections Platform.</p>
-            <p class="my-4 text-h5">Paste your long link here</p>
-            <v-form fast-fail @submit.prevent>
-                <v-text-field
-                    v-model="state.original_url"
-                    :rules="state.urlRules"
-                    label="Enter URL"
-                ></v-text-field>
-                <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Shorten</v-btn>
-                <v-btn class="my-2"><a :href="state.short_url" target="_blank">{{ state.short_url }}</a></v-btn>
-            </v-form>
+
+            <p class="my-4">Simplify engagement with our powerful URL shortener, dynamic QR Codes, and customized landing pages. Effortlessly connect your audience to the right content while building, editing, and tracking every interaction on our intuitive platform.</p>
+
+            <v-card v-if="!state.status">
+                <v-card-text>
+                    <v-form @submit.prevent>
+                        <v-card-title>Link Shortener</v-card-title>
+                        <v-text-field
+                            v-model="state.original_url"
+                            variant="solo-filled"
+                            :rules="state.urlRules"
+                            label="Enter URL"
+                        ></v-text-field>
+                        <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Shorten Link</v-btn>
+                        <v-btn class="my-2"><a :href="state.short_url" target="_blank">{{ state.short_url }}</a></v-btn>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+            <v-card v-else>
+                <v-card-text>
+                    <v-form @submit.prevent>
+                        <v-card-title>Generate Free QR Code</v-card-title>
+                        <v-text-field
+                            v-model="state.original_url"
+                            :rules="state.urlRules"
+                            label="Paste your long link here"
+                        ></v-text-field>
+                        <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Generate QR Code</v-btn>
+                    </v-form>
+                    <div v-if="state.short_url">
+                        <QrCodeComponent :input="state.short_url" />
+                    </div>
+                </v-card-text>
+            </v-card>
         </v-row>
 
         <v-row class="flex flex-column justify-center text-center my-4">
@@ -77,19 +108,19 @@ const createFreeLink = async () => {
                     <div class="flex text-secondary">
                         <v-list-item>
                             <template v-slot:prepend>
-                                <v-icon icon="mdi-check" class="text-green"></v-icon>
+                                <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
                             </template>
                             <v-list-item-title>4 short links/month</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <template v-slot:prepend>
-                                <v-icon icon="mdi-check" class="text-green"></v-icon>
+                                <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
                             </template>
                             <v-list-item-title>4 custom back-halves/month</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <template v-slot:prepend>
-                                <v-icon icon="mdi-check" class="text-green"></v-icon>
+                                <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
                             </template>
                             <v-list-item-title>Unlimited link clicks</v-list-item-title>
                         </v-list-item>
@@ -98,15 +129,36 @@ const createFreeLink = async () => {
                 </v-list>
 
             </v-card>
-            <div>Icons Icons Icons Icons Icons</div>
+        </v-row>
+
+        <v-row class="flex justify-evenly">
+            <div class="mx-1">
+                <v-img src="https://placehold.co/100x50" />
+                <v-card-text>Customer</v-card-text>
+            </div>
+            <div class="mx-1">
+                <v-img src="https://placehold.co/100x50" />
+                <v-card-text>Customer</v-card-text>
+            </div>
+            <div class="mx-1">
+                <v-img src="https://placehold.co/100x50" />
+                <v-card-text>Customer</v-card-text>
+            </div>
+            <div class="mx-1">
+                <v-img src="https://placehold.co/100x50" />
+                <v-card-text>Customer</v-card-text>
+            </div>
+            <div class="mx-1">
+                <v-img src="https://placehold.co/100x50" />
+                <v-card-text>Customer</v-card-text>
+            </div>
         </v-row>
 
         <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">The Bitly Connections Platform</p>
-            <p>All the products you need to build brand connections, manage links and QR Codes, and connect with audiences everywhere, in a single unified platform.</p>
+            <p class="my-8 text-h4">The Best Engagement Platform</p>
+            <p>Everything You Need to Build Your Brand: Manage Links, Create QR Codes, and Engage Audiences Everywhere from One Powerful Platform.</p>
             <div class="flex justify-center my-4">
-                <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2 my-4">Get started for free</v-btn>
-                <!-- <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2">Get a quote</v-btn> -->
+                <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2 my-4">Start now for free</v-btn>
             </div>
 
             <div class="flex justify-center">
@@ -127,8 +179,9 @@ const createFreeLink = async () => {
                 </v-card>
             </div>
         </v-row>
+
         <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">Adopted and loved by millions of users for over a decade</p>
+            <p class="my-8 text-h4">Trusted by Millions Worldwide for Over a Decade</p>
             <div class="flex justify-center">
                 <v-card class="mx-2">
                     <v-img src="https://placehold.co/400"></v-img>
@@ -147,8 +200,9 @@ const createFreeLink = async () => {
                 </v-card>
             </div>
         </v-row>
+
         <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">What our customers are saying</p>
+            <p class="my-8 text-h4">Hear What Our Customers Have to Say</p>
             <div class="flex justify-center">
                 <v-card class="mx-2">
                     <v-img src="https://placehold.co/400"></v-img>
@@ -172,10 +226,11 @@ const createFreeLink = async () => {
                 </v-card>
             </div>
         </v-row>
+
         <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">More than a link shortener</p>
-            <p>Knowing how your clicks and scans are performing should be as easy as making them. Track, analyze, and optimize all your connections in one place.</p>
-            <v-btn :href="route('register')" color="primary" variant="flat">Get started for free</v-btn>
+            <p class="my-4 text-h4">Beyond Link Shortening: A Complete Connection Platform</p>
+            <p class="my-4">Effortless Insights: Track, Analyze, and Optimize Your Clicks and Scans All in One Place</p>
+            <v-btn class="my-4" :href="route('register')" color="primary" variant="flat">Start now for free</v-btn>
         </v-row>
     </v-container>
 </template>
