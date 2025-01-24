@@ -39,14 +39,20 @@ const options = {
             title: {
                 display: false,
                 text: 'Date'
-            }
+            },
+            grid: {
+                color: 'rgba(200, 200, 200, 0.1)', // X-axis grid line color
+            },
         },
         y: {
             display: true,
             title: {
                 display: true,
                 text: 'Clicks'
-            }
+            },
+            grid: {
+                color: 'rgba(200, 200, 200, 0.1)', // X-axis grid line color
+            },
         }
     },
     plugins: {
@@ -298,10 +304,6 @@ const custom = [
     }
 ];
 
-const position = {
-  lat: parseFloat(location.latitude),
-  lng: parseFloat(location.longitude)
-};
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 

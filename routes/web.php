@@ -45,14 +45,14 @@ Route::middleware([
         foreach ($graphs as $graph) {
             $graphData->push([
                 'shortCode' => $graph->shortCode,
-                'labels' => $graph->labels,
+                'labels' => array_reverse($graph->labels),
                 'datasets' => [
                     [
                         'label' => 'Clicks (' . $graph->shortCode . ')',
-                        'backgroundColor' => '#ffffff',
+                        'backgroundColor' => '#fff',
                         'borderColor' => '#f87979',
                         'borderWidth' => 3,
-                        'pointRadius' => 3,
+                        'pointRadius' => 4,
                         'lineTension' => 0.2,
                         'data' => $graph->datasets[0]->data,
                     ]
