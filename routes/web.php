@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Http\Middleware\CheckShortlinkExpiration;
 use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\Api\GetClicksOverTime;
+use App\Models\Location;
 use App\Models\Shortlink;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -26,9 +27,11 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function (Request $request) {
 
-        // Prepare graph data for each shortlink
         $userId = $request->user()->id;
+
+        // Prepare graph data for each shortlink
         $shortlinks = Shortlink::where('user_id', $userId)->get();
+        // TODO: Add a check to see if the user has any shortlinks before proceeding
         $clicksController = new GetClicksOverTime();
         $graphs = collect();
         foreach ($shortlinks as $link) {
@@ -37,6 +40,7 @@ Route::middleware([
             $graphs->push($clickData);
         }
 
+        // Prepare configurations for each graph
         $graphData = collect();
         foreach ($graphs as $graph) {
             $graphData->push([
@@ -56,8 +60,12 @@ Route::middleware([
             ]);
         }
 
+        // Prepare location data
+        $locations = Location::where('user_id', $userId)->get();
+
         return Inertia::render('Dashboard', [
             'graphs' => $graphData,
+            'locations' => $locations,
         ]);
     })->name('dashboard');
 

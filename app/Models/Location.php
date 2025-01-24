@@ -11,6 +11,7 @@ class Location extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'user_id',
         'ip_address',
         'driver',
         'country_name',
