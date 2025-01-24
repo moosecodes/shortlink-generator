@@ -27,9 +27,24 @@ class RedirectLinkController extends Controller
                 'clicked_at' => now(),
             ]);
 
-            $ipAddress = $request->ip();
+            $ipAddresses = [
+                // $request->ip(), // Current IP address
+                '98.220.20.182',
+                '77.73.203.21',
+                '67.199.248.14',
+                '163.195.1.225',
+                '151.101.192.144',
+                '184.30.42.22',
+                '47.246.136.156',
+            ];
 
-            $location = LocationService::get('98.220.20.182');
+            // Select a random IP address from the array
+            $ipAddress = $ipAddresses[array_rand($ipAddresses)];
+            Log::info('Selected IP Address: ' . $ipAddress);
+
+            $userId = $request->user()->id;
+
+            $location = LocationService::get($ipAddress);
 
             if (!$shortlink->uniqueClicks()->where('ip_address', $ipAddress)->exists()) {
                 $shortlink->uniqueClicks()->create([
@@ -42,6 +57,7 @@ class RedirectLinkController extends Controller
 
                 // Create a new record in the locations table with default string values
                 $location = Location::create([
+                    'user_id' => $userId,
                     'ip_address' => $ipAddress,
                     'driver' => $location->driver,
                     'country_name' => $location->countryName,
