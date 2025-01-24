@@ -29,12 +29,6 @@ class GetClicksOverTime extends Controller
                 'labels' => $labels,
                 'datasets' => [
                     [
-                        'label' => 'Clicks Over Time',
-                        'backgroundColor' => '#f87979',
-                        'borderColor' => '#f87979',
-                        'borderWidth' => 3,
-                        'pointRadius' => 3,
-                        'lineTension' => 0.2,
                         'data' => $data,
                     ]
                 ]

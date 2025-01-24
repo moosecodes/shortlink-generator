@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { GoogleMap, Marker, AdvancedMarker } from 'vue3-google-map'
-import { VRow, VCol } from 'vuetify/lib/components/index.mjs';
+import { VRow, VCol, VExpansionPanels, VExpansionPanel } from 'vuetify/lib/components/index.mjs';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -32,6 +32,28 @@ const props = defineProps({
 const options = {
     responsive: true,
     maintainAspectRatio: true,
+    disableDefaultUI: true,
+    scales: {
+        x: {
+            display: true,
+            title: {
+                display: false,
+                text: 'Date'
+            }
+        },
+        y: {
+            display: true,
+            title: {
+                display: true,
+                text: 'Clicks'
+            }
+        }
+    },
+    plugins: {
+        legend: {
+            display: false
+        },
+    },
 };
 
 const deDupedLocations = () => {
@@ -42,56 +64,327 @@ const deDupedLocations = () => {
     );
 };
 
+const custom = [
+    {
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#1d2c4d"
+        }
+        ]
+    },
+    {
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#8ec3b9"
+        }
+        ]
+    },
+    {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+            "color": "#1a3646"
+        }
+        ]
+    },
+    {
+        "featureType": "administrative.country",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+            "color": "#4b6878"
+        }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#64779e"
+        }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+            "color": "#4b6878"
+        }
+        ]
+    },
+    {
+        "featureType": "landscape.man_made",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+            "color": "#334e87"
+        }
+        ]
+    },
+    {
+        "featureType": "landscape.natural",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#023e58"
+        }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#283d6a"
+        }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#6f9ba5"
+        }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+            "color": "#1d2c4d"
+        }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+            "color": "#023e58"
+        }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#3C7680"
+        }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#304a7d"
+        }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#98a5be"
+        }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+            "color": "#1d2c4d"
+        }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#2c6675"
+        }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        {
+            "color": "#255763"
+        }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#b0d5ce"
+        }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+            "color": "#023e58"
+        }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#98a5be"
+        }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        {
+            "color": "#1d2c4d"
+        }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "geometry.fill",
+        "stylers": [
+        {
+            "color": "#283d6a"
+        }
+        ]
+    },
+    {
+        "featureType": "transit.station",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#3a4762"
+        }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+        {
+            "color": "#0e1626"
+        }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+        {
+            "color": "#4e6d70"
+        }
+        ]
+    }
+];
+
+const position = {
+  lat: parseFloat(location.latitude),
+  lng: parseFloat(location.longitude)
+};
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 
 <template>
     <AppLayout title="Dashboard">
-        <!-- <v-row>
-            <v-col>
-                <GoogleMap
-                    api-key="AIzaSyCz78riXILDivfsMbaQEOVACEZJjjuGoRU"
-                    style="width: '100%'; height: 400px"
-                    :zoom="3"
+        <v-row>
+            <v-col cols="12" md="12">
+                <p class="text-2xl font-semibold">Link Analytics Dashboard</p>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col cols="12" md="12">
+                <p class="text-2xl font-semibold">Clicks Over Time</p>
+            </v-col>
+            <v-col col="12" md="4" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
+                <p class="my-2">Short Code: {{ graph.shortCode }}</p>
+                <p class="mb-4">Total Clicks: {{ graph.datasets[0].data.reduce((accumulator, currentValue) => accumulator + currentValue, 0) }}</p>
+                <Line
+                    :data="graph"
+                    :options="options"
+                    class="my-4"
+                />
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col cols="12" md="12">
+                <div class="mt-4 mb-2">Stats</div>
+                <v-expansion-panels>
+                    <v-expansion-panel
+                        v-for="(graph, i) in Array.from(props.graphs)" :key="i"
+                        :title="graph.shortCode"
+                        :text="graph.datasets[0].data.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toString()">
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col cols="12" md="12">
+                <div class="mt-4 mb-2">Locations</div>
+            <GoogleMap
+                    :api-key="googleMapsApiKey"
+                    style="width: 100%; height: 400px"
+                    :styles="custom"
+                    :zoom="2"
+                    :disableDefaultUi="true"
                 >
-                    <Marker v-for="(location, i) in deDupedLocations()" :key="i" :options="{ position: { lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) } }" />
-                </GoogleMap>
-            </v-col>
-        </v-row> -->
-        <v-row class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <v-col cols="12" md="4">
-                <p class="text-4xl font-semibold mb-4">Click Locations</p>
-                <div v-for="(location, i) in deDupedLocations()" :key="i" class="my-4">
-                    <p v-if="location.city_name" class="text-1xl font-semibold">{{ location.city_name }}</p>
-                    <p v-if="location.country_name" class="text-1xl font-semibold">{{ location.country_name }}</p>
-                    <p v-if="location.timezone">{{ location.timezone }}</p>
-
-                    <!-- <p v-if="location.postal_code">{{ location.postal_code }}</p>
-                    <p v-if="location.latitude">{{ location.latitude }}, {{ location.longitude }}</p> -->
-
-                    <GoogleMap
-                        api-key="AIzaSyCz78riXILDivfsMbaQEOVACEZJjjuGoRU"
-                        style="width: 100%; height: 200px"
-                        :center="{ lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) }"
-                        :zoom="2"
-                    >
-                        <Marker :options="{ position: { lat: parseFloat(location.latitude), lng: parseFloat(location.longitude) } }" />
-                    </GoogleMap>
-                </div>
-            </v-col>
-
-            <v-col>
-                <p class="text-4xl font-semibold">Click Graph Data</p>
-                <div v-for="(graph, i) in Array.from(props.graphs).reverse()" :key="i">
-                    <p class="my-4">Clicks Over Time -> {{ graph.shortCode }}</p>
-                    <Line
-                        :data="graph"
-                        :options="options"
-                        class="my-4"
+                    <Marker
+                        v-for="(location, i) in deDupedLocations()" :key="i"
+                        :options="{
+                            position: {
+                                lat: parseFloat(location.latitude),
+                                lng: parseFloat(location.longitude)
+                        }}"
                     />
-                </div>
+                </GoogleMap>
+            <v-expansion-panels>
+                <v-expansion-panel
+                    v-for="(location, i) in deDupedLocations()" :key="i"
+                    :title="location.country_name"
+                    :text="`Timezone: ${location.timezone}`"
+                ></v-expansion-panel>
+            </v-expansion-panels>
             </v-col>
-
 
         </v-row>
+
+        <v-row>
+            <v-col cols="12" md="12">
+                <div class="mt-4 mb-2">Top Referrers</div>
+                <v-expansion-panels>
+                    <v-expansion-panel
+                        v-for="i in 3"
+                        :key="i"
+                        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                        title="Item"
+                    ></v-expansion-panel>
+                </v-expansion-panels>
+            </v-col>
+        </v-row>
+
+
     </AppLayout>
 </template>

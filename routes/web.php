@@ -48,8 +48,8 @@ Route::middleware([
                 'labels' => $graph->labels,
                 'datasets' => [
                     [
-                        'label' => 'Clicks Over Time (' . $graph->shortCode . ')',
-                        'backgroundColor' => '#f87979',
+                        'label' => 'Clicks (' . $graph->shortCode . ')',
+                        'backgroundColor' => '#ffffff',
                         'borderColor' => '#f87979',
                         'borderWidth' => 3,
                         'pointRadius' => 3,
