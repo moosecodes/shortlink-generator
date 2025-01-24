@@ -32,6 +32,7 @@ const generateQRCode = async (input) => {
 
 // Watch for changes to props.input and generate the QR code when it changes
 watch(() => props.input, (newInput) => {
+    if(!newInput) return;
     newInput +=  newInput.indexOf("?") < 0 ? "?qr=1" : "&qr=1";
     generateQRCode(newInput);
 }, { immediate: true });

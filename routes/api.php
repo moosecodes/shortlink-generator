@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\StatusController;
 use App\Http\Controllers\Api\UpdateLinkController;
 // use App\Http\Controllers\Api\LocationController;
 use App\Http\Middleware\CheckShortlinkExpiration;
+use App\Http\Controllers\Api\GetClicksOverTime;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,6 +20,8 @@ Route::get('/user', function (Request $request) {
 Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
     ->middleware(CheckShortlinkExpiration::class)
     ->name('shortlink.redirect');
+
+Route::get('/clicks/overtime/{id}', [GetClicksOverTime::class, 'index']);
 
 Route::post('/redirects', [RedirectLinkController::class, 'getRedirects']);
 
