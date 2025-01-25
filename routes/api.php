@@ -16,11 +16,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Define the redirect route first to give it priority
-Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
-    ->middleware(CheckShortlinkExpiration::class)
-    ->name('shortlink.redirect');
-
 Route::get('/clicks/overtime/{id}', [GetClicksOverTime::class, 'index']);
 
 Route::post('/redirects', [RedirectLinkController::class, 'getRedirects']);
@@ -40,3 +35,7 @@ Route::patch('/link/deactivate/{id}', [StatusController::class, 'deactivate']);
 Route::delete('/link/delete/{id}', [DeleteLinkController::class, 'index']);
 
 // Route::get('location/{ip}', [LocationController::class, 'index']);
+// Define the redirect route first to give it priority
+Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
+    ->middleware(CheckShortlinkExpiration::class)
+    ->name('api.shortlink.redirect');

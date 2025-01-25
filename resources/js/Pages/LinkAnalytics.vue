@@ -73,7 +73,7 @@ const deDupedLocations = () => {
     );
 };
 
-const custom = [
+const custom2 = [
     {
         "featureType": "all",
         "elementType": "labels",
@@ -347,7 +347,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                 <p class="text-2xl font-semibold">Link Analytics Dashboard</p>
             </v-col>
         </v-row>
-
+{{ props.graphs }}
         <div v-if="props?.graphs?.length">
             <v-row>
                 <v-col cols="12" md="12">
@@ -355,25 +355,22 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                     <p class="mb-4">Short Codes</p>
                 </v-col>
                 <v-col col="12" md="4" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
-                    <v-btn :href="`/link/graphs/${graph.shortCode}`">{{ graph.shortCode }}</v-btn>
-                    <small class="mx-4">{{ graph.datasets[0].data.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toString() }} clicks</small>
+                    <v-btn variant="plain">{{ graph.shortCode }}</v-btn>
+                    <Line
+                        :data="graph"
+                        :options="options"
+                        class="my-4"
+                    />
                 </v-col>
             </v-row>
 
             <v-row v-if="props?.locations?.length">
                 <v-col cols="12" md="12">
                     <div class="mt-4 mb-2">Locations</div>
-                    <v-expansion-panels>
-                        <v-expansion-panel
-                            v-for="(location, i) in deDupedLocations()" :key="i"
-                            :title="location.country_name"
-                            :text="`Timezone: ${location.timezone}`"
-                        ></v-expansion-panel>
-                    </v-expansion-panels>
-                    <GoogleMap
+                <GoogleMap
                         :api-key="googleMapsApiKey"
                         style="width: 100%; height: 400px"
-                        :styles="custom"
+                        :styles="custom2"
                         :zoom="2"
                         :disableDefaultUi="true"
                     >
@@ -386,9 +383,42 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                             }}"
                         />
                     </GoogleMap>
-
+                <v-expansion-panels>
+                    <v-expansion-panel
+                        v-for="(location, i) in deDupedLocations()" :key="i"
+                        :title="location.country_name"
+                        :text="`Timezone: ${location.timezone}`"
+                    ></v-expansion-panel>
+                </v-expansion-panels>
                 </v-col>
 
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <div class="mt-4 mb-2">Stats</div>
+                    <v-expansion-panels>
+                        <v-expansion-panel
+                            v-for="(graph, i) in Array.from(props.graphs)" :key="i"
+                            :title="graph.shortCode"
+                            :text="graph.datasets[0].data.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toString()">
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+                </v-col>
+            </v-row>
+
+            <v-row>
+                <v-col cols="12" md="12">
+                    <div class="mt-4 mb-2">Top Referrers</div>
+                    <v-expansion-panels>
+                        <v-expansion-panel
+                            v-for="i in 3"
+                            :key="i"
+                            text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                            title="Item"
+                        ></v-expansion-panel>
+                    </v-expansion-panels>
+                </v-col>
             </v-row>
         </div>
     </AppLayout>
