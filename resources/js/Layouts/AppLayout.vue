@@ -15,7 +15,6 @@ import {
     VFooter,
     VIcon,
     VImg,
-    VLayout,
     VList,
     VListItem,
     VListItemTitle,
@@ -186,6 +185,14 @@ const navigateTo = (routeName) => {
 
             <v-divider></v-divider>
 
+            <div class="flex justify-center p-4">
+                <v-btn type="submit" color="primary" @click="navigateTo('NewLinkPage')" class="flex justify-center items-center" block>
+                Create Link
+                </v-btn>
+            </div>
+
+            <v-divider></v-divider>
+
             <v-list>
                 <v-list-item
                     link
@@ -200,23 +207,63 @@ const navigateTo = (routeName) => {
                     link
                     @click="navigateTo('showAllShortlinks')"
                     :active="route().current('showAllShortlinks')"
-                    prepend-icon="mdi-link"
-                    title="Manage Links"
-                    value="shortlinks"
+                    prepend-icon="mdi-link-variant"
+                    title="Links"
+                    value="manage-shortlinks"
                 ></v-list-item>
 
                 <v-list-item
                     link
-                    @click="navigateTo('NewLinkPage')"
-                    :active="route().current('NewLinkPage')"
-                    prepend-icon="mdi-plus"
-                    title="New Link"
-                    value="new-shortlink"
+                    @click="navigateTo('dashboard')"
+                    :active="route().current('dashboard')"
+                    prepend-icon="mdi-qrcode-scan"
+                    title="QR Codes"
+                    value="qr-codes"
                 ></v-list-item>
+
                 <v-list-item
-                    @click="logout"
-                    prepend-icon="mdi-logout"
-                    title="Logout"
+                    link
+                    @click="navigateTo('dashboard')"
+                    :active="route().current('dashboard')"
+                    prepend-icon="mdi-file-document-outline"
+                    title="Pages"
+                    value="pages"
+                ></v-list-item>
+
+                <v-list-item
+                    link
+                    @click="navigateTo('dashboard')"
+                    :active="route().current('dashboard')"
+                    prepend-icon="mdi-google-analytics"
+                    title="Analytics"
+                    value="analytics"
+                ></v-list-item>
+
+                <v-list-item
+                    link
+                    @click="navigateTo('dashboard')"
+                    :active="route().current('dashboard')"
+                    prepend-icon="mdi-folder-outline"
+                    title="Campaigns"
+                    value="campaigns"
+                ></v-list-item>
+
+                <v-list-item
+                    link
+                    @click="navigateTo('dashboard')"
+                    :active="route().current('dashboard')"
+                    prepend-icon="mdi-folder-outline"
+                    title="Custom Domains"
+                    value="custom-domains"
+                ></v-list-item>
+
+                <v-divider></v-divider>
+
+                <v-list-item
+                    prepend-icon="mdi-cog"
+                    title="Settings"
+                    @click="navigateTo('settings')"
+                    :active="route().current('settings')"
                 ></v-list-item>
             </v-list>
         </v-navigation-drawer>

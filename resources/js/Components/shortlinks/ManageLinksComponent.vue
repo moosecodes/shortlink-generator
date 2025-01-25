@@ -60,7 +60,7 @@ onMounted(() => {
             <v-col align="end">
                 <v-btn
                     prepend-icon="mdi-plus"
-                    color="indigo"
+                    color="primary"
                     class=""
                     @click="navigateTo('NewLinkPage')">
                     New Link

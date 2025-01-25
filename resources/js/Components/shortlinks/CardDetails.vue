@@ -49,7 +49,7 @@ const isRecent = (shortlink) => {
 </script>
 
 <template>
-    <v-col cols="12" md="12" :class="{ 'border-green-500 border-2 mb-4': isRecent(shortlink) }">
+    <v-col cols="12" md="12">
         <v-card
             :color="shortlink?.is_active ? 'indigo' : 'indigo darken-4'"
             :variant="shortlink?.is_active ? 'elevated' : 'tonal'"
@@ -84,20 +84,31 @@ const isRecent = (shortlink) => {
             </v-card-item>
 
             <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-end bg-indigo-darken-2' : 'd-flex flex-wrap justify-end bg-black'">
+                <v-chip v-if="isRecent(shortlink)" variant="flat" color="indigo" class="mr-2">New</v-chip>
                 <small class="mx-2">Created: <b>{{ new Date(shortlink.created_at).toLocaleString() }}</b></small>
                 <small class="mx-2">Expires: <b>{{ new Date(shortlink.expires_at).toLocaleString() }}</b></small>
             </v-card-actions>
 
             <v-card-actions :class="shortlink.is_active ? 'd-flex flex-wrap justify-between bg-indigo-darken-3' : 'd-flex justify-between flex-wrap bg-black'">
-                <v-chip variant="flat" class="mx-2">{{ shortlink.is_premium ? 'PREMIUM' : 'FREE' }}</v-chip>
+                <v-chip variant="flat" class="mx-2" color="secondary">{{ shortlink.is_premium ? 'PREMIUM' : 'FREE' }}</v-chip>
                 <div class="d-flex flex-wrap">
+                    <v-btn
+                        variant="flat"
+                        :prepend-icon="shortlink.is_active ? 'mdi-stop' : 'mdi-play'"
+                        :color="shortlink.is_active ? 'error' : 'success'"
+                        @click="toggleActivation(shortlink)"
+                        class="m-2">
+                            {{ shortlink.is_active ? 'Disable' : 'Enable' }}
+                    </v-btn>
+
                     <v-btn
                         variant="outlined"
                         :href="shortlink.short_url"
+                        :disabled="!shortlink.is_active"
                         target="_blank"
                         prepend-icon="mdi-eye"
                         class="m-2">
-                        View Link
+                            View Link
                     </v-btn>
 
                     <v-btn
@@ -105,26 +116,17 @@ const isRecent = (shortlink) => {
                         prepend-icon="mdi-link"
                         @click="updateShortlink(shortlink)"
                         class="m-2">
-                        Edit Link
+                            Edit Link
                     </v-btn>
 
                     <v-btn
-                        variant="flat"
-                        :prepend-icon="shortlink.is_active ? 'mdi-cancel' : 'mdi-connection'"
-                        :color="shortlink.is_active ? 'error' : 'success'"
-                        @click="toggleActivation(shortlink)"
-                        class="m-2">
-                        {{ shortlink.is_active ? 'Disable' : 'Enable' }}
-                    </v-btn>
-
-                    <v-btn
-                        v-if="!shortlink.is_active"
+                        :disabled="!shortlink.is_active"
                         variant="flat"
                         prepend-icon="mdi-delete"
-                        color="error"
+                        :color="shortlink.is_active ? 'error' : ''"
                         @click="deleteShortlink(shortlink)"
                         class="m-2">
-                        Delete
+                            Delete
                     </v-btn>
                 </div>
             </v-card-actions>

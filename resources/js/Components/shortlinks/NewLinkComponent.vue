@@ -74,7 +74,7 @@ const showParameterPreview = computed(() => {
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
             <v-col>
-                <v-btn type="submit" color="primary" @click="navigateTo('dashboard')">Create Shortlink</v-btn>
+                <v-btn color="primary" @click="navigateTo('NewLinkPage')">Create Shortlink</v-btn>
             </v-col>
             <v-col>
                 <p v-if="message">{{ message }}</p>
