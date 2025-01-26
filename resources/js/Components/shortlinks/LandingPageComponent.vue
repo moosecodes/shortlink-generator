@@ -135,17 +135,17 @@ const toggleFeature = () => {
         <v-row class="flex flex-column justify-center text-center my-4">
             <div class="flex justify-between">
                 <v-card>
-                    <v-img src="https://placehold.co/400" />
+                    <v-img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://placehold.co/400" />
+                    <v-img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://placehold.co/400" />
+                    <v-img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
@@ -161,60 +161,17 @@ const toggleFeature = () => {
 
             <div class="flex justify-between">
                 <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-img src="https://picsum.photos/600/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-img src="https://picsum.photos/600/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-            </div>
-        </v-row>
-
-        <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">Trusted by Millions Worldwide for Over a Decade</p>
-
-            <div class="flex justify-between">
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-            </div>
-        </v-row>
-
-        <v-row class="flex flex-column justify-center text-center my-4">
-            <p class="my-8 text-h4">Hear What Our Customers Have to Say</p>
-            <div class="flex justify-between">
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
-                    <v-card-title>Link Management</v-card-title>
-                    <v-card-text>Link Management</v-card-text>
-                </v-card>
-                <v-card>
-                    <v-img src="https://placehold.co/400"></v-img>
+                    <v-img src="https://picsum.photos/600/400"></v-img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>

@@ -1,8 +1,10 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { GoogleMap, Marker, AdvancedMarker } from 'vue3-google-map'
-import { VBtn, VRow, VCol, VExpansionPanels, VExpansionPanel } from 'vuetify/lib/components/index.mjs';
+import { VRow, VCol, VToolbarTitle, VSpacer, VToolbar, VListItemTitle, VListItemAction, VIcon, VList, VListItem, VListItemSubtitle, VCard } from 'vuetify/lib/components/index.mjs';
 import customMapStyles from './googleMapStyles';
+import { ref } from 'vue';
+import { Bar } from 'vue-chartjs'
 
 import {
   Chart as ChartJS,
@@ -12,9 +14,9 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement
 } from 'chart.js'
-import { Line } from 'vue-chartjs'
 
 ChartJS.register(
   CategoryScale,
@@ -23,7 +25,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement,
 )
 
 const props = defineProps({
@@ -76,27 +79,19 @@ const deDupedLocations = () => {
 };
 
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+const selected = ref([1]);
 </script>
 
 <template>
     <AppLayout title="Dashboard">
         <v-row>
             <v-col cols="12" md="12">
-                <p class="text-3xl font-semibold">Short Codes</p>
+                <p class="text-3xl font-semibold">Click Engagement</p>
             </v-col>
         </v-row>
 
         <div v-if="props?.graphs?.length">
-            <v-row>
-                <v-col cols="12" md="12">
-                    <p class="text-2xl font-semibold">Click Engagement</p>
-                </v-col>
-                <v-col col="12" md="4" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
-                    <v-btn :href="`/link/graphs/${graph.shortCode}`">{{ graph.shortCode }}</v-btn>
-                    <small class="mx-4">{{ graph.datasets[0].data.reduce((accumulator, currentValue) => accumulator + currentValue, 0).toString() }} clicks</small>
-                </v-col>
-            </v-row>
-
             <v-row v-if="props?.locations?.length">
                 <v-col cols="12" md="12">
                     <div class="my-2 text-2xl font-semibold">Locations</div>
@@ -104,7 +99,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                     <GoogleMap
                         :api-key="googleMapsApiKey"
                         style="width: 100%; height: 400px"
-                        :styles="customMapStyles.darkGold"
+                        :styles="customMapStyles.assasin"
                         :zoom="2"
                         :disableDefaultUi="true"
                     >
@@ -117,9 +112,51 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                             }}"
                         />
                     </GoogleMap>
-
                 </v-col>
+            </v-row>
 
+            <v-row>
+                <v-col cols="12" md="12">
+                    <v-card>
+                        <v-toolbar color="pink">
+
+                        <v-toolbar-title>Short Codes</v-toolbar-title>
+
+                        <v-spacer></v-spacer>
+
+                        </v-toolbar>
+
+                        <v-list v-model:selected="selected" select-strategy="leaf">
+                            <v-list-item
+                                v-for="item in props.graphs"
+                                :key="item.shortCode"
+                                :value="item.shortCode"
+                                active-class="text-pink"
+                                class="py-3"
+                            >
+                                <v-list-item-title>{{ item.shortCode }}</v-list-item-title>
+
+                                <!-- <v-list-item-subtitle class="mb-1 text-high-emphasis opacity-100">{{ item.shortCode }}</v-list-item-subtitle>
+
+                                <v-list-item-subtitle class="text-high-emphasis">{{ item.shortCode }}</v-list-item-subtitle> -->
+{{ item }}
+                                <Bar :data="item" :options="options" />
+
+                                <template v-slot:append="{ isSelected }">
+                                    <v-list-item-action class="flex-column align-end">
+                                        <small class="mb-4 text-high-emphasis opacity-60">{{ item.shortCode }}</small>
+
+                                        <v-spacer></v-spacer>
+
+                                        <v-icon v-if="isSelected" color="yellow-darken-3">mdi-star</v-icon>
+
+                                        <v-icon v-else class="opacity-30">mdi-star-outline</v-icon>
+                                    </v-list-item-action>
+                                </template>
+                            </v-list-item>
+                        </v-list>
+                    </v-card>
+                </v-col>
             </v-row>
         </div>
     </AppLayout>
