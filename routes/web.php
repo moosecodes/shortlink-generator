@@ -29,11 +29,13 @@ Route::middleware([
         $userId = $request->user()->id;
 
         $shortlinks = Shortlink::where('user_id', $userId)->get();
+
         // TODO: Add a check to see if the user has any shortlinks before proceeding
         $clicksController = new GetClicksOverTime();
         $graphs = collect();
         foreach ($shortlinks as $link) {
             $clickData = $clicksController->index($link->id)->getData();
+            $clickData->shortlink_id = $link->id;
             $clickData->shortCode = $link->short_code;
             $graphs->push($clickData);
         }
@@ -42,6 +44,7 @@ Route::middleware([
         $graphData = collect();
         foreach ($graphs as $graph) {
             $graphData->push([
+                'shortlink_id' => $graph->shortlink_id,
                 'shortCode' => $graph->shortCode,
                 'labels' => array_reverse($graph->labels),
                 'datasets' => [
@@ -67,18 +70,21 @@ Route::middleware([
         ]);
     })->name('dashboard');
 
-    Route::get('/link/graphs/{shortlink_id}', function (Request $request) {
+    Route::get('/link/graphs/{shortlink_id}', function (Request $request, $id) {
         $userId = $request->user()->id;
 
-        $shortlink = Shortlink::where('user_id', $userId)->where('short_code', $request->route('shortlink_id'))->get();
+        $shortlink = Shortlink::where('user_id', $userId)->where('id', $id)->get();
         // TODO: Add a check to see if the user has any shortlinks before proceeding
         $clicksController = new GetClicksOverTime();
+
         $clickData = $clicksController->index($shortlink[0]->id)->getData();
+        $clickData->shortlink_id = $request->route('shortlink_id');
         $clickData->shortCode = $request->route('shortlink_id');
 
         // Prepare configurations for each graph
         $graphData = collect();
         $graphData->push([
+            'shortlink_id' => $clickData->shortlink_id,
             'shortCode' => $clickData->shortCode,
             'labels' => array_reverse($clickData->labels),
             'datasets' => [

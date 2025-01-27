@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { GoogleMap, Marker, AdvancedMarker } from 'vue3-google-map'
-import { VRow, VCol, VToolbarTitle, VSpacer, VToolbar, VListItemTitle, VListItemAction, VIcon, VList, VListItem, VListItemSubtitle, VCard } from 'vuetify/lib/components/index.mjs';
+import { VBtn, VRow, VCol, VToolbarTitle, VSpacer, VToolbar, VListItemTitle, VListItemAction, VIcon, VList, VListItem, VListItemSubtitle, VCard } from 'vuetify/lib/components/index.mjs';
 import customMapStyles from './googleMapStyles';
 import { ref } from 'vue';
 import { Bar } from 'vue-chartjs'
@@ -81,6 +81,8 @@ const deDupedLocations = () => {
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const selected = ref([1]);
+
+const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
 </script>
 
 <template>
@@ -120,9 +122,9 @@ const selected = ref([1]);
                     <v-card>
                         <v-toolbar color="pink">
 
-                        <v-toolbar-title>Short Codes</v-toolbar-title>
+                            <v-toolbar-title>Short Codes</v-toolbar-title>
 
-                        <v-spacer></v-spacer>
+                            <v-spacer></v-spacer>
 
                         </v-toolbar>
 
@@ -134,12 +136,14 @@ const selected = ref([1]);
                                 active-class="text-pink"
                                 class="py-3"
                             >
+                                <v-btn :href="route('link.graphs', { shortlink_id: item.shortlink_id })" variant="flat" class="mx-4">Analytics</v-btn>
+
                                 <v-list-item-title>{{ item.shortCode }}</v-list-item-title>
 
-                                <!-- <v-list-item-subtitle class="mb-1 text-high-emphasis opacity-100">{{ item.shortCode }}</v-list-item-subtitle>
+                                <v-list-item-subtitle class="mb-1 text-high-emphasis opacity-100">{{ item.shortlink_id }}</v-list-item-subtitle>
 
-                                <v-list-item-subtitle class="text-high-emphasis">{{ item.shortCode }}</v-list-item-subtitle> -->
-{{ item }}
+                                <v-list-item-subtitle class="text-high-emphasis">{{ item.shortCode }}</v-list-item-subtitle>
+
                                 <Bar :data="item" :options="options" />
 
                                 <template v-slot:append="{ isSelected }">

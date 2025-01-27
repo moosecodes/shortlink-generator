@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { GoogleMap, Marker, AdvancedMarker } from 'vue3-google-map'
-import { VBtn, VRow, VCol, VExpansionPanels, VExpansionPanel } from 'vuetify/lib/components/index.mjs';
+import { VRow, VCol, VExpansionPanels, VExpansionPanel } from 'vuetify/lib/components/index.mjs';
 import customMapStyles from './googleMapStyles';
 
 import {
@@ -14,6 +14,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js'
+
 import { Line } from 'vue-chartjs'
 
 ChartJS.register(
@@ -90,11 +91,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
             <v-row>
                 <v-col col="12" md="4" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
                     <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
-                    <Line
-                        :data="graph"
-                        :options="options"
-                        class="my-4"
-                    />
+                    <Line :data="graph" :options="options" class="my-4" />
                 </v-col>
             </v-row>
 
