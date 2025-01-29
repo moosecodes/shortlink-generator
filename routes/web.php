@@ -18,7 +18,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('landingPage');
 
 Route::middleware([
     'auth:sanctum',
@@ -107,7 +107,7 @@ Route::middleware([
             'graphs' => $graphData,
             'locations' => $locations,
         ]);
-    })->name('link.graphs');
+    })->name('link.analytics');
 
     Route::get('/link/new', function () {
         return Inertia::render('NewLinkPage');
@@ -121,7 +121,7 @@ Route::middleware([
 
     Route::get('/links/manage', function () {
         return Inertia::render('ManageLinksPage');
-    })->name('showAllShortlinks');
+    })->name('show.links');
 });
 
 Route::get('/{short_code}', [RedirectLinkController::class, 'index'])

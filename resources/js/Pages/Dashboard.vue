@@ -136,7 +136,7 @@ const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
                                 active-class="text-pink"
                                 class="py-3"
                             >
-                                <v-btn :href="route('link.graphs', { shortlink_id: item.shortlink_id })" variant="flat" class="mx-4">Analytics</v-btn>
+                                <v-btn :href="route('link.analytics', { shortlink_id: item.shortlink_id })" variant="flat" class="mx-4">Analytics</v-btn>
 
                                 <v-list-item-title>{{ item.shortCode }}</v-list-item-title>
 

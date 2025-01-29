@@ -10,15 +10,15 @@ import {
 
 import { useTheme } from 'vuetify';
 
-const theme = useTheme()
+const theme = useTheme();
 
 const toggleTheme = () => {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
-}
+};
 </script>
 
 <template>
-    <v-app-bar elevation="2" color="white">
+    <v-app-bar elevation="2" color="primaryAppBar" dark app>
         <v-app-bar-title>
             <div class="d-flex align-center mx-4">
                 <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">

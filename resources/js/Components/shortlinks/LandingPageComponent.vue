@@ -92,7 +92,7 @@ const toggleFeature = () => {
                             :rules="state.urlRules"
                             label="Paste your long link here"
                         ></v-text-field>
-                        <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Generate QR Code</v-btn>
+                        <v-btn class="my-4" type="submit" @click="createFreeLink" variant="flat" color="primary" block>Generate FREE QR Code</v-btn>
                     </v-form>
                     <div v-if="state.short_url">
                         <QrCodeComponent :input="state.short_url" />
@@ -106,18 +106,24 @@ const toggleFeature = () => {
                 <v-list>
                     <v-list-subheader class="flex justify-center text-h6" color="text-secondary">Sign up for free. Your free plan includes:</v-list-subheader>
 
-                    <div class="flex text-secondary">
+                    <div class="flex flex-column text-secondary">
                         <v-list-item>
                             <template v-slot:prepend>
                                 <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
                             </template>
-                            <v-list-item-title>4 short links/month</v-list-item-title>
+                            <v-list-item-title>100 short links per month</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <template v-slot:prepend>
                                 <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
                             </template>
-                            <v-list-item-title>4 custom back-halves/month</v-list-item-title>
+                            <v-list-item-title>100 custom back-halves per month</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item>
+                            <template v-slot:prepend>
+                                <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
+                            </template>
+                            <v-list-item-title>Link Tracking*</v-list-item-title>
                         </v-list-item>
                         <v-list-item>
                             <template v-slot:prepend>
@@ -135,17 +141,17 @@ const toggleFeature = () => {
         <v-row class="flex flex-column justify-center text-center my-4">
             <div class="flex justify-between">
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400" />
+                    <img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400" />
+                    <img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400" />
+                    <img src="https://picsum.photos/600/400" />
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
@@ -156,22 +162,22 @@ const toggleFeature = () => {
             <p class="my-8 text-h4">The Best Engagement Platform</p>
             <p>Everything You Need to Build Your Brand: Manage Links, Create QR Codes, and Engage Audiences Everywhere from One Powerful Platform.</p>
             <div class="flex justify-center my-4">
-                <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2 my-4">Start now for free</v-btn>
+                <v-btn :href="route('register')" color="primary" variant="flat" class="mx-2 my-4">Start now for FREE</v-btn>
             </div>
 
             <div class="flex justify-between">
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400"></v-img>
+                    <img src="https://picsum.photos/600/400"></img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400"></v-img>
+                    <img src="https://picsum.photos/600/400"></img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
                 <v-card>
-                    <v-img src="https://picsum.photos/600/400"></v-img>
+                    <img src="https://picsum.photos/600/400"></img>
                     <v-card-title>Link Management</v-card-title>
                     <v-card-text>Link Management</v-card-text>
                 </v-card>
@@ -181,7 +187,7 @@ const toggleFeature = () => {
         <v-row class="flex flex-column justify-center text-center my-4">
             <p class="my-4 text-h4">Beyond Link Shortening: A Complete Connection Platform</p>
             <p class="my-4">Effortless Insights: Track, Analyze, and Optimize Your Clicks and Scans All in One Place</p>
-            <v-btn class="my-4" :href="route('register')" color="primary" variant="flat">Start now for free</v-btn>
+            <v-btn class="my-4" :href="route('register')" color="primary" variant="flat">Start now for FREE</v-btn>
         </v-row>
     </v-container>
 </template>

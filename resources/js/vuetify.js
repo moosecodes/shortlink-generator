@@ -29,6 +29,7 @@ const vuetify = createVuetify({
             dark: {
                 colors: {
                     primary: "#fe2c55",
+                    primaryAppBar: "rgba(44, 44, 44, .8)",
                     secondary: colors.blue.lighten5,
                     accent: colors.blue.accent1,
                     error: colors.red.base,

@@ -9,6 +9,7 @@ import {
     VMain,
     VRow,
     VCol,
+    VLayout,
 } from 'vuetify/lib/components/index.mjs';
 
 defineProps({
@@ -18,43 +19,41 @@ defineProps({
 
 <template>
     <v-app>
-        <v-layout>
-            <Head :title="title" />
+        <Head :title="title" />
 
-            <Banner />
+        <Banner />
 
-            <AppBarComponent />
+        <AppBarComponent />
 
-            <v-main>
-                <v-container fluid>
-                    <slot />
-                </v-container>
-            </v-main>
+        <v-main>
+            <v-container fluid>
+                <slot />
+            </v-container>
+        </v-main>
 
-            <v-footer>
-                <v-row>
-                    <v-col>
-                        Why Shortlinks?
-                    </v-col>
-                    <v-col>
-                        Products
-                    </v-col>
-                    <v-col>
-                        Feature
-                    </v-col>
-                    <v-col>
-                        Legal
-                    </v-col>
-                    <v-col>
-                        About
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col>
-                        &copy; {{ new Date().getFullYear() }} FreedomFace, LLC. All rights reserved.
-                    </v-col>
-                </v-row>
-            </v-footer>
-        </v-layout>
+        <v-footer>
+            <v-row>
+                <v-col>
+                    Why Shortlinks?
+                </v-col>
+                <v-col>
+                    Products
+                </v-col>
+                <v-col>
+                    Feature
+                </v-col>
+                <v-col>
+                    Legal
+                </v-col>
+                <v-col>
+                    About
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    &copy; {{ new Date().getFullYear() }} FreedomFace, LLC. All rights reserved.
+                </v-col>
+            </v-row>
+        </v-footer>
     </v-app>
 </template>

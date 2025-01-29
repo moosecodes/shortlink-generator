@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -21,11 +20,11 @@ import {
     VListSubheader,
     VMain,
     VMenu,
-    VNavigationDrawer,
     VSpacer,
 } from 'vuetify/lib/components/index.mjs';
 
 import { useTheme } from 'vuetify';
+import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue';
 
 defineProps({
     title: String,
@@ -36,9 +35,6 @@ const theme = useTheme()
 const toggleTheme = () => {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
 }
-
-const drawer = ref(true);
-const rail = ref(false);
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'),
@@ -55,9 +51,6 @@ const logout = () => {
     router.post(route('logout'));
 };
 
-const navigateTo = (routeName) => {
-    router.get(route(routeName));
-};
 </script>
 
 <template>
@@ -71,7 +64,7 @@ const navigateTo = (routeName) => {
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
             <v-app-bar-title>
-                <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
+                <Link :href="route('landingPage')" class="d-flex align-center text-decoration-none">
                     <ApplicationMark class="d-inline-block" style="height: 36px;" />
                 </Link>
             </v-app-bar-title>
@@ -163,110 +156,9 @@ const navigateTo = (routeName) => {
                 </v-list>
             </v-menu>
 
-
         </v-app-bar>
 
-        <!-- Navigation Drawer -->
-        <v-navigation-drawer
-            v-model="drawer"
-            :rail="rail"
-            permanent
-            elevation="2"
-        >
-            <v-list>
-                <v-list-item
-                    :prepend-avatar="$page.props.auth.user.profile_photo_url"
-                    :title="$page.props.auth.user.name"
-                    :subtitle="$page.props.auth.user.email"
-                    :href="route('profile.show')"
-                >
-                </v-list-item>
-            </v-list>
-
-            <v-divider></v-divider>
-
-            <div class="flex justify-center p-4">
-                <v-btn type="submit" color="primary" @click="navigateTo('NewLinkPage')" class="flex justify-center items-center" block>
-                Create Link
-                </v-btn>
-            </div>
-
-            <v-divider></v-divider>
-
-            <v-list>
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-view-dashboard"
-                    title="Dashboard"
-                    value="dashboard"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('showAllShortlinks')"
-                    :active="route().current('showAllShortlinks')"
-                    prepend-icon="mdi-link-variant"
-                    title="Links"
-                    value="manage-shortlinks"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-qrcode-scan"
-                    title="QR Codes"
-                    value="qr-codes"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-file-document-outline"
-                    title="Pages"
-                    value="pages"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-google-analytics"
-                    title="Analytics"
-                    value="analytics"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-folder-outline"
-                    title="Campaigns"
-                    value="campaigns"
-                ></v-list-item>
-
-                <v-list-item
-                    link
-                    @click="navigateTo('dashboard')"
-                    :active="route().current('dashboard')"
-                    prepend-icon="mdi-folder-outline"
-                    title="Custom Domains"
-                    value="custom-domains"
-                ></v-list-item>
-
-                <v-divider></v-divider>
-
-                <v-list-item
-                    prepend-icon="mdi-cog"
-                    title="Settings"
-                    @click="navigateTo('settings')"
-                    :active="route().current('settings')"
-                ></v-list-item>
-            </v-list>
-        </v-navigation-drawer>
+        <NavigationDrawer />
 
         <v-main>
             <v-container fluid>
