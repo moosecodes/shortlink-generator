@@ -28,6 +28,7 @@ const fetchShortlinks = async () => {
         const response = await axios.post('/api/links/manage' , {
             userId: state.userId,
         });
+
         state.shortlinks = response.data;
     } catch (error) {
         console.error('Error fetching shortlinks:', error);
@@ -43,6 +44,7 @@ const filteredShortlinks = computed(() => {
         return state.shortlinks.filter(link => !link.is_active).reverse();
     }
 });
+
 onMounted(() => {
     fetchShortlinks();
 });

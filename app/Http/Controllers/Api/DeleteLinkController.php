@@ -13,7 +13,7 @@ class DeleteLinkController extends Controller
     public function index($id)
     {
         try {
-            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink = $this->findShortlinkById($id);
             $shortlink->delete();
 
             return response()->json(['message' => 'Shortlink deleted successfully']);
@@ -23,5 +23,10 @@ class DeleteLinkController extends Controller
             Log::error('Unexpected error occurred while deleting shortlink: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    private function findShortlinkById($id)
+    {
+        return Shortlink::where('short_code', $id)->firstOrFail();
     }
 }

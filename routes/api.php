@@ -23,19 +23,21 @@ Route::post('/redirects', [RedirectLinkController::class, 'getRedirects']);
 Route::post('/shortlinks/free', [CreateLinkController::class, 'freeLink']);
 
 Route::post('/manage/new', [CreateLinkController::class, 'index']);
+
 Route::post('/links/manage', [ShowLinkController::class, 'showAll']);
 
 Route::post('/link/details', [ShowLinkController::class, 'index']);
 
-Route::patch('/link/update', [UpdateLinkController::class, 'index']);
+Route::patch('/link/update', [UpdateLinkController::class, 'update']);
 
 Route::patch('/link/activate/{id}', [StatusController::class, 'activate']);
+
 Route::patch('/link/deactivate/{id}', [StatusController::class, 'deactivate']);
 
 Route::delete('/link/delete/{id}', [DeleteLinkController::class, 'index']);
 
 // Route::get('location/{ip}', [LocationController::class, 'index']);
-// Define the redirect route first to give it priority
+
 Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
     ->middleware(CheckShortlinkExpiration::class)
     ->name('api.shortlink.redirect');

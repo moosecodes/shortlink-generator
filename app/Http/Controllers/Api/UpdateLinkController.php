@@ -3,51 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
-use App\Models\Shortlink;
 use App\Models\Metadata;
-use Illuminate\Validation\ValidationException;
+use App\Models\Shortlink;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class UpdateLinkController extends Controller
 {
-    private function validateRequest(Request $request)
-    {
-        return $request->validate([
-            'id' => 'required|uuid',
-            'user_url' => 'required|url',
-            'metadatas' => 'array',
-        ]);
-    }
-
-    public function index(Request $request)
+    public function update(Request $request)
     {
         try {
             $validatedData = $this->validateRequest($request);
 
-            // Find the shortlink
-            $shortlink = Shortlink::where('id', $request->id)->firstOrFail();
+            $shortlink = $this->findShortlink($request->id);
 
-            // Update the shortlink
-            $shortlink->update($validatedData);
+            $this->updateShortlink($shortlink, $validatedData);
 
-            // Update the shortlink metadata
-            if (isset($validatedData['metadatas'])) {
-                // Delete existing metadata
-                $shortlink->metadatas()->delete();
-
-                // Create new metadata
-                foreach ($validatedData['metadatas'] as $key => $value) {
-                    if (isset($value['meta_key']) && isset($value['meta_value'])) {
-                        $shortlink->metadatas()->create([
-                            'meta_key' => $validatedData['metadatas'][$key]['meta_key'],
-                            'meta_value' => $validatedData['metadatas'][$key]['meta_value'],
-                        ]);
-                    }
-                }
-            }
+            $this->updateShortlinkMetadata($shortlink, $validatedData);
 
             $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 
@@ -59,6 +34,43 @@ class UpdateLinkController extends Controller
         } catch (Exception $e) {
             Log::error('Unexpected error occurred while updating shortlink: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    private function validateRequest(Request $request)
+    {
+        return $request->validate([
+            'id' => 'required|exists:shortlinks,id',
+            'user_url' => 'required|url',
+            'metadatas' => 'array',
+            'metadatas.*.meta_key' => 'required_with:metadatas|string',
+            'metadatas.*.meta_value' => 'required_with:metadatas|string',
+        ]);
+    }
+
+    private function findShortlink($id)
+    {
+        return Shortlink::where('id', $id)->firstOrFail();
+    }
+
+    private function updateShortlink($shortlink, $validatedData)
+    {
+        $shortlink->update($validatedData);
+    }
+
+    private function updateShortlinkMetadata($shortlink, $validatedData)
+    {
+        if (isset($validatedData['metadatas'])) {
+            $shortlink->metadatas()->delete();
+
+            foreach ($validatedData['metadatas'] as $metadata) {
+                if (isset($metadata['meta_key']) && isset($metadata['meta_value'])) {
+                    $shortlink->metadatas()->create([
+                        'meta_key' => $metadata['meta_key'],
+                        'meta_value' => $metadata['meta_value'],
+                    ]);
+                }
+            }
         }
     }
 }

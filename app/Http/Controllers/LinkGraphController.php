@@ -2,28 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use App\Models\Shortlink;
 use App\Models\Location;
-use Inertia\Inertia;
 use App\Http\Controllers\Api\GetClicksOverTime;
 
 class LinkGraphController extends Controller
 {
-    public function index(Request $request, $id)
+    public function index(Request $request, $shortlink_id)
     {
         $userId = $request->user()->id;
 
-        $shortlink = Shortlink::where('user_id', $userId)->where('id', $id)->get();
-        // TODO: Add a check to see if the user has any shortlinks before proceeding
+        $shortlink = Shortlink::where('user_id', $userId)->where('id', $shortlink_id)->firstOrFail();
+        $clickData = $this->getClickData($shortlink->id, $request->route('shortlink_id'));
+
+        $graphData = $this->prepareGraphData($clickData);
+        $locations = Location::where('user_id', $userId)->get();
+
+        return Inertia::render('LinkAnalytics', [
+            'graphs' => $graphData,
+            'locations' => $locations,
+        ]);
+    }
+
+    private function getClickData($shortlinkId, $shortlinkRouteId)
+    {
         $clicksController = new GetClicksOverTime();
+        $clickData = $clicksController->index($shortlinkId)->getData();
+        $clickData->shortlink_id = $shortlinkRouteId;
+        $clickData->shortCode = $shortlinkRouteId;
 
-        $clickData = $clicksController->index($shortlink[0]->id)->getData();
-        $clickData->shortlink_id = $request->route('shortlink_id');
-        $clickData->shortCode = $request->route('shortlink_id');
+        return $clickData;
+    }
 
-        // Prepare configurations for each graph
+    private function prepareGraphData($clickData)
+    {
         $graphData = collect();
         $graphData->push([
             'shortlink_id' => $clickData->shortlink_id,
@@ -31,7 +45,7 @@ class LinkGraphController extends Controller
             'labels' => array_reverse($clickData->labels),
             'datasets' => [
                 [
-                    'label' => 'Clicks (' . $clickData->shortCode . ')',
+                    'label' => "Clicks (' . $clickData->shortCode . ')",
                     'backgroundColor' => '#fff',
                     'borderColor' => '#f87979',
                     'borderWidth' => 3,
@@ -42,12 +56,6 @@ class LinkGraphController extends Controller
             ],
         ]);
 
-        // Prepare location data
-        $locations = Location::where('user_id', $userId)->get();
-
-        return Inertia::render('LinkAnalytics', [
-            'graphs' => $graphData,
-            'locations' => $locations,
-        ]);
+        return $graphData;
     }
 }

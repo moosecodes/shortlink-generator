@@ -17,10 +17,21 @@ class DashboardController extends Controller
         $userId = $request->user()->id;
 
         $shortlinks = Shortlink::where('user_id', $userId)->get();
+        $graphData = $this->prepareGraphData($shortlinks);
 
-        // TODO: Add a check to see if the user has any shortlinks before proceeding
+        $locations = Location::where('user_id', $userId)->get();
+
+        return Inertia::render('Dashboard', [
+            'graphs' => $graphData,
+            'locations' => $locations,
+        ]);
+    }
+
+    private function prepareGraphData($shortlinks)
+    {
         $clicksController = new GetClicksOverTime();
         $graphs = collect();
+
         foreach ($shortlinks as $link) {
             $clickData = $clicksController->index($link->id)->getData();
             $clickData->shortlink_id = $link->id;
@@ -28,7 +39,6 @@ class DashboardController extends Controller
             $graphs->push($clickData);
         }
 
-        // Prepare configurations for each graph
         $graphData = collect();
         foreach ($graphs as $graph) {
             $graphData->push([
@@ -37,24 +47,18 @@ class DashboardController extends Controller
                 'labels' => array_reverse($graph->labels),
                 'datasets' => [
                     [
-                        'label' => 'Clicks (' . $graph->shortCode . ')',
+                        'label' => "Clicks ({$graph->shortCode})",
                         'backgroundColor' => '#fff',
                         'borderColor' => '#f87979',
                         'borderWidth' => 3,
                         'pointRadius' => 4,
                         'lineTension' => 0.2,
-                        'data' => $graph->datasets[0]->data,
+                        'data' => $graph->datasets->datasets[0]->data,
                     ]
                 ],
             ]);
         }
 
-        // Prepare location data
-        $locations = Location::where('user_id', $userId)->get();
-
-        return Inertia::render('Dashboard', [
-            'graphs' => $graphData,
-            'locations' => $locations,
-        ]);
+        return $graphData;
     }
 }

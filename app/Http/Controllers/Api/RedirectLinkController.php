@@ -13,70 +13,24 @@ use Illuminate\Support\Facades\Log;
 
 class RedirectLinkController extends Controller
 {
-    public function index($short_code, Request $request)
+    public function index(Request $request, $short_code)
     {
         try {
             $shortlink = Shortlink::where('short_code', $short_code)->firstOrFail();
 
-            if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink is not active!'], 400);
-
-            $shortlink->increment('total_clicks');
-            $shortlink->clicksOverTime()->create([
-                'ip_address' => $request->ip(),
-                'referrer' => $request->header('referer'),
-                'clicked_at' => now(),
-            ]);
-
-            $ipAddresses = [
-                // $request->ip(), // Current IP address
-                '98.220.20.182',
-                '77.73.203.21',
-                '67.199.248.14',
-                '163.195.1.225',
-                '151.101.192.144',
-                '184.30.42.22',
-                '47.246.136.156',
-            ];
-
-            // Select a random IP address from the array
-            $ipAddress = $ipAddresses[array_rand($ipAddresses)];
-            Log::info('Selected IP Address: ' . $ipAddress);
-
             $userId = $request->user()->id;
 
-            $location = LocationService::get($ipAddress);
+            if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink is not active!'], 400);
 
-            if (!$shortlink->uniqueClicks()->where('ip_address', $ipAddress)->exists()) {
-                $shortlink->uniqueClicks()->create([
-                    'ip_address' => $ipAddress,
-                    'device' => 'Unknown',
-                    'browser' => 'Unknown',
-                    'referrer' => $request->header('referer'),
-                    'user_agent' => $request->header('User-Agent'),
-                ]);
+            $this->recordClick($shortlink, $request);
 
-                // Create a new record in the locations table with default string values
-                $location = Location::create([
-                    'user_id' => $userId,
-                    'ip_address' => $ipAddress,
-                    'driver' => $location->driver,
-                    'country_name' => $location->countryName,
-                    'country_code' => $location->countryCode,
-                    'region_code' => $location->regionCode,
-                    'region_name' => $location->regionName,
-                    'city_name' => $location->cityName,
-                    'zip_code' => $location->zipCode,
-                    'iso_code' => $location->isoCode,
-                    'postal_code' => $location->postalCode,
-                    'latitude' => $location->latitude,
-                    'longitude' => $location->longitude,
-                    'metro_code' => $location->metroCode,
-                    'area_code' => $location->areaCode,
-                    'timezone' => $location->timezone,
-                ]);
-
-                $shortlink->increment('unique_clicks');
+            if (env('APP_ENV') === 'production') {
+                $ipAddress = $request->ip();
+            } else {
+                $ipAddress = $this->getRandomIpAddress();
             }
+
+            $this->upsertUniqueClick($shortlink, $ipAddress, $userId, $request);
 
             $props = [];
             foreach ($shortlink->getAttributes() as $key => $value) {
@@ -114,5 +68,77 @@ class RedirectLinkController extends Controller
         }
 
         return response()->json(['shortlink_redirect_urls' => $urls]);
+    }
+
+    private function recordClick(Shortlink $shortlink, Request $request)
+    {
+        $shortlink->increment('total_clicks');
+
+        $shortlink->clicksOverTime()->create([
+            'ip_address' => $request->ip(),
+            'referrer' => $request->header('referer'),
+            'clicked_at' => now(),
+        ]);
+    }
+
+    private function getRandomIpAddress()
+    {
+        $ipAddresses = [
+            '98.220.20.182',
+            '77.73.203.21',
+            '67.199.248.14',
+            '163.195.1.225',
+            '151.101.192.144',
+            '184.30.42.22',
+            '47.246.136.156',
+        ];
+
+        $ip = $ipAddresses[array_rand($ipAddresses)];
+
+        Log::info('Selected IP Address: ' . $ip);
+
+        return $ip;
+    }
+
+    private function upsertUniqueClick(Shortlink $shortlink, $ipAddress, $userId, Request $request)
+    {
+        if (!$shortlink->uniqueClicks()->where('ip_address', $ipAddress)->exists()) {
+            $shortlink->uniqueClicks()->create([
+                'ip_address' => $ipAddress,
+                'device' => 'Unknown',
+                'browser' => 'Unknown',
+                'referrer' => $request->header('referer'),
+                'user_agent' => $request->header('User-Agent'),
+            ]);
+
+            $shortlink->increment('unique_clicks');
+
+            $this->insertLocationData($userId, $ipAddress);
+        }
+    }
+
+    private function insertLocationData($userId, $ipAddress)
+    {
+        $location = LocationService::get($ipAddress);
+
+        // Create a new record in the locations table with default string values
+        $location = Location::create([
+            'user_id' => $userId,
+            'ip_address' => $ipAddress,
+            'driver' => $location->driver,
+            'country_name' => $location->countryName,
+            'country_code' => $location->countryCode,
+            'region_code' => $location->regionCode,
+            'region_name' => $location->regionName,
+            'city_name' => $location->cityName,
+            'zip_code' => $location->zipCode,
+            'iso_code' => $location->isoCode,
+            'postal_code' => $location->postalCode,
+            'latitude' => $location->latitude,
+            'longitude' => $location->longitude,
+            'metro_code' => $location->metroCode,
+            'area_code' => $location->areaCode,
+            'timezone' => $location->timezone,
+        ]);
     }
 }

@@ -5,12 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\CheckShortlinkExpiration;
 use App\Http\Controllers\Api\RedirectLinkController;
-use App\Http\Controllers\Api\GetClicksOverTime;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkGraphController;
-use App\Models\Location;
-use App\Models\Shortlink;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 Route::get('/', function () {
