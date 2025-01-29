@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Http\Middleware\CheckShortlinkExpiration;
 use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\Api\GetClicksOverTime;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LinkGraphController;
 use App\Models\Location;
 use App\Models\Shortlink;
 use Illuminate\Http\Request;
@@ -25,89 +27,9 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function (Request $request) {
-        $userId = $request->user()->id;
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        $shortlinks = Shortlink::where('user_id', $userId)->get();
-
-        // TODO: Add a check to see if the user has any shortlinks before proceeding
-        $clicksController = new GetClicksOverTime();
-        $graphs = collect();
-        foreach ($shortlinks as $link) {
-            $clickData = $clicksController->index($link->id)->getData();
-            $clickData->shortlink_id = $link->id;
-            $clickData->shortCode = $link->short_code;
-            $graphs->push($clickData);
-        }
-
-        // Prepare configurations for each graph
-        $graphData = collect();
-        foreach ($graphs as $graph) {
-            $graphData->push([
-                'shortlink_id' => $graph->shortlink_id,
-                'shortCode' => $graph->shortCode,
-                'labels' => array_reverse($graph->labels),
-                'datasets' => [
-                    [
-                        'label' => 'Clicks (' . $graph->shortCode . ')',
-                        'backgroundColor' => '#fff',
-                        'borderColor' => '#f87979',
-                        'borderWidth' => 3,
-                        'pointRadius' => 4,
-                        'lineTension' => 0.2,
-                        'data' => $graph->datasets[0]->data,
-                    ]
-                ],
-            ]);
-        }
-
-        // Prepare location data
-        $locations = Location::where('user_id', $userId)->get();
-
-        return Inertia::render('Dashboard', [
-            'graphs' => $graphData,
-            'locations' => $locations,
-        ]);
-    })->name('dashboard');
-
-    Route::get('/link/graphs/{shortlink_id}', function (Request $request, $id) {
-        $userId = $request->user()->id;
-
-        $shortlink = Shortlink::where('user_id', $userId)->where('id', $id)->get();
-        // TODO: Add a check to see if the user has any shortlinks before proceeding
-        $clicksController = new GetClicksOverTime();
-
-        $clickData = $clicksController->index($shortlink[0]->id)->getData();
-        $clickData->shortlink_id = $request->route('shortlink_id');
-        $clickData->shortCode = $request->route('shortlink_id');
-
-        // Prepare configurations for each graph
-        $graphData = collect();
-        $graphData->push([
-            'shortlink_id' => $clickData->shortlink_id,
-            'shortCode' => $clickData->shortCode,
-            'labels' => array_reverse($clickData->labels),
-            'datasets' => [
-                [
-                    'label' => 'Clicks (' . $clickData->shortCode . ')',
-                    'backgroundColor' => '#fff',
-                    'borderColor' => '#f87979',
-                    'borderWidth' => 3,
-                    'pointRadius' => 4,
-                    'lineTension' => 0.2,
-                    'data' => $clickData->datasets[0]->data,
-                ]
-            ],
-        ]);
-
-        // Prepare location data
-        $locations = Location::where('user_id', $userId)->get();
-
-        return Inertia::render('LinkAnalytics', [
-            'graphs' => $graphData,
-            'locations' => $locations,
-        ]);
-    })->name('link.analytics');
+    Route::get('/link/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('link.analytics');
 
     Route::get('/link/new', function () {
         return Inertia::render('NewLinkPage');
@@ -122,6 +44,19 @@ Route::middleware([
     Route::get('/links/manage', function () {
         return Inertia::render('ManageLinksPage');
     })->name('show.links');
+
+    Route::get('/qrcodes', function () {
+        return 'qrcodes';
+    })->name('qr-codes');
+    Route::get('/analytics', function () {
+        return 'analytics';
+    })->name('analytics');
+    Route::get('/custom-domains', function () {
+        return 'custom-domains';
+    })->name('custom-domains');
+    Route::get('/settings', function () {
+        return 'settings';
+    })->name('settings');
 });
 
 Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
