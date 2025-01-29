@@ -16,15 +16,19 @@ class CheckShortlinkExpiration
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Assume route has short_code
         if ($shortCode = $request->route('short_code')) {
-            $shortlink = Shortlink::where('short_code', $shortCode)->first();
-
-            if (!$shortlink || $shortlink->isExpired()) {
+            if ($this->isShortlinkExpired($shortCode)) {
                 return response()->json(['error' => 'This shortlink has expired!'], 410); // HTTP 410 Gone
             }
         }
 
         return $next($request);
+    }
+
+    private function isShortlinkExpired($shortCode)
+    {
+        $shortlink = Shortlink::where('short_code', $shortCode)->first();
+
+        return !$shortlink || $shortlink->isExpired();
     }
 }

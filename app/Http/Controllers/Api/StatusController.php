@@ -3,39 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Exception;
-use Illuminate\Support\Facades\Log;
 use App\Models\Shortlink;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 
 class StatusController extends Controller
 {
     public function activate($id)
     {
-        try {
-            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
-            $shortlink->update(['is_active' => true]);
-
-            return response()->json(['message' => 'Shortlink activated successfully']);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Shortlink not found'], 404);
-        } catch (Exception $e) {
-            Log::error('Unexpected error occurred while activating shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
-        }
+        return $this->updateStatus($id, true, 'activated');
     }
 
     public function deactivate($id)
     {
+        return $this->updateStatus($id, false, 'deactivated');
+    }
+
+    private function updateStatus($id, $status, $action)
+    {
         try {
             $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
-            $shortlink->update(['is_active' => false]);
+            $shortlink->update(['is_active' => $status]);
 
-            return response()->json(['message' => 'Shortlink deactivated successfully']);
+            return response()->json(['message' => "Shortlink {$action} successfully"]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {
-            Log::error('Unexpected error occurred while deactivating shortlink: ' . $e->getMessage());
+            Log::error("Unexpected error occurred while {$action} shortlink: " . $e->getMessage());
             return response()->json(['error' => 'An unexpected error occurred.'], 500);
         }
     }
