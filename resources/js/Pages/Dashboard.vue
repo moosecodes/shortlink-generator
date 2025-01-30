@@ -87,6 +87,7 @@ const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
 
 <template>
     <AppLayout title="Dashboard">
+
         <v-row>
             <v-col cols="12" md="12">
                 <p class="text-3xl font-semibold">Click Engagement</p>
@@ -97,7 +98,9 @@ const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
             <v-row v-if="props?.locations?.length">
                 <v-col cols="12" md="12">
                     <div class="my-2 text-2xl font-semibold">Locations</div>
+
                     <p v-for="(location, i) in deDupedLocations()" :key="i" class="my-2">{{ location.country_name + ' - ' + location.timezone }}</p>
+
                     <GoogleMap
                         :api-key="googleMapsApiKey"
                         style="width: 100%; height: 400px"
@@ -124,7 +127,7 @@ const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
 
                             <v-toolbar-title>Short Codes</v-toolbar-title>
 
-                            <v-spacer></v-spacer>
+                            <v-spacer />
 
                         </v-toolbar>
 
@@ -150,7 +153,7 @@ const shortlinkId = '9e09b2b0-8df2-4071-a77d-e2c21c661a15';
                                     <v-list-item-action class="flex-column align-end">
                                         <small class="mb-4 text-high-emphasis opacity-60">{{ item.shortCode }}</small>
 
-                                        <v-spacer></v-spacer>
+                                        <v-spacer />
 
                                         <v-icon v-if="isSelected" color="yellow-darken-3">mdi-star</v-icon>
 

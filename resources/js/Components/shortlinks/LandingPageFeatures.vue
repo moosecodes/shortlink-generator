@@ -37,7 +37,7 @@ const freeFeatures = [
                 <div class="flex flex-column text-secondary">
                     <v-list-item v-for="(feature, i) in freeFeatures" :key="i">
                         <template v-slot:prepend>
-                            <v-icon icon="mdi-check-circle-outline" class="text-green"></v-icon>
+                            <v-icon icon="mdi-check-circle-outline" class="text-green" />
                         </template>
                         <v-list-item-title>{{ feature }}</v-list-item-title>
                     </v-list-item>

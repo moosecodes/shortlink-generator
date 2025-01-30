@@ -126,13 +126,13 @@ onMounted(fetchShortlink);
                             label="Key"
                             required
                             class=""
-                        ></v-text-field>
+                        />
                         <v-text-field
                             v-if="state.showUTMFields"
                             v-model="field.meta_value"
                             label="Value"
                             required
-                        ></v-text-field>
+                        />
                     </v-col>
                 </v-row>
                 <v-row>

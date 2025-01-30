@@ -43,7 +43,7 @@ watch(() => props.input, (newInput) => {
     <v-img
         :width="200"
         :src="state.base64QRCode"
-    ></v-img>
+    />
     <p class="my-4">QR Code for {{ props.input }}</p>
 </div>
 </template>

@@ -38,11 +38,11 @@ onMounted(async () => {
 </script>
 
 <template>
-    <AppLayout title="Manage Shortlinks">
+    <AppLayout title="Manage Links">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
             <v-row>
                 <v-col cols="12">
-                    <h1 class="text-2xl font-bold">Manage Shortlinks</h1>
+                    <h1 class="text-2xl font-bold">Manage Links</h1>
                     <p v-if="!state.shortlinks.length">
                         No shortlinks currently exist. Create a new link to get started!
                     </p>
@@ -52,7 +52,7 @@ onMounted(async () => {
                         prepend-icon="mdi-plus"
                         color="primary"
                         class=""
-                        @click="navigateTo('CreateLinkPage')">
+                        @click="navigateTo('link.create')">
                         New Link
                     </v-btn>
                 </v-col>

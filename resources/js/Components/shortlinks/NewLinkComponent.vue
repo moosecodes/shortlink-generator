@@ -98,7 +98,7 @@ const showParameterPreview = computed(() => {
                     v-model="state.shortlink.user_url"
                     label="Redirect to (URL)"
                     required
-                ></v-text-field>
+                />
             </v-col>
 
             <v-col>Custom Link (optional)</v-col>
@@ -106,7 +106,7 @@ const showParameterPreview = computed(() => {
                 <v-text-field
                     v-model="state.shortlink.custom_short_code"
                     label="Enter custom back-half of the URL"
-                ></v-text-field>
+                />
             </v-col>
         </v-row>
 
@@ -123,12 +123,12 @@ const showParameterPreview = computed(() => {
                     v-model="field.meta_key"
                     label="Key"
                     :label="field.meta_key"
-                ></v-text-field>
+                />
                 <v-text-field
                     v-model="field.meta_value"
                     label="Value"
                     :label="field.meta_value"
-                ></v-text-field>
+                />
             </v-col>
         </v-row>
 
@@ -145,12 +145,12 @@ const showParameterPreview = computed(() => {
                     v-model="field.meta_key"
                     label="Key"
                     :label="field.meta_key"
-                ></v-text-field>
+                />
                 <v-text-field
                     v-model="field.meta_value"
                     label="Value"
                     :label="field.meta_value"
-                ></v-text-field>
+                />
             </v-col>
         </v-row>
 

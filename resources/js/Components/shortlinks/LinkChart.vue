@@ -1,7 +1,7 @@
 <template>
     <div class="link-chart">
         <h2>Link Chart</h2>
-        <canvas id="linkChartCanvas"></canvas>
+        <canvas id="linkChartCanvas" />
     </div>
 </template>
 

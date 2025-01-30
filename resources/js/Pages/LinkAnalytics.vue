@@ -119,7 +119,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                             v-for="(location, i) in deDupedLocations()" :key="i"
                             :title="location.country_name"
                             :text="`Timezone: ${location.timezone}`"
-                        ></v-expansion-panel>
+                        />
                     </v-expansion-panels>
                 </v-col>
             </v-row>

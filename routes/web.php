@@ -25,16 +25,18 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/link/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('link.analytics');
+    Route::prefix('link')->name('link.')->group(function () {
+        Route::get('/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
 
-    Route::get('/link/new', function () {
-        return Inertia::render('CreateLinkPage');
-    })->name('CreateLinkPage');
+        Route::get('/new', function () {
+            return Inertia::render('link.create');
+        })->name('create');
 
-    Route::get('/link/update/{shortlink_id}', function ($shortlink_id) {
-        return Inertia::render('UpdateShortlink', [
-            'shortlink_id' => $shortlink_id,
-        ]);
+        Route::get('/update/{shortlink_id}', function ($shortlink_id) {
+            return Inertia::render('UpdateShortlink', [
+                'shortlink_id' => $shortlink_id,
+            ]);
+        })->name('update');
     });
 
     Route::get('/links/manage', function () {
@@ -42,16 +44,16 @@ Route::middleware([
     })->name('show.links');
 
     Route::get('/qrcodes', function () {
-        return 'qrcodes';
+        return 'qrcodes page';
     })->name('qr-codes');
     Route::get('/analytics', function () {
-        return 'analytics';
-    })->name('analytics');
+        return 'analytics page';
+    })->name('page.analytics');
     Route::get('/custom-domains', function () {
-        return 'custom-domains';
+        return 'custom-domains page';
     })->name('custom-domains');
     Route::get('/settings', function () {
-        return 'settings';
+        return 'settings page';
     })->name('settings');
 });
 

@@ -37,14 +37,15 @@ const toggleTheme = () => {
 }
 
 const switchToTeam = (team) => {
-    router.put(route('current-team.update'),
-     {
-        team_id: team.id,
-
-    },
-     {
-        preserveState: false,
-    });
+    router.put(
+        route('current-team.update'),
+            {
+                team_id: team.id,
+            },
+            {
+                preserveState: false,
+            }
+    );
 };
 
 const logout = () => {
@@ -61,7 +62,7 @@ const logout = () => {
 
         <!-- Rest of the template remains the same -->
         <v-app-bar elevation="2">
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
             <v-app-bar-title>
                 <Link :href="route('landingPage')" class="d-flex align-center text-decoration-none">
@@ -69,7 +70,7 @@ const logout = () => {
                 </Link>
             </v-app-bar-title>
 
-            <v-spacer></v-spacer>
+            <v-spacer />
 
             <!-- Teams Dropdown -->
             <v-menu v-if="$page.props.jetstream.hasTeamFeatures">
@@ -86,15 +87,15 @@ const logout = () => {
                     <v-list-item
                         :href="route('teams.show', $page.props.auth.user.current_team)"
                         title="Team Settings"
-                    ></v-list-item>
+                    />
 
                     <v-list-item
                         v-if="$page.props.jetstream.canCreateTeams"
                         :href="route('teams.create')"
                         title="Create New Team"
-                    ></v-list-item>
+                    />
 
-                    <v-divider v-if="$page.props.auth.user.all_teams.length > 1"></v-divider>
+                    <v-divider v-if="$page.props.auth.user.all_teams.length > 1" />
 
                     <template v-if="$page.props.auth.user.all_teams.length > 1">
                         <v-list-subheader>Switch Teams</v-list-subheader>
@@ -120,7 +121,7 @@ const logout = () => {
                 <template v-slot:activator="{ props }">
                     <v-btn variant="text" v-bind="props">
                         <v-avatar v-if="$page.props.jetstream.managesProfilePhotos" size="32">
-                            <v-img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name"></v-img>
+                            <v-img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" />
                         </v-avatar>
                         <span v-else>{{ $page.props.auth.user.name }}</span>
                         <v-icon>mdi-chevron-down</v-icon>
@@ -133,26 +134,27 @@ const logout = () => {
                     <v-list-item
                         :href="route('profile.show')"
                         title="Profile"
-                    ></v-list-item>
+                    />
 
                     <v-list-item
                         v-if="$page.props.jetstream.hasApiFeatures"
                         :href="route('api-tokens.index')"
                         title="API Tokens"
-                    ></v-list-item>
-                    <v-divider></v-divider>
+                    />
+
+                    <v-divider />
 
                     <v-list-item
                         @click="toggleTheme"
                         title="Toggle Theme"
-                    ></v-list-item>
+                    />
 
-                    <v-divider></v-divider>
+                    <v-divider />
 
                     <v-list-item
                         @click="logout"
                         title="Log Out"
-                    ></v-list-item>
+                    />
                 </v-list>
             </v-menu>
 
@@ -161,7 +163,7 @@ const logout = () => {
         <NavigationDrawer />
 
         <v-main>
-            <v-container fluid>
+            <v-container>
                 <slot />
             </v-container>
         </v-main>
