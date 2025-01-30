@@ -40,6 +40,7 @@ const submitForm = async () => {
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
         });
+
         state.message = response;
     } catch (error) {
         console.error('Error creating shortlink:', error);
@@ -108,6 +109,7 @@ const showParameterPreview = computed(() => {
                 ></v-text-field>
             </v-col>
         </v-row>
+
         <v-row class="my-4" >
             <v-col>
                 <v-btn color="info" @click="toggleUTMFields">{{ state.showFormFields ? 'Hide' : 'Show' }} Form Fields</v-btn>

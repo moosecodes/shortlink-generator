@@ -75,6 +75,11 @@ const isRecent = (shortlink) => {
                         {{ shortlink.short_url }}
                     </a>
                 </v-chip>
+                <v-chip class="text-caption my-2 mr-2 item-justify-start">
+                    <a :href="shortlink.user_url" target="_blank">
+                        {{ shortlink.user_url }}
+                    </a>
+                </v-chip>
             </v-card-item>
 
             <v-card-item>

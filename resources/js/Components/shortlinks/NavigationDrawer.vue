@@ -43,7 +43,13 @@ const navigateTo = (routeName) => {
             <v-divider></v-divider>
 
             <div class="flex justify-center p-4">
-                <v-btn type="submit" color="primary" @click="navigateTo('NewLinkPage')" class="flex justify-center items-center" block>
+                <v-btn
+                    prepend-icon="mdi-plus"
+                    type="submit"
+                    color="primary"
+                    @click="navigateTo('CreateLinkPage')"
+                    class="flex justify-center items-center"
+                    block>
                 Create Link
                 </v-btn>
             </div>

@@ -28,8 +28,8 @@ Route::middleware([
     Route::get('/link/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('link.analytics');
 
     Route::get('/link/new', function () {
-        return Inertia::render('NewLinkPage');
-    })->name('NewLinkPage');
+        return Inertia::render('CreateLinkPage');
+    })->name('CreateLinkPage');
 
     Route::get('/link/update/{shortlink_id}', function ($shortlink_id) {
         return Inertia::render('UpdateShortlink', [
