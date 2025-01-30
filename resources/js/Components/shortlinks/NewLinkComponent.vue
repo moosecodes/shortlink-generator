@@ -51,9 +51,11 @@ const submitForm = async () => {
 const toggleUTMFields = () => {
     state.showFormFields = !state.showFormFields;
 }
+
 const addNewField = () => {
     state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
 };
+
 const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
@@ -74,34 +76,16 @@ const showParameterPreview = computed(() => {
 
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
-            <v-col>
-                <v-btn type="submit" color="primary" @click="navigateTo('show.links')">Create Shortlink</v-btn>
-            </v-col>
-            <v-col>
-                <p v-if="message">{{ message }}</p>
-            </v-col>
-        </v-row>
-        <v-row v-if="state.shortlink.user_url.length">
-            <v-col cols="12">Link Preview:</v-col>
-            <v-col cols="12">
-                {{ state.shortlink.user_url }}
-                /
-                {{ state.shortlink.custom_short_code || "XxXxXxXx"}}
-                ?
-                {{ showParameterPreview }}
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col>Target Link</v-col>
+            <v-col>Target URL</v-col>
             <v-col cols="12" md="12">
                 <v-text-field
                     v-model="state.shortlink.user_url"
-                    label="Redirect to (URL)"
+                    label="Enter target link here"
                     required
                 />
             </v-col>
 
-            <v-col>Custom Link (optional)</v-col>
+            <v-col>Customize Link <small>(optional)</small></v-col>
             <v-col cols="12" md="12">
                 <v-text-field
                     v-model="state.shortlink.custom_short_code"
@@ -110,9 +94,40 @@ const showParameterPreview = computed(() => {
             </v-col>
         </v-row>
 
+        <v-row v-if="state.shortlink.user_url.length">
+            <v-col cols="12">
+            <p cols="12">Link Preview</p>
+                {{ state.shortlink.user_url }}
+                /
+                {{ state.shortlink?.custom_short_code || "XxXxXxXx"}}
+                ?
+                {{ showParameterPreview }}
+            </v-col>
+        </v-row>
+
         <v-row class="my-4" >
             <v-col>
-                <v-btn color="info" @click="toggleUTMFields">{{ state.showFormFields ? 'Hide' : 'Show' }} Form Fields</v-btn>
+                <v-btn
+                    color="info"
+                    @click="toggleUTMFields">
+                        {{ state.showFormFields ? 'Hide' : 'Show' }} UTM Fields
+                    </v-btn>
+            </v-col>
+        </v-row>
+
+        <v-row v-if="state.showFormFields">
+            <v-col>UTM Fields</v-col>
+            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="12">
+                <v-text-field
+                    v-model="field.meta_key"
+                    label="Key"
+                    :label="field.meta_key"
+                />
+                <v-text-field
+                    v-model="field.meta_value"
+                    label="Value"
+                    :label="field.meta_value"
+                />
             </v-col>
         </v-row>
 
@@ -139,21 +154,12 @@ const showParameterPreview = computed(() => {
         </v-row>
 
         <v-row>
-            <v-col>UTM Fields</v-col>
-            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="12">
-                <v-text-field
-                    v-model="field.meta_key"
-                    label="Key"
-                    :label="field.meta_key"
-                />
-                <v-text-field
-                    v-model="field.meta_value"
-                    label="Value"
-                    :label="field.meta_value"
-                />
+            <v-col>
+                <v-btn type="submit" color="primary" @click="navigateTo('show.links')">Create Shortlink</v-btn>
+            </v-col>
+            <v-col>
+                <p v-if="message">{{ message }}</p>
             </v-col>
         </v-row>
-
-
     </v-form>
 </template>
