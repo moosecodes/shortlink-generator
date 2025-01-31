@@ -11,10 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    // if (Auth::check()) {
-    //     Auth::logout();
-    // }
-
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -45,8 +41,8 @@ Route::middleware([
             return Inertia::render('link.create');
         })->name('create');
 
-        Route::get('/update/{shortlink_id}', function ($shortlink_id) {
-            return Inertia::render('UpdateShortlink', [
+        Route::get('/edit/{shortlink_id}', function ($shortlink_id) {
+            return Inertia::render('EditLinkPage', [
                 'shortlink_id' => $shortlink_id,
             ]);
         })->name('update');

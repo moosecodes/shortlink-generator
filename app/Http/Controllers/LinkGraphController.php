@@ -20,7 +20,7 @@ class LinkGraphController extends Controller
         $graphData = $this->prepareGraphData($clickData);
         $locations = Location::where('user_id', $userId)->get();
 
-        return Inertia::render('LinkAnalytics', [
+        return Inertia::render('LinkAnalyticsPage', [
             'graphs' => $graphData,
             'locations' => $locations,
         ]);
@@ -51,7 +51,7 @@ class LinkGraphController extends Controller
                     'borderWidth' => 3,
                     'pointRadius' => 4,
                     'lineTension' => 0.2,
-                    'data' => $clickData->datasets[0]->data,
+                    'data' => $clickData->datasets->datasets[0]->data,
                 ]
             ],
         ]);

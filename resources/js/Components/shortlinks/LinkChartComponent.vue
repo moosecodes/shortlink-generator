@@ -1,7 +1,7 @@
 <template>
     <div class="link-chart">
         <h2>Link Chart</h2>
-        <canvas id="linkChartCanvas" />
+        <canvas id="LinkChartComponentCanvas" />
     </div>
 </template>
 
@@ -10,12 +10,12 @@ import { ref, onMounted } from 'vue';
 import { Chart } from 'chart.js';
 
 export default {
-    name: 'LinkChart',
+    name: 'LinkChartComponent',
     setup() {
         const chart = ref(null);
 
         onMounted(() => {
-            const ctx = document.getElementById('linkChartCanvas').getContext('2d');
+            const ctx = document.getElementById('LinkChartComponentCanvas').getContext('2d');
             chart.value = new Chart(ctx, {
                 type: 'bar',
                 data: {

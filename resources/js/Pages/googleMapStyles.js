@@ -1836,7 +1836,6 @@ customMapStyles.assasin = [
         ]
     }
 ];
-
 customMapStyles.modest = [
     {
         "featureType": "all",
@@ -1903,7 +1902,7 @@ customMapStyles.modest = [
                 "saturation": "9"
             },
             {
-                "color": "#29446b"
+                "color": "#f87979"
             }
         ]
     },

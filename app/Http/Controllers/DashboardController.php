@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
         $locations = Location::where('user_id', $userId)->get();
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('DashboardPage', [
             'graphs' => $graphData,
             'locations' => $locations,
         ]);
@@ -48,8 +48,8 @@ class DashboardController extends Controller
                 'datasets' => [
                     [
                         'label' => "Clicks ({$graph->shortCode})",
-                        'backgroundColor' => '#fff',
-                        'borderColor' => '#f87979',
+                        'backgroundColor' => 'rgba(254, 44, 85, 0.7)',
+                        'borderColor' => '#fff',
                         'borderWidth' => 3,
                         'pointRadius' => 4,
                         'lineTension' => 0.2,

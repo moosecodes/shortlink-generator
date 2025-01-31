@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum', \App\Http\Middleware\AutoLoginGuest::class, \A
     Route::post('/manage/new', [CreateLinkController::class, 'index']);
     Route::get('/links/manage', [ShowLinkController::class, 'showAll']);
     Route::post('/link/details', [ShowLinkController::class, 'index']);
-    Route::patch('/link/update', [UpdateLinkController::class, 'update']);
+    Route::patch('/link/edit', [UpdateLinkController::class, 'update']);
     Route::patch('/link/activate/{id}', [StatusController::class, 'activate']);
     Route::patch('/link/deactivate/{id}', [StatusController::class, 'deactivate']);
     Route::delete('/link/delete/{id}', [DeleteLinkController::class, 'index']);

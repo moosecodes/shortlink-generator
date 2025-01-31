@@ -3,10 +3,10 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { computed, reactive, onMounted } from 'vue';
 import { VBtn, VRow, VCol, VSelect } from 'vuetify/components';
 import { usePage } from '@inertiajs/vue3'
-import CardDetails from '@/Components/shortlinks/CardDetails.vue';
+import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 import { fetchShortlinks, redirectedUrls, navigateTo } from '@/Components/shortlinks/requests';
 
-const page = usePage()
+const page = usePage() // TODO: look up docs for usePage() and useOther()
 
 const props = defineProps({
     auth: Object,
@@ -35,7 +35,7 @@ const filteredShortlinks = computed(() => {
 });
 
 onMounted(async () => {
-    console.log(page.props.auth.user?.id);
+    console.log(page);
     state.shortlinks = await fetchShortlinks();
     state.redirects = await redirectedUrls(state.shortlinks);
 });
@@ -43,45 +43,43 @@ onMounted(async () => {
 
 <template>
     <AppLayout title="Manage Links">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
-            <v-row>
-                <v-col cols="12">
-                    <h1 class="text-2xl font-bold">Manage Links</h1>
-                    <p v-if="!state.shortlinks?.length">
-                        No shortlinks currently exist. Create a new link to get started!
-                    </p>
-                </v-col>
-                <v-col align="end" cols="12">
-                    <v-btn
-                        prepend-icon="mdi-plus"
-                        color="primary"
-                        class=""
-                        @click="navigateTo('link.create')">
-                        New Link
-                    </v-btn>
-                </v-col>
+        <v-row>
+            <v-col cols="12">
+                <h1 class="text-3xl font-semibold">Manage Links</h1>
+                <p v-if="!state.shortlinks?.length">
+                    No shortlinks currently exist. Create a new link to get started!
+                </p>
+            </v-col>
+
+            <v-col align="end" cols="12">
+                <v-btn
+                    prepend-icon="mdi-plus"
+                    color="primary"
+                    class=""
+                    @click="navigateTo('link.create')">
+                    New Link
+                </v-btn>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col>
+                <h2 class="my-2 font-bold">{{ state.linkFilter }} Links ({{ filteredShortlinks?.length }}/{{ state.shortlinks?.length }})</h2>
+            </v-col>
+
+            <v-col>
+                <v-select
+                    v-model="state.linkFilter"
+                    :items="['All', 'Active', 'Inactive']"
+                    label="Filter Shortlinks"
+                    ></v-select>
+            </v-col>
+        </v-row>
+
+        <div v-if="filteredShortlinks">
+            <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
+                <LinkDetailsComponent :shortlink="shortlink" :redirects="state.redirects" />
             </v-row>
-
-            <v-row>
-                <v-col>
-                    <h2 class="my-2 font-bold">{{ state.linkFilter }} Shortlinks ({{ filteredShortlinks?.length }}/{{ state.shortlinks?.length }})</h2>
-                </v-col>
-
-                <v-col>
-                    <v-select
-                        v-model="state.linkFilter"
-                        :items="['All', 'Active', 'Inactive']"
-                        label="Filter Shortlinks"
-                        ></v-select>
-                </v-col>
-            </v-row>
-
-            <div v-if="filteredShortlinks">
-                <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
-                    <CardDetails :shortlink="shortlink" :redirects="state.redirects" />
-                </v-row>
-            </div>
-
         </div>
     </AppLayout>
 </template>

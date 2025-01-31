@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const state = reactive({
-    user_url: 'asdf',
+    user_url: '',
     urlRules: [],
     short_url: '',
     message: '',

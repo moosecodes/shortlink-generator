@@ -163,9 +163,12 @@ const logout = () => {
         <NavigationDrawer />
 
         <v-main>
-            <v-container>
-                <slot />
-            </v-container>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+                <v-container>
+                    <slot />
+                </v-container>
+            </div>
+
         </v-main>
 
         <v-footer>

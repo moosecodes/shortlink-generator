@@ -1,7 +1,7 @@
 <script setup>
 import LandingPageLayout from '@/Layouts/LandingPageLayout.vue';
-import LandingPageFeatures from '@/Components/shortlinks/LandingPageFeatures.vue';
-import FreeCodeGenerators from '@/Components/shortlinks/FreeCodeGenerators.vue';
+import LandingPageFeaturesComponent from '@/Components/shortlinks/LandingPageFeaturesComponent.vue';
+import LandingPageGeneratorsComponent from '@/Components/shortlinks/LandingPageGeneratorsComponent.vue';
 
 import {
     VRow,
@@ -22,9 +22,9 @@ defineProps({
                 <v-row class="flex flex-column justify-center text-center my-4">
                     <p class="my-8 text-h3">Transform Your Links into Powerful Connections</p>
                     <p class="my-4">Simplify engagement with our powerful URL shortener, dynamic QR Codes, and customized landing pages. Effortlessly connect your audience to the right content while building, editing, and tracking every interaction on our intuitive platform.</p>
-                    <FreeCodeGenerators />
+                    <LandingPageGeneratorsComponent />
                 </v-row>
-                <LandingPageFeatures />
+                <LandingPageFeaturesComponent />
             </v-container>
         </div>
     </LandingPageLayout>

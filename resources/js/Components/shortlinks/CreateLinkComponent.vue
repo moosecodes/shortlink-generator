@@ -12,7 +12,6 @@ const props = defineProps({
 });
 
 const state = reactive({
-    userId: page.props.auth.user?.id,
     shortlink: {
         custom_short_code: '',
         user_url: 'https://www.google.com',
@@ -32,16 +31,9 @@ const state = reactive({
 const message = ref('');
 const valid = ref(false);
 
-const submitForm = async () => {
-
-    localStorage.setItem('token', import.meta.env.VITE_USER_API_TOKEN);
-    const token = `Bearer ${localStorage.getItem('token')}`;
-
-    console.log(state.userId, token);
-
+const createNewLink = async () => {
     try {
         const response = await axios.post('/api/manage/new', {
-            userId: state.userId,
             user_url: state.shortlink.user_url,
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
@@ -76,11 +68,16 @@ const showParameterPreview = computed(() => {
 </script>
 
 <template>
-    <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold my-2">New Link</h1>
-    </div>
-{{ state }}
-    <v-form v-model="valid" @submit.prevent="submitForm">
+    <v-row>
+        <v-col cols="12">
+            <h1 class="text-3xl font-semibold">New Link</h1>
+            <p>Create a new short link with optional vanity URL.</p>
+            <p>Add custom parameters, if desired.</p>
+            <p>Create link!</p>
+        </v-col>
+    </v-row>
+
+    <v-form v-model="valid" @submit.prevent="createNewLink">
         <v-row>
             <v-col>Target URL</v-col>
             <v-col cols="12" md="12">

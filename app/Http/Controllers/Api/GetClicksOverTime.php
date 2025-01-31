@@ -15,9 +15,6 @@ class GetClicksOverTime extends Controller
             $clicks = $this->getClicksByShortlinkId($id);
             $aggregatedData = $this->aggregateClicksByDay($clicks);
 
-            $labels = $aggregatedData->keys()->toArray(); // Extract the dates as labels
-            $data = $aggregatedData->values()->toArray(); // Extract counts as data points
-
             $response = $this->prepareResponse($aggregatedData);
 
             return response()->json($response);

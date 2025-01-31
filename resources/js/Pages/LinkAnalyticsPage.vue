@@ -80,7 +80,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Link Analytics">
         <v-row>
             <v-col cols="12" md="12">
                 <p class="text-3xl font-semibold">Link Analytics</p>

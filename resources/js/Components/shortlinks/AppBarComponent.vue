@@ -30,8 +30,8 @@ const toggleTheme = () => {
 
         <nav class="flex justify-between">
             <v-btn variant="text" class="mr-4">Platform</v-btn>
-            <v-btn variant="text" class="mr-4">Pricing</v-btn>
 
+            <v-btn variant="text" class="mr-4">Pricing</v-btn>
 
             <v-btn
                 v-if="$page.props.auth.user"
