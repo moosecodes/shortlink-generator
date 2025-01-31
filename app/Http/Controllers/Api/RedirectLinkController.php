@@ -33,11 +33,6 @@ class RedirectLinkController extends Controller
             $this->upsertUniqueClick($shortlink, $ipAddress, $userId, $request);
 
             $props = [];
-            foreach ($shortlink->getAttributes() as $key => $value) {
-                if ($key !== "short_code") {
-                    $props[$key] = $value;
-                }
-            }
 
             return redirect($shortlink->user_url . '?' . http_build_query($props));
         } catch (ModelNotFoundException $e) {
@@ -72,7 +67,12 @@ class RedirectLinkController extends Controller
 
     private function recordClick(Shortlink $shortlink, Request $request)
     {
-        $shortlink->increment('total_clicks');
+
+        if ($request->has('qr') && $request->input('qr') == 1) {
+            $shortlink->increment('qr_scans');
+        } else {
+            $shortlink->increment('total_clicks');
+        }
 
         $shortlink->clicksOverTime()->create([
             'ip_address' => $request->ip(),

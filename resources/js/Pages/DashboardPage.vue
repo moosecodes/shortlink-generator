@@ -2,7 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { VBtn, VRow, VCol } from 'vuetify/lib/components/index.mjs';
 import { Bar } from 'vue-chartjs'
-import WorldMapComponent from '@/Components/shortlinks/WorldMapComponent.vue';
+import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
 import {
   Chart as ChartJS,
@@ -95,7 +95,7 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
             </v-col>
 
             <v-col cols="12" md="6">
-                <WorldMapComponent
+                <WorldTrafficComponent
                     :googleMapsApiKey="googleMapsApiKey"
                     :locations="props.locations"
                 />

@@ -67,7 +67,7 @@ onMounted(() => {
                     </v-btn>
                 </v-card>
             </v-col>
-{{ state }}
+
             <!-- Custom Parameters -->
             <v-col cols="12" md="12">
                 <p><b>Custom Parameters</b></p>

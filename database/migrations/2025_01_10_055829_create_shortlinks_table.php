@@ -15,6 +15,7 @@ class CreateShortlinksTable extends Migration
             $table->string('hash')->unique()->index();
             $table->string('short_url')->unique()->index();
             $table->unsignedBigInteger('total_clicks')->default(0)->index();
+            $table->unsignedBigInteger('qr_scans')->default(0)->index();
             $table->unsignedBigInteger('unique_clicks')->default(0)->index();
             $table->boolean('is_active')->default(false)->index();
             $table->boolean('is_premium')->default(false)->index();

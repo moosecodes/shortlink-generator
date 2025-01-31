@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
-import { VForm, VCard, VRow, VCol, VBtn } from 'vuetify/components';
+import { VForm,  VRow, VCol } from 'vuetify/components';
 import LinkDetailsComponent from './LinkDetailsComponent.vue';
 import { fetchShortlink, updateLink } from '@/Components/shortlinks/requests';
 import MetaDataEditComponent from '@/Components/shortlinks/MetaDataEditComponent.vue';

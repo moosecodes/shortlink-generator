@@ -21,6 +21,7 @@ class Shortlink extends Model
         'is_premium',
         'user_url',
         'total_clicks',
+        'qr_scans',
         'unique_clicks',
         'expires_at',
     ];
