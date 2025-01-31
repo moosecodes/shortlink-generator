@@ -8,8 +8,13 @@ use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LinkGraphController;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
+    // if (Auth::check()) {
+    //     Auth::logout();
+    // }
+
     return Inertia::render('LandingPage', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -22,8 +27,16 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    \App\Http\Middleware\AutoLoginGuest::class,
+    \App\Http\Middleware\LogAuthStatus::class,
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/links/manage', function () {
+        return Inertia::render('ManageLinksPage', [
+            'links' => Auth::user()->shortlinks,
+        ]);
+    })->name('show.links');
 
     Route::prefix('link')->name('link.')->group(function () {
         Route::get('/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
@@ -39,21 +52,28 @@ Route::middleware([
         })->name('update');
     });
 
-    Route::get('/links/manage', function () {
-        return Inertia::render('ManageLinksPage');
-    })->name('show.links');
-
     Route::get('/qrcodes', function () {
-        return 'qrcodes page';
+        return Inertia::render('ManageLinksPage');
     })->name('qr-codes');
+
+    Route::get('/pages', function () {
+        return Inertia::render('ManageLinksPage');
+    })->name('pages');
+
     Route::get('/analytics', function () {
-        return 'analytics page';
+        return Inertia::render('ManageLinksPage');
     })->name('page.analytics');
+
+    Route::get('/campaigns', function () {
+        return Inertia::render('ManageLinksPage');
+    })->name('campaigns');
+
     Route::get('/custom-domains', function () {
-        return 'custom-domains page';
+        return Inertia::render('ManageLinksPage');
     })->name('custom-domains');
+
     Route::get('/settings', function () {
-        return 'settings page';
+        return Inertia::render('ManageLinksPage');
     })->name('settings');
 });
 

@@ -16,7 +16,9 @@ class ShowLinkController extends Controller
     public function index(Request $request)
     {
         try {
-            $shortlink = $this->findShortlink($request->userId, $request->id);
+            $userId = $request->user()->id ?? 999;
+
+            $shortlink = $this->findShortlink($userId, $request->id);
             $metadatas = $this->getMetadatas($shortlink->id);
 
             return response()->json(array_merge($shortlink->toArray(), ['metadatas' => $metadatas]));
@@ -30,7 +32,9 @@ class ShowLinkController extends Controller
 
     public function showAll(Request $request)
     {
-        $shortlinks = Shortlink::where('user_id', $request->userId)->get();
+        $userId = $request->user()->id ?? 999;
+        $shortlinks = Shortlink::where('user_id', $userId)->get();
+
         return response()->json($shortlinks);
     }
 

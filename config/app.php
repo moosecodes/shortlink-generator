@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Secret Key
+    |--------------------------------------------------------------------------
+    |
+    | This value is the secret key used for various application-specific
+    | purposes, such as generating short codes. Ensure this key is kept
+    | secret and not exposed publicly.
+    |
+    */
+
+    'secret_key' => env('APP_SECRET_KEY', 'your_default_secret_key'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

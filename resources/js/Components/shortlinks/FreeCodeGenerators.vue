@@ -18,11 +18,9 @@ const props = defineProps({
 });
 
 const state = reactive({
-    userId: 999,
-    user_url: '',
+    user_url: 'asdf',
     urlRules: [],
     short_url: '',
-    metadata: [],
     message: '',
     switchFeature: false,
 });
@@ -35,9 +33,7 @@ const toggleFeature = () => {
 const createFreeLink = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
-            user_id: state.userId,
             user_url: state.user_url,
-            free_metadata: state.metadata,
         });
         state.short_url = response.data.short_url;
         state.message = response;
@@ -89,7 +85,8 @@ const createFreeLink = async () => {
                     <v-btn
                         v-else
                         class="my-4"
-                        color="success":href="state.short_url"
+                        color="success"
+                        :href="state.short_url"
                         target="_blank">
                             {{ state.short_url }}
                     </v-btn>

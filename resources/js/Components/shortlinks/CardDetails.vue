@@ -26,6 +26,7 @@ const deleteShortlink = async({ short_code }) => {
 }
 
 const toggleActivation = async (shortlink) => {
+    console.log('Toggling activation:', shortlink);
     try {
         const route = shortlink.is_active
             ? `/api/link/deactivate/${shortlink.short_code}`

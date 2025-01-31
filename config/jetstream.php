@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'middleware' => ['web', 'auth', 'verified', 'api'],
+    'middleware' => ['web'],
 
     'auth_session' => AuthenticateSession::class,
 

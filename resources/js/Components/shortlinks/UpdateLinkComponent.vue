@@ -34,8 +34,7 @@ const state = reactive({
 const fetchShortlink = async () => {
     try {
         const response = await axios.post(`/api/link/details`, {
-            id: props.shortlink_id.shortlink_id,
-            userId: state.userId,
+            id: props.shortlink_id.shortlink_id
         });
         state.shortlink = response.data;
         state.shortlink.metadatas = response.data.metadatas;

@@ -1,10 +1,13 @@
 import { router } from '@inertiajs/vue3';
 
-export const fetchShortlinks = async (userId) => {
+export const fetchShortlinks = async () => {
     try {
-        const response = await axios.post('/api/links/manage' , {
-            userId: userId,
-        });
+        localStorage.setItem('token', import.meta.env.VITE_USER_API_TOKEN);
+        const token = `Bearer ${localStorage.getItem('token')}`;
+
+        console.log(token);
+
+        const response = await axios.get('/api/links/manage');
 
         return response.data;
     } catch (error) {

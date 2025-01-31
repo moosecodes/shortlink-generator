@@ -12,6 +12,7 @@ class CreateShortlinksTable extends Migration
             $table->uuid('id')->primary();
             $table->string('user_url')->index();
             $table->string('short_code')->unique()->index();
+            $table->string('hash')->unique()->index();
             $table->string('short_url')->unique()->index();
             $table->unsignedBigInteger('total_clicks')->default(0)->index();
             $table->unsignedBigInteger('unique_clicks')->default(0)->index();

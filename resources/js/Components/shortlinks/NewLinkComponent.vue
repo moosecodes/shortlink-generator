@@ -33,6 +33,12 @@ const message = ref('');
 const valid = ref(false);
 
 const submitForm = async () => {
+
+    localStorage.setItem('token', import.meta.env.VITE_USER_API_TOKEN);
+    const token = `Bearer ${localStorage.getItem('token')}`;
+
+    console.log(state.userId, token);
+
     try {
         const response = await axios.post('/api/manage/new', {
             userId: state.userId,
@@ -73,7 +79,7 @@ const showParameterPreview = computed(() => {
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold my-2">New Link</h1>
     </div>
-
+{{ state }}
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-row>
             <v-col>Target URL</v-col>

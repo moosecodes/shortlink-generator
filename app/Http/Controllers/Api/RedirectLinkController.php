@@ -18,7 +18,7 @@ class RedirectLinkController extends Controller
         try {
             $shortlink = Shortlink::where('short_code', $short_code)->firstOrFail();
 
-            $userId = $request->user()->id;
+            $userId = $request->user()->id ?? 999;
 
             if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink is not active!'], 400);
 

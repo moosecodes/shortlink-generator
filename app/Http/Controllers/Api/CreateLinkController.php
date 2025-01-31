@@ -14,11 +14,16 @@ class CreateLinkController extends Controller
     public function index(Request $request)
     {
         try {
+
+            $userId = $request->user()->id ?? 999;
+
+            $hash = substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
+
             $validatedData = $this->validateRequest($request);
 
-            $shortCode = $this->generateShortCode($request);
+            $shortCode = $this->generateShortCode($request, $hash);
 
-            $shortlink = $this->createShortlink($validatedData, $request->userId, $shortCode);
+            $shortlink = $this->createShortlink($validatedData, $userId, $shortCode, $hash);
 
             $this->createShortlinkMetadatas($shortlink, $validatedData);
 
@@ -26,41 +31,41 @@ class CreateLinkController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         } catch (Exception $e) {
-            Log::error('Unexpected error occurred while creating shortlink: ' . $e->getMessage());
-            return response()->json(['error' => 'An unexpected error occurred.'], 500);
+            Log::error('500 Unexpected error occurred while creating shortlink: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
     private function validateRequest(Request $request)
     {
         return $request->validate([
-            'userId' => 'required|integer',
+            'userId' => 'integer',
             'user_url' => 'required|url',
             'metadatas' => 'array',
             'custom_short_code' => 'string|nullable',
         ]);
     }
 
-    private function generateShortCode(Request $request)
+    private function generateShortCode(Request $request, $hash)
     {
-        return isset($request->custom_short_code)
-            ? $request->custom_short_code
-            : substr(hash_hmac('sha256', uniqid(), 'your_secret_key'), 0, 8);
+        return $request->custom_short_code ?? substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
     }
 
-    private function createShortlink(array $validatedData, $userId, $shortCode)
+    private function createShortlink(array $validatedData, $userId, $shortCode, $hash)
     {
-        return Shortlink::create(array_merge($validatedData, [
+        $data = [
             'user_id' => $userId,
+            'user_url' => $validatedData['user_url'],
             'short_code' => $shortCode,
             'short_url' => config('app.url') . '/' . $shortCode,
-            'is_active' => false,
-            'is_premium' => true,
-            'expires_at' => now()->addDays(30),
-        ]));
+            'hash' => $hash,
+            'is_active' => $userId === 999 ? true : false,
+        ];
+
+        return Shortlink::create(array_merge($validatedData, $data));
     }
 
-    private function createShortlinkMetadatas($shortlink, array $validatedData)
+    private function createShortlinkMetadatas(Shortlink $shortlink, array $validatedData)
     {
         if (isset($validatedData['metadatas'])) {
             foreach ($validatedData['metadatas'] as $metadata) {
@@ -71,50 +76,6 @@ class CreateLinkController extends Controller
                     ]);
                 }
             }
-        }
-    }
-
-    public function freeLink(Request $request)
-    {
-        try {
-            // Validate request
-            $validatedData = $request->validate([
-                'user_id' => 'required|integer',
-                'user_url' => 'required|url',
-                'metadata_free' => 'array',
-            ]);
-
-            // Generate a unique short code
-            $shortCode = substr(hash_hmac('sha256', uniqid(), 'your_free_key'), 0, 8);
-
-            // Create the shortlink
-            $shortlink = Shortlink::create(array_merge($validatedData, [
-                'user_id' => $request->user_id,
-                'short_code' => $shortCode,
-                'short_url' => config('app.url') . '/' . $shortCode,
-                'is_active' => true,
-                'is_premium' => false,
-                'expires_at' => now()->addDays(30),
-            ]));
-
-            // Create the shortlink metadata
-            if (
-                isset($validatedData['metadata_free']) &&
-                (isset($value['meta_key']) && $value['meta_key'] == "free") &&
-                isset($value['meta_value'])
-            ) {
-                $shortlink->metadata()->create([
-                    'meta_key' => $validatedData['metadata_free']['free']['meta_key'],
-                    'meta_value' => $validatedData['metadata_free']['free']['meta_value'],
-                ]);
-            }
-
-            return response()->json($shortlink, 201);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 422);
-        } catch (Exception $e) {
-            Log::error('Unexpected error occurred while creating free shortlink: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

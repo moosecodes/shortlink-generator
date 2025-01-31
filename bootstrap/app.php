@@ -15,9 +15,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            'shortlink.expiration' => \App\Http\Middleware\CheckShortlinkExpiration::class,
+            'autologin.guest' => \App\Http\Middleware\AutoLoginGuest::class,
+            'log.auth' => \App\Http\Middleware\LogAuthStatus::class,
         ]);
         $middleware->api(append: [
+            Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             'shortlink.expiration' => \App\Http\Middleware\CheckShortlinkExpiration::class,
+            'autologin.guest' => \App\Http\Middleware\AutoLoginGuest::class,
+            'log.auth' => \App\Http\Middleware\LogAuthStatus::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

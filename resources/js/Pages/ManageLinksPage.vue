@@ -22,6 +22,9 @@ const state = reactive({
 const filteredShortlinks = computed(() => {
     const { linkFilter, shortlinks } = state;
 
+    if(!shortlinks) {
+        return [];
+    }
     if (linkFilter === 'All') {
         return shortlinks.slice().reverse();
     } else if (linkFilter === 'Active') {
@@ -32,7 +35,8 @@ const filteredShortlinks = computed(() => {
 });
 
 onMounted(async () => {
-    state.shortlinks = await fetchShortlinks(page.props.auth.user?.id);
+    console.log(page.props.auth.user?.id);
+    state.shortlinks = await fetchShortlinks();
     state.redirects = await redirectedUrls(state.shortlinks);
 });
 </script>
@@ -43,7 +47,7 @@ onMounted(async () => {
             <v-row>
                 <v-col cols="12">
                     <h1 class="text-2xl font-bold">Manage Links</h1>
-                    <p v-if="!state.shortlinks.length">
+                    <p v-if="!state.shortlinks?.length">
                         No shortlinks currently exist. Create a new link to get started!
                     </p>
                 </v-col>
@@ -60,7 +64,7 @@ onMounted(async () => {
 
             <v-row>
                 <v-col>
-                    <h2 class="my-2 font-bold">{{ state.linkFilter }} Shortlinks ({{ filteredShortlinks.length }}/{{ state.shortlinks.length }})</h2>
+                    <h2 class="my-2 font-bold">{{ state.linkFilter }} Shortlinks ({{ filteredShortlinks?.length }}/{{ state.shortlinks?.length }})</h2>
                 </v-col>
 
                 <v-col>
@@ -72,9 +76,12 @@ onMounted(async () => {
                 </v-col>
             </v-row>
 
-            <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
-                <CardDetails :shortlink="shortlink" :redirects="state.redirects" />
-            </v-row>
+            <div v-if="filteredShortlinks">
+                <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
+                    <CardDetails :shortlink="shortlink" :redirects="state.redirects" />
+                </v-row>
+            </div>
+
         </div>
     </AppLayout>
 </template>

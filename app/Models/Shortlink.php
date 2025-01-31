@@ -15,6 +15,7 @@ class Shortlink extends Model
     protected $fillable = [
         'user_id',
         'short_code',
+        'hash',
         'short_url',
         'is_active',
         'is_premium',
