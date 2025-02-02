@@ -41,6 +41,7 @@ class UpdateLinkController extends Controller
     {
         return $request->validate([
             'id' => 'required|exists:shortlinks,id',
+            'short_code' => 'required|string',
             'user_url' => 'required|url',
             'metadatas' => 'array',
             'metadatas.*.meta_key' => 'required_with:metadatas|string',

@@ -20,7 +20,7 @@ const state = reactive({
 });
 
 const addCustomParam = () => {
-    state.metadatas.push({ meta_key: '', meta_value: '' });
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
 };
 
 const navigateTo = (routeName) => {
@@ -52,16 +52,17 @@ onMounted(async () => {
             <v-col cols="12" md="12">
                 <h1 class="text-3xl font-semibold">Edit Link {{ state.shortlink?.short_code }}</h1>
 
-                <div v-if="!state.shortlink?.id">
-                    <p>Create a new short link with optional vanity URL.</p>
-                    <p>Add custom parameters, if desired.</p>
-                    <p>Create link!</p>
+                <div v-if="state.shortlink">
+                    <p class="mb-4">Edit a link with optional vanity short code.</p>
+                    <v-text-field
+                        v-model="state.shortlink.short_code"
+                        variant="underlined"
+                        label="Vanity Short Code"
+                        required
+                    />
                 </div>
 
-                <LinkDetailsComponent
-                    v-else
-
-                />
+                <LinkDetailsComponent />
 
             </v-col>
         </v-row>
@@ -94,7 +95,6 @@ onMounted(async () => {
                     variant="outlined"
                     label="Key"
                     required
-                    :clearable="true"
                 />
                 <v-text-field
                     v-model="field.meta_value"
