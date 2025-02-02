@@ -8,6 +8,7 @@ import { fetchShortlinkbyShortCode, updateLink } from '@/Components/shortlinks/r
 const props = defineProps({
     auth: Object,
     flash: Object,
+    filteredShortlinks: Object,
     linkShortCode: {
         type: Object,
         required: true,
@@ -62,7 +63,7 @@ onMounted(async () => {
                     />
                 </div>
 
-                <LinkDetailsComponent />
+                <LinkDetailsComponent v-if="state.shortlink" :filteredShortlinks="[state.shortlink]" />
 
             </v-col>
         </v-row>

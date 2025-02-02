@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, watch } from 'vue';
-import { VImg } from 'vuetify/components';
+import { VImg, VChip } from 'vuetify/components';
 import QRCode from 'qrcode';
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const generateQRCode = async (input) => {
                 margin: 4,
                 scale: 4,
                 color: {
-                    dark:"#000000ff",
+                    dark:"#fe2c55aa",
                     light:"#ffffffff"
                 }
             });
@@ -39,11 +39,11 @@ watch(() => props.input, (newInput) => {
 </script>
 
 <template>
-<div class="flex flex-col items-center">
+<div class="">
     <v-img
         :width="200"
         :src="state.base64QRCode"
     />
-    <p class="my-4">QR Code for {{ props.input }}</p>
+    <p class="my-2">QR Code for {{ props.input }}</p>
 </div>
 </template>

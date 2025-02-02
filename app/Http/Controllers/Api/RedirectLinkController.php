@@ -20,7 +20,7 @@ class RedirectLinkController extends Controller
 
             $userId = $request->user()->id ?? 999;
 
-            if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink is not active!'], 400);
+            if (!$shortlink->is_active) return response()->json(['error' => 'Shortlink ' . $short_code . 'is not active!'], 400);
 
             $this->recordClick($shortlink, $request);
 
@@ -41,28 +41,6 @@ class RedirectLinkController extends Controller
             Log::error('Unexpected error occurred while redirecting: ' . $e->getMessage());
             return response()->json(['error' => 'An unexpected error occurred: ' . $e->getMessage()], 500);
         }
-    }
-
-    public function getRedirects(Request $request)
-    {
-        $shortlinks = Shortlink::all();
-        $urls = [];
-        foreach ($shortlinks as $shortlink) {
-            $props = [];
-            foreach ($shortlink->getAttributes() as $key => $value) {
-                if ($key == "short_code") {
-                    $props[$key] = $value;
-                }
-            }
-            $urls[] = [
-                'id' => $shortlink->id,
-                'short_code' => $shortlink->short_code,
-                'url' => $shortlink->user_url . '?' . http_build_query($props),
-                'short_url' => $shortlink->short_url,
-            ];
-        }
-
-        return response()->json(['shortlink_redirect_urls' => $urls]);
     }
 
     private function recordClick(Shortlink $shortlink, Request $request)

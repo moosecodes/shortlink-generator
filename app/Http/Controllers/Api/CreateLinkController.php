@@ -60,6 +60,7 @@ class CreateLinkController extends Controller
             'short_url' => config('app.url') . '/' . $shortCode,
             'hash' => $hash,
             'is_active' => $userId === 999 ? true : false,
+            'expires_at' => now()->addDays(30),
         ];
 
         return Shortlink::create(array_merge($validatedData, $data));

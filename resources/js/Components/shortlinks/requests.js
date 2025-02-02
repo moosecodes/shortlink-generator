@@ -13,16 +13,17 @@ export const deleteShortlink = async ({ short_code }) => {
     }
 }
 
-export const toggleActivation = async (shortlink) => {
-    console.log('Toggling activation:', shortlink);
+export const toggleActivation = async (link) => {
+    console.log('Toggling activation:', link);
     try {
-        const route = shortlink.is_active
-            ? `/api/link/deactivate/${shortlink.short_code}`
-            : `/api/link/activate/${shortlink.short_code}`;
+        const route = link.is_active
+            ? `/api/link/deactivate/${link.id}`
+            : `/api/link/activate/${link.id}`;
 
-        await axios.patch(route);
+        const response = await axios.patch(route);
 
-        shortlink.is_active = !shortlink.is_active;
+        return response.data;
+
     } catch (error) {
         console.error('Error toggling activation:', error);
     }

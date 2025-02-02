@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\CreateLinkController;
 use App\Http\Controllers\Api\DeleteLinkController;
 use App\Http\Controllers\Api\RedirectLinkController;
 use App\Http\Controllers\Api\ShowLinkController;
-use App\Http\Controllers\Api\StatusController;
+use App\Http\Controllers\Api\LinkActivationController;
 use App\Http\Controllers\Api\UpdateLinkController;
 use App\Http\Middleware\CheckShortlinkExpiration;
 use App\Http\Controllers\Api\GetClicksOverTime;
@@ -23,10 +23,9 @@ Route::middleware('auth:sanctum', \App\Http\Middleware\AutoLoginGuest::class, \A
     Route::get('/links/manage', [ShowLinkController::class, 'showAll']);
     Route::post('/link/details', [ShowLinkController::class, 'index']);
     Route::patch('/link/edit/byShortCode/', [UpdateLinkController::class, 'update']);
-    Route::patch('/link/activate/{id}', [StatusController::class, 'activate']);
-    Route::patch('/link/deactivate/{id}', [StatusController::class, 'deactivate']);
+    Route::patch('/link/activate/{id}', [LinkActivationController::class, 'activate']);
+    Route::patch('/link/deactivate/{id}', [LinkActivationController::class, 'deactivate']);
     Route::delete('/link/delete/{id}', [DeleteLinkController::class, 'index']);
-    // Route::post('/redirects', [RedirectLinkController::class, 'getRedirects']);
 });
 
 // Public route (no authentication required)

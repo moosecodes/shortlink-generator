@@ -8,25 +8,28 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
-class StatusController extends Controller
+class LinkActivationController extends Controller
 {
     public function activate($id)
     {
-        return $this->updateStatus($id, true, 'activated');
+        return $this->updateStatus($id, 1, 'activated');
     }
 
     public function deactivate($id)
     {
-        return $this->updateStatus($id, false, 'deactivated');
+        return $this->updateStatus($id, 0, 'deactivated');
     }
 
     private function updateStatus($id, $status, $action)
     {
         try {
-            $shortlink = Shortlink::where('short_code', $id)->firstOrFail();
+            $shortlink = Shortlink::where('id', $id)->firstOrFail();
             $shortlink->update(['is_active' => $status]);
 
-            return response()->json(['message' => "Shortlink {$action} successfully"]);
+            return response()->json([
+                'message' => "Shortlink {$action} successfully",
+                'shortlink' => $shortlink
+            ]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {

@@ -16,11 +16,11 @@ const state = reactive({
         custom_short_code: '',
         user_url: 'https://www.google.com',
         metadatas: [
-            { meta_key: 'utm_source', meta_value: 'milky way' },
-            { meta_key: 'utm_medium', meta_value: 'email' },
-            { meta_key: 'utm_campaign', meta_value: 'newsletter' },
-            { meta_key: 'utm_term', meta_value: 'spring_sale' },
-            { meta_key: 'utm_content', meta_value: 'cta_button' },
+            { meta_key: 'utm_source', meta_value: '' },
+            { meta_key: 'utm_medium', meta_value: '' },
+            { meta_key: 'utm_campaign', meta_value: '' },
+            { meta_key: 'utm_term', meta_value: '' },
+            { meta_key: 'utm_content', meta_value: '' },
         ],
     },
     showFormFields: true,
@@ -59,11 +59,12 @@ const navigateTo = (routeName) => {
 };
 
 const showParameterPreview = computed(() => {
-  const parameters = state.shortlink.metadatas.map(
-    m => m.meta_key
+  let parameters = state.shortlink.metadatas.map(
+    m => (m.meta_key && m.meta_value)
         ? `${m.meta_key}=${m.meta_value}`
-        : null).join('&');
-  return parameters;
+        : null);
+    parameters = parameters.filter(p => p);
+  return parameters.join(' & ');
 });
 </script>
 
@@ -119,8 +120,8 @@ const showParameterPreview = computed(() => {
         </v-row>
 
         <v-row v-if="state.showFormFields">
-            <v-col>UTM Fields</v-col>
-            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="12">
+            <v-col cols="12" md="12">UTM Fields</v-col>
+            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="4">
                 <v-text-field
                     v-model="field.meta_key"
                     label="Key"
