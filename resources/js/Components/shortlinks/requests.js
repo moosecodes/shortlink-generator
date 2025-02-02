@@ -14,7 +14,6 @@ export const deleteShortlink = async ({ short_code }) => {
 }
 
 export const toggleActivation = async (link) => {
-    console.log('Toggling activation:', link);
     try {
         const route = link.is_active
             ? `/api/link/deactivate/${link.id}`
@@ -29,9 +28,9 @@ export const toggleActivation = async (link) => {
     }
 };
 
-export const fetchShortlinkByShortCode = async (shortCode) => {
+export const fetchShortlinkByUuid = async (uuid) => {
     try {
-        const response = await axios.post(`/api/link/details`, { id: shortCode });
+        const response = await axios.post(`/api/link/details`, { id: uuid });
         return response.data;
     } catch (error) {
         console.error('Error fetching shortlink:', error);
