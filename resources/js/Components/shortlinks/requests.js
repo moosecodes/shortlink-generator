@@ -28,9 +28,9 @@ export const toggleActivation = async (link) => {
     }
 };
 
-export const fetchShortlinkByUuid = async (uuid) => {
+export const fetchShortlinkByShortCode = async (shortCode) => {
     try {
-        const response = await axios.post(`/api/link/details`, { id: uuid });
+        const response = await axios.post(`/api/link/details`, { id: shortCode });
         return response.data;
     } catch (error) {
         console.error('Error fetching shortlink:', error);
