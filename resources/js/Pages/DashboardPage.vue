@@ -32,6 +32,10 @@ const props = defineProps({
     locations: Array,
 });
 
+const editLink = (shortCode) => {
+    window.location.href = `/link/edit/byShortCode/${shortCode}`
+};
+
 const barOptions = {
     responsive: true,
     maintainAspectRatio: true,
@@ -87,8 +91,22 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                 >
                     <p><b>{{ item.shortCode }} <small>({{ item.shortlink_id }})</small></b></p>
 
-                    <v-btn :href="route('link.analytics', { shortlink_id: item.shortlink_id })" variant="flat" class="m-4">Analytics</v-btn>
-
+                    <v-btn
+                        :href="route('link.analytics', { shortlink_id: item.shortlink_id })"
+                        prepend-icon="mdi-link"
+                        variant="outlined"
+                        class="m-4"
+                    >
+                        Analytics
+                    </v-btn>
+                    <v-btn
+                    v-if="!route().current('link.update')"
+                    variant="outlined"
+                    prepend-icon="mdi-link"
+                    @click="editLink(item.shortCode)"
+                    class="m-2">
+                        Edit Link
+                </v-btn>
                     <Bar :data="item" :options="barOptions" />
 
                 </div>

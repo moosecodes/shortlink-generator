@@ -41,9 +41,9 @@ Route::middleware([
             return Inertia::render('link.create');
         })->name('create');
 
-        Route::get('/edit/{shortlink_id}', function ($shortlink_id) {
+        Route::get('/edit/byShortCode/{linkShortCode}', function ($linkShortCode) {
             return Inertia::render('EditLinkPage', [
-                'shortlink_id' => $shortlink_id,
+                'linkShortCode' => $linkShortCode,
             ]);
         })->name('update');
     });

@@ -4,7 +4,7 @@ import { computed, reactive, onMounted } from 'vue';
 import { VBtn, VRow, VCol, VSelect } from 'vuetify/components';
 import { usePage } from '@inertiajs/vue3'
 import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
-import { fetchShortlinks, redirectedUrls, navigateTo } from '@/Components/shortlinks/requests';
+import { fetchUserShortlinks, navigateTo } from '@/Components/shortlinks/requests';
 
 const page = usePage() // TODO: look up docs for usePage() and useOther()
 
@@ -15,7 +15,6 @@ const props = defineProps({
 
 const state = reactive({
     shortlinks: [],
-    redirects: [],
     linkFilter: 'All',
 });
 
@@ -36,22 +35,21 @@ const filteredShortlinks = computed(() => {
 
 onMounted(async () => {
     console.log(page);
-    state.shortlinks = await fetchShortlinks();
-    state.redirects = await redirectedUrls(state.shortlinks);
+    state.shortlinks = await fetchUserShortlinks();
 });
 </script>
 
 <template>
     <AppLayout title="Manage Links">
         <v-row>
-            <v-col cols="12">
+            <v-col cols="12" md="12">
                 <h1 class="text-3xl font-semibold">Manage Links</h1>
                 <p v-if="!state.shortlinks?.length">
                     No shortlinks currently exist. Create a new link to get started!
                 </p>
             </v-col>
 
-            <v-col align="end" cols="12">
+            <v-col align="end" cols="12" md="12">
                 <v-btn
                     prepend-icon="mdi-plus"
                     color="primary"
@@ -76,10 +74,6 @@ onMounted(async () => {
             </v-col>
         </v-row>
 
-        <div v-if="filteredShortlinks">
-            <v-row v-for="shortlink in filteredShortlinks" :key="shortlink.id">
-                <LinkDetailsComponent :shortlink="shortlink" :redirects="state.redirects" />
-            </v-row>
-        </div>
+        <LinkDetailsComponent v-if="filteredShortlinks" :filteredShortlinks="filteredShortlinks" />
     </AppLayout>
 </template>
