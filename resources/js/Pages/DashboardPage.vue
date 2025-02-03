@@ -28,48 +28,13 @@ ChartJS.register(
 )
 
 const props = defineProps({
-    graphs: Array,
+    shortlinks: Array,
     locations: Array,
 });
 
 const editLink = (shortCode) => {
     window.location.href = `/link/edit/byShortCode/${shortCode}`
 };
-
-const barOptions = {
-    responsive: true,
-    maintainAspectRatio: true,
-    disableDefaultUI: true,
-    scales: {
-        x: {
-            display: true,
-            title: {
-                display: false,
-                text: 'Date'
-            },
-            grid: {
-                color: 'rgba(128, 128, 128, 0)',
-            },
-        },
-        y: {
-            display: true,
-            title: {
-                display: true,
-                text: 'Clicks'
-            },
-            grid: {
-                color: 'rgba(128, 128, 128, 0.3)',
-            },
-        }
-    },
-    plugins: {
-        legend: {
-            display: false
-        },
-    },
-};
-
-const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 
 <template>
@@ -81,40 +46,47 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
             </v-col>
         </v-row>
 
-        <v-row v-if="props?.graphs?.length && props?.locations?.length">
-            <v-col cols="12" md="6">
-                <div class="my-2 text-2xl font-semibold">Recent Activity</div>
-                <div v-for="item in props.graphs" :key="item.shortCode"
+        <v-row v-if="props?.shortlinks?.length">
+            <v-col cols="12" md="12">
+                <div class="my-2 text-3xl font-semibold">Recent Activity</div>
+            </v-col>
+
+            <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="12">
+{{ item }}
+                <div
                     :value="item.shortCode"
                     active-class="text-pink"
                     class="py-3"
                 >
-                    <p><b>{{ item.shortCode }} <small>({{ item.shortlink_id }})</small></b></p>
+                    <p>
+                        <v-btn :href="item.short_url" target="_blank">
+                            {{ item.short_url }}
+                        </v-btn>
+                    </p>
 
                     <v-btn
-                        :href="route('link.analytics', { shortlink_id: item.shortlink_id })"
-                        prepend-icon="mdi-link"
+                        :href="route('link.analytics', { shortlink_id: item.id })"
+                        prepend-icon="mdi-signal"
                         variant="outlined"
                         class="m-4"
                     >
                         Analytics
                     </v-btn>
+
                     <v-btn
-                    v-if="!route().current('link.update')"
-                    variant="outlined"
-                    prepend-icon="mdi-link"
-                    @click="editLink(item.shortCode)"
-                    class="m-2">
+                        v-if="!route().current('link.update')"
+                        variant="outlined"
+                        prepend-icon="mdi-link-edit"
+                        @click="editLink(item.short_code)"
+                        class="m-2">
                         Edit Link
-                </v-btn>
-                    <Bar :data="item" :options="barOptions" />
+                    </v-btn>
 
                 </div>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12" v-if="props.shortlinks.length">
                 <WorldTrafficComponent
-                    :googleMapsApiKey="googleMapsApiKey"
                     :locations="props.locations"
                 />
             </v-col>

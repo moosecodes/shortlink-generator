@@ -1,8 +1,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { GoogleMap, Marker, AdvancedMarker } from 'vue3-google-map'
-import { VRow, VCol, VExpansionPanels, VExpansionPanel } from 'vuetify/lib/components/index.mjs';
-import customMapStyles from './googleMapStyles';
+import { Line, Bar } from 'vue-chartjs'
+import { VRow, VCol } from 'vuetify/lib/components/index.mjs';
+import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
 import {
   Chart as ChartJS,
@@ -12,10 +12,9 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement
 } from 'chart.js'
-
-import { Line } from 'vue-chartjs'
 
 ChartJS.register(
   CategoryScale,
@@ -24,7 +23,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement,
 )
 
 const props = defineProps({
@@ -32,7 +32,7 @@ const props = defineProps({
     locations: Array,
 });
 
-const options = {
+const lineOptions = {
     responsive: true,
     maintainAspectRatio: true,
     disableDefaultUI: true,
@@ -55,6 +55,39 @@ const options = {
             },
             grid: {
                 color: 'rgba(200, 200, 200, 0.1)', // X-axis grid line color
+            },
+        }
+    },
+    plugins: {
+        legend: {
+            display: false
+        },
+    },
+};
+
+const barOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    disableDefaultUI: true,
+    scales: {
+        x: {
+            display: true,
+            title: {
+                display: false,
+                text: 'Date'
+            },
+            grid: {
+                color: 'rgba(128, 128, 128, 0)',
+            },
+        },
+        y: {
+            display: true,
+            title: {
+                display: true,
+                text: 'Clicks'
+            },
+            grid: {
+                color: 'rgba(128, 128, 128, 0.3)',
             },
         }
     },
@@ -89,38 +122,26 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
         <div v-if="props?.graphs?.length">
             <v-row>
-                <v-col col="12" md="4" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
+                <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
                     <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
-                    <Line :data="graph" :options="options" class="my-4" />
+                    <p>{{ graph }}</p>
+
+                    <Line :data="graph" :options="lineOptions" class="my-4" />
+                </v-col>
+
+                <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
+                    <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
+
+                    <Bar :data="graph" :options="barOptions" class="my-4" />
                 </v-col>
             </v-row>
 
             <v-row v-if="props?.locations?.length">
                 <v-col cols="12" md="12">
-                    <div class="mt-4 mb-2">Locations</div>
-                    <GoogleMap
-                            :api-key="googleMapsApiKey"
-                            style="width: 100%; height: 400px"
-                            :styles="customMapStyles.darkGold"
-                            :zoom="2"
-                            :disableDefaultUi="true"
-                        >
-                        <Marker
-                            v-for="(location, i) in deDupedLocations()" :key="i"
-                            :options="{
-                                position: {
-                                    lat: parseFloat(location.latitude),
-                                    lng: parseFloat(location.longitude)
-                            }}"
-                        />
-                    </GoogleMap>
-                    <v-expansion-panels>
-                        <v-expansion-panel
-                            v-for="(location, i) in deDupedLocations()" :key="i"
-                            :title="location.country_name"
-                            :text="`Timezone: ${location.timezone}`"
-                        />
-                    </v-expansion-panels>
+                    <WorldTrafficComponent
+                        :googleMapsApiKey="googleMapsApiKey"
+                        :locations="deDupedLocations()"
+                    />
                 </v-col>
             </v-row>
         </div>

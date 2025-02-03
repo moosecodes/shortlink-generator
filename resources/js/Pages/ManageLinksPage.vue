@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { computed, reactive, onMounted } from 'vue';
-import { VBtn, VRow, VCol, VSelect } from 'vuetify/components';
+import { VBtn, VRow, VCol, VSelect, VCard, VCardItem, VCardTitle } from 'vuetify/components';
 import { usePage } from '@inertiajs/vue3'
 import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 import { fetchUserShortlinks, navigateTo } from '@/Components/shortlinks/requests';
@@ -41,24 +41,37 @@ onMounted(async () => {
 
 <template>
     <AppLayout title="Manage Links">
-        <v-row>
-            <v-col cols="12" md="12">
-                <h1 class="text-3xl font-semibold">Manage Links</h1>
-                <p v-if="!state.shortlinks?.length">
-                    No shortlinks currently exist. Create a new link to get started!
-                </p>
-            </v-col>
+        <div class="mb-4">
+            <h1 class="text-3xl font-semibold">Manage Links</h1>
+            <p v-if="!state.shortlinks?.length">
+                No shortlinks currently exist. Create a new link to get started!
+            </p>
+        </div>
 
-            <v-col align="end" cols="12" md="12">
+        <div class="d-flex justify-around my-12">
+            <v-card>
                 <v-btn
-                    prepend-icon="mdi-plus"
-                    color="primary"
-                    class=""
+                    prepend-icon="mdi-link-plus"
+                    color="indigo"
                     @click="navigateTo('link.create')">
-                    New Link
+                        New Link
                 </v-btn>
-            </v-col>
-        </v-row>
+            </v-card>
+
+            <v-btn
+                prepend-icon="mdi-qrcode-scan"
+                color="indigo"
+                @click="navigateTo('link.create')">
+                    New QR Code
+            </v-btn>
+
+            <v-btn
+                prepend-icon="mdi-file-document-outline"
+                color="indigo"
+                @click="navigateTo('link.create')">
+                    New Page
+            </v-btn>
+        </div>
 
         <v-row>
             <v-col>

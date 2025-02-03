@@ -5,10 +5,13 @@ import QRCode from 'qrcode';
 
 const props = defineProps({
     input: String,
+    scans: Number,
 });
 
 const state = reactive({
     base64QRCode: '',
+    scans: 0,
+    qrURL: '',
 });
 
 const generateQRCode = async (input) => {
@@ -20,7 +23,7 @@ const generateQRCode = async (input) => {
                 margin: 4,
                 scale: 4,
                 color: {
-                    dark:"#fe2c55aa",
+                    dark:"#fe2c55ff",
                     light:"#ffffffff"
                 }
             });
@@ -34,16 +37,22 @@ const generateQRCode = async (input) => {
 watch(() => props.input, (newInput) => {
     if(!newInput) return;
     newInput +=  newInput.indexOf("?") < 0 ? "?qr=1" : "&qr=1";
+    state.qrURL = newInput;
     generateQRCode(newInput);
 }, { immediate: true });
 </script>
 
 <template>
-<div class="">
-    <v-img
-        :width="200"
-        :src="state.base64QRCode"
-    />
-    <p class="my-2">QR Code for {{ props.input }}</p>
-</div>
+    <div class="flex flex-col items-center my-4">
+        <v-chip class="my-4">{{ scans }} QR Scans</v-chip>
+
+        <v-img
+            :width="200"
+            :src="state.base64QRCode"
+        />
+
+        <v-chip class="my-4">
+            <a :href="state.qrURL" target="_blank">{{ state.qrURL }}</a>
+        </v-chip>
+    </div>
 </template>

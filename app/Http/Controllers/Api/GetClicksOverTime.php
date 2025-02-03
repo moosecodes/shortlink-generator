@@ -15,7 +15,10 @@ class GetClicksOverTime extends Controller
             $clicks = $this->getClicksByShortlinkId($id);
             $aggregatedData = $this->aggregateClicksByDay($clicks);
 
-            $response = $this->prepareResponse($aggregatedData);
+            // Sort the aggregated data by keys (dates)
+            $sortedAggregatedData = $aggregatedData->sortKeys();
+
+            $response = $this->prepareResponse($sortedAggregatedData);
 
             return response()->json($response);
         } catch (Exception $e) {
@@ -40,18 +43,22 @@ class GetClicksOverTime extends Controller
 
     private function prepareResponse($aggregatedData)
     {
-        $labels = $aggregatedData->keys()->toArray(); // Extract the dates as labels
-        $data = $aggregatedData->values()->toArray(); // Extract counts as data points
+        // Sort the aggregated data by keys (dates)
+        $sortedAggregatedData = $aggregatedData->sortKeys();
+
+        $labels = $sortedAggregatedData->keys()->toArray(); // Extract the dates as labels
+        $data = $sortedAggregatedData->values()->toArray(); // Extract counts as data points
 
         return [
             'labels' => $labels,
             'datasets' => [
-                'labels' => $labels,
-                'datasets' => [
-                    [
-                        'data' => $data,
-                    ]
-                ]
+                [
+                    'data' => $data,
+                    'label' => 'Clicks Over Time',
+                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                    'borderColor' => 'rgba(75, 192, 192, 1)',
+                    'borderWidth' => 1,
+                ],
             ],
         ];
     }

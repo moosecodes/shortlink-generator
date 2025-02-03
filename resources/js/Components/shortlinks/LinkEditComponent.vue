@@ -1,6 +1,6 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import { onMounted, reactive, computed, watch, nextTick } from 'vue';
+import { onMounted, reactive, computed } from 'vue';
 import { VBtn, VCard, VTextField, VForm, VRow, VCol, VChip } from 'vuetify/components';
 import LinkDetailsComponent from './LinkDetailsComponent.vue';
 import { fetchShortlinkbyShortCode, updateLink } from '@/Components/shortlinks/requests';
@@ -20,14 +20,6 @@ const state = reactive({
     valid: false,
 });
 
-const addCustomParam = () => {
-    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
-};
-
-const navigateTo = (routeName) => {
-    router.get(route(routeName));
-};
-
 const sortedMetadatas = computed(() => {
     if (!state.shortlink?.metadatas) {
         return [];
@@ -41,6 +33,33 @@ const sortedMetadatas = computed(() => {
     });
 });
 
+const addCustomParam = () => {
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
+};
+
+const addUTMFields = () => {
+  const metaTemplate = [
+    { meta_key: 'utm_source', meta_value: '' },
+    { meta_key: 'utm_medium', meta_value: '' },
+    { meta_key: 'utm_campaign', meta_value: '' },
+    { meta_key: 'utm_term', meta_value: '' },
+    { meta_key: 'utm_content', meta_value: '' },
+  ];
+
+  metaTemplate.forEach(templateItem => {
+    const exists = state.shortlink.metadatas.some(
+      metadata => metadata.meta_key === templateItem.meta_key
+    );
+    if (!exists) {
+      state.shortlink.metadatas.push(templateItem);
+    }
+  });
+};
+
+const navigateTo = (routeName) => {
+    router.get(route(routeName));
+};
+
 onMounted(async () => {
     await fetchShortlinkbyShortCode(props.linkShortCode.linkShortCode).then((response) => {
         state.shortlink = response;
@@ -51,88 +70,94 @@ onMounted(async () => {
 <template>
         <v-row>
             <v-col cols="12" md="12">
-                <h1 class="text-3xl font-semibold">Edit Link {{ state.shortlink?.short_code }}</h1>
-
-                <div v-if="state.shortlink">
-                    <p class="mb-4">Edit a link with optional vanity short code.</p>
+                <h1 class="text-3xl font-semibold">Edit Link</h1>
+                <p class="text-2xl font-weight-black my-4">Optional Name</p>
+                <div v-if="state.shortlink" class="my-4">
                     <v-text-field
                         v-model="state.shortlink.short_code"
-                        variant="underlined"
-                        label="Vanity Short Code"
+                        variant="outlined"
+                        label="Customize Short Code"
                         required
                     />
                 </div>
-
-                <LinkDetailsComponent v-if="state.shortlink" :filteredShortlinks="[state.shortlink]" />
-
+                <!-- <LinkDetailsComponent v-if="state.shortlink" :filteredShortlinks="[state.shortlink]" /> -->
             </v-col>
         </v-row>
 
         <v-form
             v-model="state.valid"
             @submit.prevent="updateLink(state.shortlink)">
+
             <v-row>
-            <v-col cols="12" md="12">
-                <v-card>
-                    <v-btn
-                        type="submit"
-                        color="primary"
-                        @click="navigateTo('dashboard')"
-                        class="m-4"
-                    >{{state.message ? state.message : 'Update Shortlink' }}
-                    </v-btn>
-                </v-card>
-            </v-col>
+                <v-col cols="12" md="12">
+                    <v-card>
+                        <v-btn
+                            type="submit"
+                            color="primary"
+                            @click="navigateTo('dashboard')"
+                            class="m-4"
+                        >
+                            {{state.message ? state.message : 'Update Shortlink' }}
+                        </v-btn>
 
-            <!-- Custom Parameters -->
-            <v-col cols="12" md="12">
-                <p class="text-2xl"><b>Custom Parameters</b></p>
-            </v-col>
+                        <v-btn
+                            color="primary"
+                            @click="addUTMFields"
+                            class="m-4"
+                        >
+                            Add UTM Fields
+                        </v-btn>
+                    </v-card>
+                </v-col>
 
-            <v-col v-for="(field, i) in sortedMetadatas.filter(d => !d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
-                <div class="mb-4"><b>Custom Parameter {{ i + 1 }}</b></div>
-                <v-text-field
-                    v-model="field.meta_key"
-                    variant="outlined"
-                    label="Key"
-                    required
-                />
-                <v-text-field
-                    v-model="field.meta_value"
-                    variant="outlined"
-                    label="Value"
-                    required
-                    :disabled="!field.meta_key"
-                />
-            </v-col>
+                <!-- Custom Parameters -->
+                <v-col cols="12" md="12">
+                    <p class="text-2xl"><b>Custom Parameters</b></p>
+                </v-col>
 
-            <v-col cols="12" md="12">
-                <v-card>
-                    <v-btn
-                        color="secondary"
-                        @click="addCustomParam"
-                        class="m-4"
-                    >Add Custom Parameter</v-btn>
-                </v-card>
-            </v-col>
-        </v-row>
+                <v-col v-for="(field, i) in sortedMetadatas.filter(d => !d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
+                    <div class="mb-4"><b>Custom Parameter {{ i + 1 }}</b></div>
+                    <v-text-field
+                        v-model="field.meta_key"
+                        variant="outlined"
+                        label="Key"
+                        required
+                    />
+                    <v-text-field
+                        v-model="field.meta_value"
+                        variant="outlined"
+                        label="Value"
+                        required
+                        :disabled="!field.meta_key"
+                    />
+                </v-col>
 
-        <!-- UTM Parameters -->
-        <v-row>
-            <v-col cols="12" md="12">
-                <p class="text-2xl"><b>UTM Parameters</b></p>
-            </v-col>
+                <v-col cols="12" md="12">
+                    <v-card>
+                        <v-btn
+                            color="secondary"
+                            @click="addCustomParam"
+                            class="m-4"
+                        >Add Custom Parameter</v-btn>
+                    </v-card>
+                </v-col>
+            </v-row>
 
-            <v-col v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
-                <v-chip class="mb-4">{{ field.meta_key }}</v-chip>
+            <!-- UTM Parameters -->
+            <v-row>
+                <v-col cols="12" md="12">
+                    <p class="text-2xl"><b>UTM Parameters</b></p>
+                </v-col>
 
-                <v-text-field
-                    v-model="field.meta_value"
-                    label="Value"
-                    required
-                />
-            </v-col>
-        </v-row>
+                <v-col v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
+                    <v-chip class="mb-4">{{ field.meta_key }}</v-chip>
 
+                    <v-text-field
+                        v-model="field.meta_value"
+                        label="Value"
+                        required
+                    />
+                </v-col>
+            </v-row>
         </v-form>
 </template>

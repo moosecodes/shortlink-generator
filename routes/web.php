@@ -35,7 +35,7 @@ Route::middleware([
     })->name('show.links');
 
     Route::prefix('link')->name('link.')->group(function () {
-        Route::get('/graphs/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
+        Route::get('/analytics/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
 
         Route::get('/new', function () {
             return Inertia::render('link.create');

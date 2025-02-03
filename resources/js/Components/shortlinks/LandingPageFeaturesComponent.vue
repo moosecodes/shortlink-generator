@@ -21,10 +21,11 @@ const rowStyles = {
 };
 
 const freeFeatures = [
-    '100 short links per month',
-    '100 custom back-halves per month',
-    'Link Tracking*',
-    'Unlimited link clicks',
+    '50 Free Short Links / month',
+    '50 Free Aliases / month',
+    'Qr Code Generation',
+    'Unlimited Clicks and Scans',
+    'Custom Domains (coming soon)',
 ];
 </script>
 

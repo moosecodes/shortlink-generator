@@ -17,48 +17,12 @@ class DashboardController extends Controller
         $userId = $request->user()->id;
 
         $shortlinks = Shortlink::where('user_id', $userId)->get();
-        $graphData = $this->prepareGraphData($shortlinks);
 
         $locations = Location::where('user_id', $userId)->get();
 
         return Inertia::render('DashboardPage', [
-            'graphs' => $graphData,
+            'shortlinks' => $shortlinks,
             'locations' => $locations,
         ]);
-    }
-
-    private function prepareGraphData($shortlinks)
-    {
-        $clicksController = new GetClicksOverTime();
-        $graphs = collect();
-
-        foreach ($shortlinks as $link) {
-            $clickData = $clicksController->index($link->id)->getData();
-            $clickData->shortlink_id = $link->id;
-            $clickData->shortCode = $link->short_code;
-            $graphs->push($clickData);
-        }
-
-        $graphData = collect();
-        foreach ($graphs as $graph) {
-            $graphData->push([
-                'shortlink_id' => $graph->shortlink_id,
-                'shortCode' => $graph->shortCode,
-                'labels' => array_reverse($graph->labels),
-                'datasets' => [
-                    [
-                        'label' => "Clicks ({$graph->shortCode})",
-                        'backgroundColor' => 'rgba(254, 44, 85, 0.7)',
-                        'borderColor' => '#fff',
-                        'borderWidth' => 3,
-                        'pointRadius' => 4,
-                        'lineTension' => 0.2,
-                        'data' => $graph->datasets->datasets[0]->data,
-                    ]
-                ],
-            ]);
-        }
-
-        return $graphData;
     }
 }

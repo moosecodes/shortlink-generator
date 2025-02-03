@@ -10,14 +10,20 @@ use App\Http\Controllers\Api\GetClicksOverTime;
 
 class LinkGraphController extends Controller
 {
-    public function index(Request $request, $shortlink_id)
+    public function index(Request $request)
     {
+        $id = $request->route('shortlink_id');
+
         $userId = $request->user()->id;
 
-        $shortlink = Shortlink::where('user_id', $userId)->where('id', $shortlink_id)->firstOrFail();
-        $clickData = $this->getClickData($shortlink->id, $request->route('shortlink_id'));
+        $shortlink = Shortlink::where('user_id', $userId)
+            ->where('id', $id)
+            ->firstOrFail();
 
-        $graphData = $this->prepareGraphData($clickData);
+        $data = $this->getClickData($shortlink);
+
+        $graphData = $this->prepareGraphData($data);
+
         $locations = Location::where('user_id', $userId)->get();
 
         return Inertia::render('LinkAnalyticsPage', [
@@ -26,32 +32,32 @@ class LinkGraphController extends Controller
         ]);
     }
 
-    private function getClickData($shortlinkId, $shortlinkRouteId)
+    private function getClickData($shortlink)
     {
         $clicksController = new GetClicksOverTime();
-        $clickData = $clicksController->index($shortlinkId)->getData();
-        $clickData->shortlink_id = $shortlinkRouteId;
-        $clickData->shortCode = $shortlinkRouteId;
+        $clickData = $clicksController->index($shortlink->id)->getData();
+        $clickData->shortlink_id = $shortlink->id;
+        $clickData->shortCode = $shortlink->short_code;
 
         return $clickData;
     }
 
-    private function prepareGraphData($clickData)
+    private function prepareGraphData($data)
     {
         $graphData = collect();
         $graphData->push([
-            'shortlink_id' => $clickData->shortlink_id,
-            'shortCode' => $clickData->shortCode,
-            'labels' => array_reverse($clickData->labels),
+            'shortlink_id' => $data->shortlink_id,
+            'shortCode' => $data->shortCode,
+            'labels' => $data->labels,
             'datasets' => [
                 [
-                    'label' => "Clicks (' . $clickData->shortCode . ')",
-                    'backgroundColor' => '#fff',
-                    'borderColor' => '#f87979',
+                    'label' => "Clicks ($data->shortCode)",
+                    'backgroundColor' => '#f87979',
+                    'borderColor' => '#fff',
                     'borderWidth' => 3,
                     'pointRadius' => 4,
-                    'lineTension' => 0.2,
-                    'data' => $clickData->datasets->datasets[0]->data,
+                    'lineTension' => 0.1,
+                    'data' => $data->datasets[0]->data,
                 ]
             ],
         ]);
