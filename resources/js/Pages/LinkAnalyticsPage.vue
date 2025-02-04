@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line, Bar } from 'vue-chartjs'
-import { VRow, VCol } from 'vuetify/lib/components/index.mjs';
+import { VRow, VCol, VChip, VCard, VCardActions } from 'vuetify/lib/components/index.mjs';
 import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
 import {
@@ -110,8 +110,6 @@ const deDupedLocations = () => {
         ))
     );
 };
-
-const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 </script>
 
 <template>
@@ -122,30 +120,54 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
             </v-col>
         </v-row>
 
-        <div v-if="props?.graphs?.length">
-            <v-row>
-                <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
-                    <LinkDetailsComponent v-if="props.shortlink" :filteredShortlinks="[props.shortlink]" />
+        <v-row v-if="props?.graphs?.length">
 
+            <v-col cols="12" md="6">
+                <LinkDetailsComponent v-if="props.shortlink" :filteredShortlinks="[props.shortlink]" />
 
-                    <Line :data="graph" :options="lineOptions" class="my-4" />
-                </v-col>
+                <v-card class="my-2">
+                    <v-card-actions class="d-flex flex-wrap justify-start">
+                        <v-chip class="m-2">Engagements: {{ props.shortlink.total_clicks }}</v-chip>
+                        <v-chip class="m-2">Unique: {{ props.shortlink.unique_clicks }}</v-chip>
+                        <v-chip class="m-2">QR Scans: {{ props.shortlink.qr_scans }}</v-chip>
+                    </v-card-actions>
 
-                <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
-                    <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
+                    <v-card-actions class="d-flex flex-wrap justify-start">
+                        <v-chip class="m-2">Last 7 Days: 999 clicks</v-chip>
+                        <v-chip class="m-2">Weekly Change: 999%</v-chip>
+                    </v-card-actions>
+                </v-card>
 
-                    <Bar :data="graph" :options="barOptions" class="my-4" />
-                </v-col>
-            </v-row>
+                <v-card class="my-2">
+                    <v-col cols="12" md="12">
+                        <div v-for="(location, i) in deDupedLocations(props.locations)" :key="i" class="my-2">
+                            <p class="font-weight-bold">{{ location.country_name }}</p>
+                            <p> {{ location.timezone }}</p>
+                        </div>
+                    </v-col>
+                </v-card>
 
-            <v-row v-if="props?.locations?.length">
-                <v-col cols="12" md="12">
-                    <WorldTrafficComponent
-                        :googleMapsApiKey="googleMapsApiKey"
-                        :locations="deDupedLocations()"
-                    />
-                </v-col>
-            </v-row>
-        </div>
+            </v-col>
+
+            <v-col v-if="props?.locations?.length" cols="12" md="6">
+                <WorldTrafficComponent :locations="deDupedLocations()" />
+            </v-col>
+        </v-row>
+
+        <v-row>
+
+        </v-row>
+
+        <v-row>
+            <v-col v-for="(graph, i) in Array.from(props.graphs)" :key="i" col="12" md="6" >
+                <p class="text-3xl font-semibold">Click Progression</p>
+                <Line :data="graph" :options="lineOptions" class="my-4" />
+            </v-col>
+
+            <v-col v-for="(graph, i) in Array.from(props.graphs)" :key="i" col="12" md="6" >
+                <p class="text-3xl font-semibold">Daily Clicks</p>
+                <Bar :data="graph" :options="barOptions" class="my-4" />
+            </v-col>
+        </v-row>
     </AppLayout>
 </template>

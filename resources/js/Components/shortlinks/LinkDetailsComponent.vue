@@ -42,12 +42,12 @@ watch(() => props.filteredShortlinks, (newValue) => {
             <v-col cols="12" md="12">
 
                 <v-card
-                    :color="link.is_active ? 'white ' : 'grey'"
+                    :color="link.is_active ? 'white ' : 'black'"
                     :variant="link.is_active ? 'outlined' : 'outlined'">
 
                     <v-card-actions
                         class="d-flex flex-wrap justify-between"
-                        :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'">
+                        :class="link.is_active ? 'bg-white' : 'bg-black'">
 
                         <div>
                             <v-chip variant="text">
@@ -72,19 +72,18 @@ watch(() => props.filteredShortlinks, (newValue) => {
                                     NEW
                                 </span>
                             </v-chip>
-
-
                         </div>
 
                         <div>
                             <v-btn
+                                v-if="!route().current('link.analytics')"
                                 variant="outlined"
                                 :href="route('link.analytics', { shortlink_id: link.id })"
                                 :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-off'"
                                 :color="link.is_active ? 'bg-success' : 'white'"
                                 class="mx-2 font-weight-bold"
                             >
-                                Stats
+                                Analytics
                             </v-btn>
 
                             <v-btn
@@ -120,7 +119,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
                         </div>
                     </v-card-actions>
 
-                    <v-card-actions :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'">
+                    <v-card-actions :class="link.is_active ? 'bg-white' : 'bg-black'">
 
                         <v-col cols="12" md="6">
 
@@ -189,7 +188,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                     <v-card-actions
                         class="d-flex flex-wrap justify-between"
-                        :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'"
+                        :class="link.is_active ? 'bg-white' : 'bg-black'"
                     >
                         <div>
 

@@ -8,10 +8,6 @@ const props = defineProps({
     shortlinks: Array,
     locations: Array,
 });
-
-const editLink = (shortCode) => {
-    window.location.href = `/link/edit/byShortCode/${shortCode}`
-};
 </script>
 
 <template>
@@ -44,7 +40,7 @@ const editLink = (shortCode) => {
                         :href="route('link.analytics', { shortlink_id: item.id })"
                         prepend-icon="mdi-signal"
                         variant="outlined"
-                        class="m-4"
+                        class="my-4"
                     >
                         Analytics
                     </v-btn>
@@ -53,7 +49,7 @@ const editLink = (shortCode) => {
                         v-if="!route().current('link.update')"
                         variant="outlined"
                         prepend-icon="mdi-link-edit"
-                        @click="editLink(item.short_code)"
+                        :href="`/link/edit/byShortCode/${item.short_code}`"
                         class="m-2">
                         Edit Link
                     </v-btn>
