@@ -15,6 +15,7 @@ import {
   Legend,
   BarElement
 } from 'chart.js'
+import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +31,7 @@ ChartJS.register(
 const props = defineProps({
     graphs: Array,
     locations: Array,
+    shortlink: Object,
 });
 
 const lineOptions = {
@@ -123,7 +125,8 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
         <div v-if="props?.graphs?.length">
             <v-row>
                 <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
-                    <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
+                    <LinkDetailsComponent v-if="props.shortlink" :filteredShortlinks="[props.shortlink]" />
+
 
                     <Line :data="graph" :options="lineOptions" class="my-4" />
                 </v-col>

@@ -29,7 +29,7 @@ const editLink = (shortCode) => {
             </v-col>
 
             <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="12">
-{{ item }}
+
                 <div
                     :value="item.shortCode"
                     active-class="text-pink"

@@ -29,6 +29,7 @@ class LinkGraphController extends Controller
         return Inertia::render('LinkAnalyticsPage', [
             'graphs' => $graphData,
             'locations' => $locations,
+            'shortlink' => $shortlink,
         ]);
     }
 
