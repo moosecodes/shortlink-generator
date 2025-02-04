@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { VRow, VCol, VBtn, VChip, VIcon, VCard, VCardActions } from 'vuetify/components';
 import dayjs from 'dayjs';
 import QrCodeComponent from './QrCodeComponent.vue';
@@ -51,8 +51,20 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                         <div>
                             <v-chip variant="text">
+
+
+                                <span v-if="isRecent(link)" :class="link.is_active ? 'text-green-500' : 'text-primary'" class="mr-2">
+                                    [ NEW ]
+                                </span>
+
                                 <span
-                                    class="text-lowercase font-weight-bold mr-2"
+                                    :class="link.is_active ? 'text-green-500' : 'text-primary'"
+                                    class="font-weight-bold mx-2">
+                                    {{ link.short_code }}
+                                </span>
+
+                                <span
+                                    class="text-lowercase font-weight-bold mx-2"
                                     :class="link.is_active ? 'text-green-500' : 'text-primary'">
                                     {{ link.is_active ? 'active' : 'inactive' }}
                                 </span>
@@ -62,60 +74,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
                                     :color="link.is_active ? 'green-500' : 'primary'">{{ link.is_active ? 'mdi-signal-variant' : 'mdi-rss-off' }}
                                 </v-icon>
 
-                                <span
-                                    :class="link.is_active ? 'text-blue-grey' : 'text-white'"
-                                    class="font-weight-bold mx-2">
-                                    {{ link.short_code }}
-                                </span>
-
-                                <span v-if="isRecent(link)" class="mx-2 text-primary font-weight-bold">
-                                    NEW
-                                </span>
                             </v-chip>
-                        </div>
-
-                        <div>
-                            <v-btn
-                                v-if="!route().current('link.analytics')"
-                                variant="outlined"
-                                :href="route('link.analytics', { shortlink_id: link.id })"
-                                :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-off'"
-                                :color="link.is_active ? 'bg-success' : 'white'"
-                                class="mx-2 font-weight-bold"
-                            >
-                                Analytics
-                            </v-btn>
-
-                            <v-btn
-                                v-if="!route().current('link.update')"
-                                variant="outlined"
-                                :prepend-icon="'mdi-link-edit'"
-                                :color="link.is_active ? 'black' : 'white'"
-                                :href="`/link/edit/byShortCode/${link.short_code}`"
-                                class="mx-2 font-weight-bold">
-                                    Edit
-                            </v-btn>
-
-                            <v-btn
-                                variant="outlined"
-                                :prepend-icon="'mdi-eye'"
-                                :href="link?.short_url"
-                                :color="link.is_active ? 'black' : 'white'"
-                                target="_blank"
-                                class="mx-2 font-weight-bold">
-                                    View Link
-                            </v-btn>
-
-                            <v-btn
-                                v-if="(route().current('link.update') || route().current('show.links'))"
-                                variant="plain"
-                                :disabled="!!link.is_active"
-                                :color="link.is_active ? 'red' : 'white bg-red'"
-                                @click="deleteShortlink(link)"
-                                class="mx-2 font-weight-bold">
-                                    <v-icon>mdi-delete</v-icon>
-                            </v-btn>
-
                         </div>
                     </v-card-actions>
 
@@ -148,42 +107,41 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                             </div>
 
-                            <div class="flex flex-column justify-start text-blue-grey my-2">
-                                <p>
-                                    <span variant="text">
-                                        {{
-                                            new Date(link?.created_at)
-                                                .toLocaleDateString('en-US', {
-                                                    year: 'numeric',
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                })
-                                        }}
-                                    </span>
-
-                                    <span> - </span>
-
-                                    <span variant="text">
-                                        {{
-                                            new Date(link?.expires_at)
-                                                .toLocaleDateString('en-US', {
-                                                    year: 'numeric',
-                                                    month: 'short',
-                                                    day: 'numeric',
-                                                })
-                                        }}
-                                    </span>
-                                </p>
-
-                                <p
-                                variant="text"
-                                    :class="link.is_active ? 'text-blue-grey font-weight-bold' : 'white'">
-                                    {{ link?.total_clicks + link?.qr_scans }} engagements
-                                </p>
-                            </div>
-
                         </v-col>
 
+                        <v-col cols="12" md="6" class="flex flex-column">
+                                <v-btn
+                                    v-if="!route().current('link.analytics')"
+                                    variant="outlined"
+                                    :href="route('link.analytics', { shortlink_id: link.id })"
+                                    :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-off'"
+                                    color="accent"
+                                    class="m-2 font-weight-bold"
+                                >
+                                    Analytics
+                                </v-btn>
+
+                                <v-btn
+                                    variant="outlined"
+                                    :prepend-icon="'mdi-eye'"
+                                    :href="link?.short_url"
+                                    :color="link.is_active ? 'black' : 'white'"
+                                    target="_blank"
+                                    class="m-2 font-weight-bold">
+                                        View Link
+                                </v-btn>
+
+                                <v-btn
+                                    v-if="!route().current('link.update')"
+                                    variant="outlined"
+                                    :prepend-icon="'mdi-link-edit'"
+                                    :color="link.is_active ? 'black' : 'white'"
+                                    :href="`/link/edit/byShortCode/${link.short_code}`"
+                                    class="m-2 font-weight-bold">
+                                        Edit
+                                </v-btn>
+
+                        </v-col>
                     </v-card-actions>
 
                     <v-card-actions
@@ -191,7 +149,6 @@ watch(() => props.filteredShortlinks, (newValue) => {
                         :class="link.is_active ? 'bg-white' : 'bg-black'"
                     >
                         <div>
-
                             <v-btn
                                 variant="flat"
                                 :color="link.is_active ? 'primary' : 'success'"
@@ -200,8 +157,52 @@ watch(() => props.filteredShortlinks, (newValue) => {
                                     <v-icon>{{ link.is_active ? 'mdi-stop' : 'mdi-play' }}</v-icon>
                             </v-btn>
 
+                            <v-btn
+                                v-if="(route().current('link.update') || route().current('show.links'))"
+                                variant="outlined"
+                                :disabled="!!link.is_active"
+                                :color="link.is_active ? 'black' : 'white bg-primary'"
+                                :prepend-icon="'mdi-delete'"
+                                @click="deleteShortlink(link)"
+                                class="m-2 font-weight-bold">
+                                    DELETE
+                            </v-btn>
                         </div>
 
+                        <div class="d-flex justify-between text-blue-grey-lighten-2 mx-2">
+                            <small
+                                variant="text"
+                                class="mx-2"
+                                :class="link.is_active ? 'text-primary font-weight-bold' : 'text-primary font-weight-bold'">
+                                {{ link?.total_clicks + link?.qr_scans }} engagements
+                            </small>
+
+                            <small>
+                                <span variant="text">
+                                    {{
+                                        new Date(link?.created_at)
+                                            .toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                            })
+                                    }}
+                                </span>
+
+                                <span> - </span>
+
+                                <span variant="text">
+                                    {{
+                                        new Date(link?.expires_at)
+                                            .toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric',
+                                            })
+                                    }}
+                                </span>
+                            </small>
+                        </div>
                     </v-card-actions>
 
                 </v-card>
