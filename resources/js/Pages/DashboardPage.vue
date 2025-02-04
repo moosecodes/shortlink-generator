@@ -63,42 +63,36 @@ const navigateTo = (routeName) => {
 
             <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="4">
 
-                <div
-                    :value="item.shortCode"
-                    active-class="text-pink"
+                <p class="font-weight-bold">
+                    <Link :href="item.short_url" target="_blank">
+                        {{ item.title || 'No Title' }}
+                    </Link>
+                </p>
+
+                <p>
+                    <Link :href="item.short_url" target="_blank">
+                        {{ item.short_url }}
+                    </Link>
+                </p>
+
+                <v-btn
+                    :href="route('link.analytics', { shortlink_id: item.id })"
+                    prepend-icon="mdi-signal"
+                    variant="outlined"
+                    class="my-4"
                 >
-                    <p class="font-weight-bold">
-                        <Link :href="item.short_url" target="_blank">
-                            {{ item.title || 'No Title' }}
-                        </Link>
-                    </p>
+                    Analytics
+                </v-btn>
 
-                    <p>
-                        <Link :href="item.short_url" target="_blank">
-                            {{ item.short_url }}
-                        </Link>
-                    </p>
+                <v-btn
+                    v-if="!route().current('link.update')"
+                    variant="outlined"
+                    prepend-icon="mdi-link-edit"
+                    :href="`/link/edit/byShortCode/${item.short_code}`"
+                    class="my4-2">
+                    Edit Link
+                </v-btn>
 
-
-                    <v-btn
-                        :href="route('link.analytics', { shortlink_id: item.id })"
-                        prepend-icon="mdi-signal"
-                        variant="outlined"
-                        class="my-4"
-                    >
-                        Analytics
-                    </v-btn>
-
-                    <v-btn
-                        v-if="!route().current('link.update')"
-                        variant="outlined"
-                        prepend-icon="mdi-link-edit"
-                        :href="`/link/edit/byShortCode/${item.short_code}`"
-                        class="m-2">
-                        Edit Link
-                    </v-btn>
-
-                </div>
             </v-col>
         </v-row>
 
