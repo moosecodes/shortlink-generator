@@ -124,7 +124,6 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
             <v-row>
                 <v-col col="12" md="12" v-for="(graph, i) in Array.from(props.graphs)" :key="i">
                     <p class="text-2xl font-semibold">{{ graph.shortCode }}</p>
-                    <p>{{ graph }}</p>
 
                     <Line :data="graph" :options="lineOptions" class="my-4" />
                 </v-col>

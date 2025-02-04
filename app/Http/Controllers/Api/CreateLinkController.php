@@ -14,16 +14,9 @@ class CreateLinkController extends Controller
     public function index(Request $request)
     {
         try {
-
-            $userId = $request->user()->id ?? 999;
-
-            $hash = substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
-
             $validatedData = $this->validateRequest($request);
 
-            $shortCode = $this->generateShortCode($request, $hash);
-
-            $shortlink = $this->createShortlink($validatedData, $userId, $shortCode, $hash);
+            $shortlink = $this->createShortlink($request);
 
             $this->createShortlinkMetadatas($shortlink, $validatedData);
 
@@ -46,20 +39,27 @@ class CreateLinkController extends Controller
         ]);
     }
 
-    private function generateShortCode(Request $request, $hash)
+    private function generateShortCode(Request $request)
     {
         return $request->custom_short_code ?? substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
     }
 
-    private function createShortlink(array $validatedData, $userId, $shortCode, $hash)
+    private function createShortlink(Request $request)
     {
+        $validatedData = $this->validateRequest($request);
+
+        $hash = substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
+
+        $shortCode = $this->generateShortCode($request, $hash);
+
         $data = [
-            'user_id' => $userId,
+            'title' => $request->title,
+            'user_id' => $request->user()->id ?? 999,
             'user_url' => $validatedData['user_url'],
             'short_code' => $shortCode,
             'short_url' => config('app.url') . '/' . $shortCode,
             'hash' => $hash,
-            'is_active' => $userId === 999 ? true : false,
+            'is_active' => $request->user()->id === 999 ? true : false,
             'expires_at' => now()->addDays(30),
         ];
 

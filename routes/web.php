@@ -38,7 +38,9 @@ Route::middleware([
         Route::get('/analytics/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
 
         Route::get('/new', function () {
-            return Inertia::render('link.create');
+            return Inertia::render('link.create', [
+                'title' => 'Create New Link'
+            ]);
         })->name('create');
 
         Route::get('/edit/byShortCode/{linkShortCode}', function ($linkShortCode) {

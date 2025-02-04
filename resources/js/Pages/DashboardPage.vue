@@ -1,31 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { VBtn, VRow, VCol } from 'vuetify/lib/components/index.mjs';
-import { Bar } from 'vue-chartjs'
 import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement
-} from 'chart.js'
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-)
 
 const props = defineProps({
     shortlinks: Array,

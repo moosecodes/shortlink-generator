@@ -2,17 +2,10 @@
 import { ref, reactive, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
-import { usePage } from '@inertiajs/vue3'
-
-const page = usePage()
-
-const props = defineProps({
-    auth: Object,
-    flash: Object,
-});
 
 const state = reactive({
     shortlink: {
+        title: '',
         custom_short_code: '',
         user_url: 'https://www.google.com',
         metadatas: [
@@ -29,11 +22,13 @@ const state = reactive({
 });
 
 const message = ref('');
+
 const valid = ref(false);
 
 const createNewLink = async () => {
     try {
         const response = await axios.post('/api/manage/new', {
+            title: state.shortlink.title,
             user_url: state.shortlink.user_url,
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
@@ -50,7 +45,7 @@ const toggleUTMFields = () => {
     state.showFormFields = !state.showFormFields;
 }
 
-const addNewField = () => {
+const addNewMetaField = () => {
     state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
 };
 
@@ -58,7 +53,7 @@ const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
 
-const showParameterPreview = computed(() => {
+const computedParameters = computed(() => {
   let parameters = state.shortlink.metadatas.map(
     m => (m.meta_key && m.meta_value)
         ? `${m.meta_key}=${m.meta_value}`
@@ -71,29 +66,30 @@ const showParameterPreview = computed(() => {
 <template>
     <v-row>
         <v-col cols="12">
-            <h1 class="text-3xl font-semibold">New Link</h1>
-            <p>Create a new short link with optional vanity URL.</p>
-            <p>Add custom parameters, if desired.</p>
-            <p>Create link!</p>
+            <h1 class="text-3xl font-semibold mb-4">{{ $page.props.title }}</h1>
         </v-col>
     </v-row>
 
     <v-form v-model="valid" @submit.prevent="createNewLink">
         <v-row>
-            <v-col>Target URL</v-col>
+
+
             <v-col cols="12" md="12">
                 <v-text-field
-                    v-model="state.shortlink.user_url"
-                    label="Enter target link here"
+                    v-model="state.shortlink.title"
+                    label="Shortlink Title (optional)"
                     required
                 />
-            </v-col>
 
-            <v-col>Customize Link <small>(optional)</small></v-col>
-            <v-col cols="12" md="12">
+                <v-text-field
+                    v-model="state.shortlink.user_url"
+                    label="Target URL"
+                    required
+                />
+
                 <v-text-field
                     v-model="state.shortlink.custom_short_code"
-                    label="Enter custom back-half of the URL"
+                    label="Custom short code"
                 />
             </v-col>
         </v-row>
@@ -105,7 +101,7 @@ const showParameterPreview = computed(() => {
                 /
                 {{ state.shortlink?.custom_short_code || "XxXxXxXx"}}
                 ?
-                {{ showParameterPreview }}
+                {{ computedParameters }}
             </v-col>
         </v-row>
 
@@ -153,7 +149,7 @@ const showParameterPreview = computed(() => {
 
         <v-row>
             <v-col>
-                <v-btn color="secondary" @click="addNewField">Add Custom Field</v-btn>
+                <v-btn color="secondary" @click="addNewMetaField">Add Custom Field</v-btn>
             </v-col>
         </v-row>
 

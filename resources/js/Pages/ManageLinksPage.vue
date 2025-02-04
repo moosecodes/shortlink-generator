@@ -44,33 +44,37 @@ onMounted(async () => {
         <div class="mb-4">
             <h1 class="text-3xl font-semibold">Manage Links</h1>
             <p v-if="!state.shortlinks?.length">
-                No shortlinks currently exist. Create a new link to get started!
+                No short links currently exist. Create a new link to get started!
             </p>
         </div>
 
-        <div class="d-flex justify-around my-12">
+        <div class="d-flex justify-end my-12">
             <v-card>
                 <v-btn
                     prepend-icon="mdi-link-plus"
-                    color="indigo"
+                    color="white"
+                    class="m-4"
                     @click="navigateTo('link.create')">
                         New Link
                 </v-btn>
+
+                <v-btn
+                    prepend-icon="mdi-qrcode-scan"
+                    color="white"
+                    class="m-4"
+                    @click="navigateTo('link.create')">
+                        New QR Code
+                </v-btn>
+
+                <v-btn
+                    prepend-icon="mdi-file-document-outline"
+                    color="white"
+                    class="m-4"
+                    @click="navigateTo('link.create')">
+                        New Page
+                </v-btn>
             </v-card>
 
-            <v-btn
-                prepend-icon="mdi-qrcode-scan"
-                color="indigo"
-                @click="navigateTo('link.create')">
-                    New QR Code
-            </v-btn>
-
-            <v-btn
-                prepend-icon="mdi-file-document-outline"
-                color="indigo"
-                @click="navigateTo('link.create')">
-                    New Page
-            </v-btn>
         </div>
 
         <v-row>

@@ -48,7 +48,7 @@ class InfluencerGrowthSeeder extends Seeder
 
         $startDate = Carbon::now()->subDays(60); // Start tracking 60 days ago
 
-        foreach (range(0, 59) as $day) {
+        foreach (range(0, 29) as $day) {
             $date = $startDate->copy()->addDays($day); // Oldest first, newest last
 
             // 📈 **Reverse Growth Pattern (Now Increasing Over Time)**

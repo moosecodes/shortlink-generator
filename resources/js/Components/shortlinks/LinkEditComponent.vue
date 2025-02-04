@@ -89,11 +89,11 @@ onMounted(async () => {
             @submit.prevent="updateLink(state.shortlink)">
 
             <v-row>
-                <v-col cols="12" md="12">
-                    <v-card>
+                <v-card>
+                    <v-col cols="12" md="12">
                         <v-btn
                             type="submit"
-                            color="primary"
+                            color="blue-grey"
                             @click="navigateTo('dashboard')"
                             class="m-4"
                         >
@@ -101,13 +101,12 @@ onMounted(async () => {
                         </v-btn>
 
                         <v-btn
-                            color="primary"
+                            color="blue-grey"
                             @click="addUTMFields"
                             class="m-4"
                         >
                             Add UTM Fields
                         </v-btn>
-                    </v-card>
                 </v-col>
 
                 <!-- Custom Parameters -->
@@ -133,31 +132,34 @@ onMounted(async () => {
                 </v-col>
 
                 <v-col cols="12" md="12">
-                    <v-card>
+                    <v-card color="blue-grey">
                         <v-btn
-                            color="secondary"
+                            color="blue-grey"
                             @click="addCustomParam"
                             class="m-4"
                         >Add Custom Parameter</v-btn>
                     </v-card>
                 </v-col>
-            </v-row>
+            </v-card>
+        </v-row>
 
             <!-- UTM Parameters -->
             <v-row>
-                <v-col cols="12" md="12">
-                    <p class="text-2xl"><b>UTM Parameters</b></p>
-                </v-col>
+                <v-card>
+                    <v-col cols="12" md="12">
+                        <p class="text-2xl"><b>UTM Parameters</b></p>
+                    </v-col>
 
-                <v-col v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
-                    <v-chip class="mb-4">{{ field.meta_key }}</v-chip>
+                    <v-col v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i" cols="12" md="12">
+                        <v-chip class="mb-4">{{ field.meta_key }}</v-chip>
 
-                    <v-text-field
-                        v-model="field.meta_value"
-                        label="Value"
-                        required
-                    />
-                </v-col>
+                        <v-text-field
+                            v-model="field.meta_value"
+                            label="Value"
+                            required
+                        />
+                    </v-col>
+                </v-card>
             </v-row>
         </v-form>
 </template>

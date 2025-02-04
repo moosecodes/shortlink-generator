@@ -13,6 +13,7 @@ class Shortlink extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'title',
         'user_id',
         'short_code',
         'hash',
