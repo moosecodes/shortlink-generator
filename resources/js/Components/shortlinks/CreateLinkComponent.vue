@@ -73,22 +73,24 @@ const computedParameters = computed(() => {
     <v-form v-model="valid" @submit.prevent="createNewLink">
         <v-row>
 
-
             <v-col cols="12" md="12">
                 <v-text-field
                     v-model="state.shortlink.title"
+                    variant="solo"
                     label="Shortlink Title (optional)"
                     required
                 />
 
                 <v-text-field
                     v-model="state.shortlink.user_url"
+                    variant="solo"
                     label="Target URL"
                     required
                 />
 
                 <v-text-field
                     v-model="state.shortlink.custom_short_code"
+                    variant="solo"
                     label="Custom short code"
                 />
             </v-col>
@@ -119,11 +121,13 @@ const computedParameters = computed(() => {
             <v-col cols="12" md="12">UTM Fields</v-col>
             <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="4">
                 <v-text-field
+                    variant="solo"
                     v-model="field.meta_key"
                     label="Key"
                     :label="field.meta_key"
                 />
                 <v-text-field
+                    variant="solo"
                     v-model="field.meta_value"
                     label="Value"
                     :label="field.meta_value"
@@ -136,11 +140,13 @@ const computedParameters = computed(() => {
             <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => !data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="12">
                 <v-text-field
                     v-model="field.meta_key"
+                    variant="solo"
                     label="Key"
                     :label="field.meta_key"
                 />
                 <v-text-field
                     v-model="field.meta_value"
+                    variant="solo"
                     label="Value"
                     :label="field.meta_value"
                 />

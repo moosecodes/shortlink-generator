@@ -24,17 +24,24 @@ const props = defineProps({
                 <div class="my-2 text-3xl font-semibold">Recent Activity</div>
             </v-col>
 
-            <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="12">
+            <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="4">
 
                 <div
                     :value="item.shortCode"
                     active-class="text-pink"
                 >
+                    <p class="font-weight-bold">
+                        <Link :href="item.short_url" target="_blank">
+                            {{ item.title || 'No Title' }}
+                        </Link>
+                    </p>
+
                     <p>
                         <Link :href="item.short_url" target="_blank">
                             {{ item.short_url }}
                         </Link>
                     </p>
+
 
                     <v-btn
                         :href="route('link.analytics', { shortlink_id: item.id })"
@@ -56,11 +63,11 @@ const props = defineProps({
 
                 </div>
             </v-col>
+        </v-row>
 
-            <v-col cols="12" md="12" v-if="props.shortlinks.length">
-                <WorldTrafficComponent
-                    :locations="props.locations"
-                />
+        <v-row v-else>
+            <v-col cols="12" md="12">
+                <v-btn class="text-2xl font-semibold" color="primary" :href="route('link.create')">Create New Link</v-btn>
             </v-col>
         </v-row>
     </AppLayout>

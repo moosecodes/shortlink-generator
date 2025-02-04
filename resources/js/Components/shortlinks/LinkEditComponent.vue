@@ -71,7 +71,7 @@ onMounted(async () => {
         <v-row>
             <v-col cols="12" md="12">
                 <h1 class="text-3xl font-semibold">Edit Link</h1>
-                <p class="text-2xl font-weight-black my-4">Optional Name</p>
+                <p class="text-2xl font-weight-black my-4">{{state.shortlink?.title || state.shortlink?.short_code}}</p>
                 <div v-if="state.shortlink" class="my-4">
                     <v-text-field
                         v-model="state.shortlink.short_code"
