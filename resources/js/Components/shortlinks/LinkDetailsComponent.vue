@@ -13,13 +13,6 @@ const props = defineProps({
 
 let filteredShortlinks = ref([]);
 
-const isActive = computed(() => {
-    return filteredShortlinks.reduce((acc, link, i) => {
-        acc[i] = !!link.is_active;
-        return acc;
-    }, {});
-});
-
 const isRecent = (link) => {
     const now = dayjs();
     const createdAt = dayjs(link?.created_at);
@@ -49,27 +42,38 @@ watch(() => props.filteredShortlinks, (newValue) => {
             <v-col cols="12" md="12">
 
                 <v-card
-                    :color="isActive[i] ? 'white ' : 'grey'"
-                    :variant="isActive[i] ? 'outlined' : 'outlined'">
+                    :color="link.is_active ? 'white ' : 'grey'"
+                    :variant="link.is_active ? 'outlined' : 'outlined'">
 
                     <v-card-actions
                         class="d-flex flex-wrap justify-between"
-                        :class="isActive[i] ? 'bg-white' : 'bg-grey-darken-4'">
+                        :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'">
 
                         <div>
                             <v-chip variant="text">
-                                <v-icon :color="isActive[i] ? 'green-500' : 'primary'">{{ isActive[i] ? 'mdi-signal-variant' : 'mdi-rss-off' }}</v-icon>
+                                <span
+                                    class="text-lowercase font-weight-bold mr-2"
+                                    :class="link.is_active ? 'text-green-500' : 'text-primary'">
+                                    {{ link.is_active ? 'active' : 'inactive' }}
+                                </span>
+
+                                <v-icon
+                                    class="mx-2"
+                                    :color="link.is_active ? 'green-500' : 'primary'">{{ link.is_active ? 'mdi-signal-variant' : 'mdi-rss-off' }}
+                                </v-icon>
 
                                 <span
-                                    class="text-lowercase font-weight-bold mx-2"
-                                    :class="isActive[i] ? 'text-green-500' : 'text-primary'">
-                                    {{ isActive[i] ? 'active' : 'inactive' }}
+                                    :class="link.is_active ? 'text-blue-grey' : 'text-white'"
+                                    class="font-weight-bold mx-2">
+                                    {{ link.short_code }}
+                                </span>
+
+                                <span v-if="isRecent(link)" class="mx-2 text-primary font-weight-bold">
+                                    NEW
                                 </span>
                             </v-chip>
 
-                            <span v-if="isRecent(link)" class="mx-2 mb-2">
-                                <v-icon color="primary">mdi-new-box</v-icon>
-                            </span>
+
                         </div>
 
                         <div>
@@ -77,34 +81,37 @@ watch(() => props.filteredShortlinks, (newValue) => {
                                 variant="outlined"
                                 :href="route('link.analytics', { shortlink_id: link.id })"
                                 :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-off'"
-                                :color="isActive[i] ? 'bg-success' : 'white'"
+                                :color="link.is_active ? 'bg-success' : 'white'"
                                 class="mx-2 font-weight-bold"
                             >
                                 Stats
                             </v-btn>
+
                             <v-btn
                                 v-if="!route().current('link.update')"
                                 variant="outlined"
-                                :color="isActive[i] ? 'black' : 'white'"
+                                :prepend-icon="'mdi-link-edit'"
+                                :color="link.is_active ? 'black' : 'white'"
                                 :href="`/link/edit/byShortCode/${link.short_code}`"
                                 class="mx-2 font-weight-bold">
-                                    <v-icon>mdi-link-edit</v-icon>
+                                    Edit
                             </v-btn>
 
                             <v-btn
                                 variant="outlined"
+                                :prepend-icon="'mdi-eye'"
                                 :href="link?.short_url"
-                                :color="isActive[i] ? 'black' : 'white'"
+                                :color="link.is_active ? 'black' : 'white'"
                                 target="_blank"
                                 class="mx-2 font-weight-bold">
-                                    <v-icon>mdi-eye</v-icon>
+                                    View Link
                             </v-btn>
 
                             <v-btn
                                 v-if="(route().current('link.update') || route().current('show.links'))"
                                 variant="plain"
-                                :disabled="isActive[i]"
-                                :color="isActive[i] ? 'red' : 'white bg-red'"
+                                :disabled="!!link.is_active"
+                                :color="link.is_active ? 'red' : 'white bg-red'"
                                 @click="deleteShortlink(link)"
                                 class="mx-2 font-weight-bold">
                                     <v-icon>mdi-delete</v-icon>
@@ -113,7 +120,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
                         </div>
                     </v-card-actions>
 
-                    <v-card-actions :class="isActive[i] ? 'bg-white' : 'bg-grey-darken-4'">
+                    <v-card-actions :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'">
 
                         <v-col cols="12" md="6">
 
@@ -121,28 +128,28 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                                 <Link
                                     :href="`/link/edit/byShortCode/${link.short_code}`"
-                                    :class="isActive[i] ? 'text-blue-grey' : 'text-white'"
+                                    :class="link.is_active ? 'text-blue-grey' : 'text-white'"
                                     class="font-weight-bold mb-2">
                                     {{ link.title }}
                                 </Link>
 
-                                <Link
+                                <a
                                     :href="link?.short_url"
                                     target="_blank"
-                                    :class="isActive[i] ? 'text-black' : 'text-blue-grey-lighten-2'">
+                                    :class="link.is_active ? 'text-black' : 'text-blue-grey-lighten-2'">
                                         {{ link?.short_url }}
-                                </Link>
+                                </a>
 
-                                <Link
+                                <a
                                     :href="link?.user_url"
                                     target="_blank"
-                                    :class="isActive[i] ? 'text-black' : 'text-blue-grey-lighten-2'">
+                                    :class="link.is_active ? 'text-black' : 'text-blue-grey-lighten-2'">
                                         {{ link?.user_url }}
-                                </Link>
+                                </a>
 
                             </div>
 
-                            <div class="flex flex-column justify-start text-blue-grey-lighten-2 my-2">
+                            <div class="flex flex-column justify-start text-blue-grey my-2">
                                 <p>
                                     <span variant="text">
                                         {{
@@ -171,13 +178,10 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                                 <p
                                 variant="text"
-                                    :class="isActive[i] ? 'text-blue-grey' : 'white'">
+                                    :class="link.is_active ? 'text-blue-grey font-weight-bold' : 'white'">
                                     {{ link?.total_clicks + link?.qr_scans }} engagements
                                 </p>
                             </div>
-
-
-
 
                         </v-col>
 
@@ -185,16 +189,16 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                     <v-card-actions
                         class="d-flex flex-wrap justify-between"
-                        :class="isActive[i] ? 'bg-white' : 'bg-grey-darken-4'"
+                        :class="link.is_active ? 'bg-white' : 'bg-grey-darken-4'"
                     >
                         <div>
 
                             <v-btn
                                 variant="flat"
-                                :color="isActive[i] ? 'primary' : 'success'"
+                                :color="link.is_active ? 'primary' : 'success'"
                                 @click="handleActivation(link, i)"
                                 class="mx-2 border-md">
-                                    <v-icon>{{ isActive[i] ? 'mdi-stop' : 'mdi-play' }}</v-icon>
+                                    <v-icon>{{ link.is_active ? 'mdi-stop' : 'mdi-play' }}</v-icon>
                             </v-btn>
 
                         </div>
@@ -214,8 +218,8 @@ watch(() => props.filteredShortlinks, (newValue) => {
                 <v-col cols="12" md="12">
 
                     <v-card
-                        :color="isActive[i] ? 'white ' : 'primary'"
-                        :variant="isActive[i] ? 'outlined' : 'outlined'"
+                        :color="link.is_active ? 'white ' : 'primary'"
+                        :variant="link.is_active ? 'outlined' : 'outlined'"
                     >
 
                         <QrCodeComponent :input="link?.short_url" :scans="link?.qr_scans"/>

@@ -1,11 +1,11 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import {
     VApp,
     VAppBar,
-    VAppBarNavIcon,
     VAppBarTitle,
     VAvatar,
     VBtn,
@@ -62,8 +62,6 @@ const logout = () => {
 
         <!-- Rest of the template remains the same -->
         <v-app-bar elevation="2">
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-
             <v-app-bar-title>
                 <Link :href="route('landingPage')" class="d-flex align-center text-decoration-none">
                     <ApplicationMark class="d-inline-block" style="height: 36px;" />

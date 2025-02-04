@@ -1,53 +1,55 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-
+import { onMounted, reactive, ref } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import {
     VBtn,
     VDivider,
     VList,
     VListItem,
     VNavigationDrawer,
+    VAppBarNavIcon,
 } from 'vuetify/lib/components/index.mjs';
 
-defineProps({
+
+const props = defineProps({
     auth: Object,
 });
 
-const drawer = ref(true);
-const rail = ref(false);
+const state = reactive({
+    drawer: true,
+    rail: false,
+})
 
 const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
+
+onMounted(() => {
+    console.log(state)
+});
 </script>
 
 <template>
     <v-navigation-drawer
-            v-model="drawer"
-            :rail="rail"
-            permanent
-            elevation="2"
-        >
-        <v-divider />
-
-        <v-btn @click="rail = !rail">Rail</v-btn>
-
-        <v-divider />
-
+        v-model="state.drawer"
+        :rail="!state.rail"
+        permanent
+        elevation="2"
+    >
         <v-list>
+            <v-app-bar-nav-icon @click.stop="state.rail = !state.rail" />
+
             <v-list-item
+                @click="state.rail = !state?.rail"
                 :prepend-avatar="$page.props.auth.user.profile_photo_url"
                 :title="$page.props.auth.user.name"
                 :subtitle="$page.props.auth.user.email"
-                :href="route('profile.show')"
             >
             </v-list-item>
         </v-list>
 
-        <v-divider />
-
-        <div v-if="!rail" class="flex justify-center p-4">
+        <div v-if="!!state.rail" class="flex justify-center p-4">
             <v-btn
                 prepend-icon="mdi-plus"
                 type="submit"
@@ -79,6 +81,7 @@ const navigateTo = (routeName) => {
             />
 
             <v-list-item
+                disabled
                 link
                 @click="navigateTo('qr-codes')"
                 :active="route().current('qr-codes')"
@@ -87,6 +90,7 @@ const navigateTo = (routeName) => {
             />
 
             <v-list-item
+                disabled
                 link
                 @click="navigateTo('pages')"
                 :active="route().current('pages')"
@@ -95,6 +99,7 @@ const navigateTo = (routeName) => {
             />
 
             <v-list-item
+                disabled
                 link
                 @click="navigateTo('page.analytics')"
                 :active="route().current('page.analytics')"
@@ -103,6 +108,7 @@ const navigateTo = (routeName) => {
             />
 
             <v-list-item
+                disabled
                 link
                 @click="navigateTo('campaigns')"
                 :active="route().current('campaigns')"
@@ -111,6 +117,7 @@ const navigateTo = (routeName) => {
             />
 
             <v-list-item
+                disabled
                 link
                 @click="navigateTo('custom-domains')"
                 :active="route().current('custom-domains')"
@@ -121,6 +128,7 @@ const navigateTo = (routeName) => {
             <v-divider />
 
             <v-list-item
+                disabled
                 prepend-icon="mdi-cog"
                 title="Settings"
                 @click="navigateTo('settings')"

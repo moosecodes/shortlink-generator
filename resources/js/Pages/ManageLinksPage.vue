@@ -48,17 +48,20 @@ onMounted(async () => {
             </p>
         </div>
 
-        <div class="d-flex justify-end my-12">
-            <v-card>
+        <div class="d-flex justify-center my-12">
+            <v-card variant="text" width="100%" class="d-flex justify-center">
                 <v-btn
+                    variant="outlined"
                     prepend-icon="mdi-link-plus"
                     color="white"
                     class="m-4"
                     @click="navigateTo('link.create')">
-                        New Link
+                        New Shortlink
                 </v-btn>
 
                 <v-btn
+                    disabled
+                    variant="text"
                     prepend-icon="mdi-qrcode-scan"
                     color="white"
                     class="m-4"
@@ -67,6 +70,8 @@ onMounted(async () => {
                 </v-btn>
 
                 <v-btn
+                    disabled
+                    variant="text"
                     prepend-icon="mdi-file-document-outline"
                     color="white"
                     class="m-4"
@@ -88,7 +93,7 @@ onMounted(async () => {
                     variant="solo"
                     :items="['All', 'Active', 'Inactive']"
                     label="Filter Shortlinks"
-                    ></v-select>
+                ></v-select>
             </v-col>
         </v-row>
 

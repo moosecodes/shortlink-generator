@@ -20,7 +20,7 @@ const toggleTheme = () => {
 <template>
     <v-app-bar elevation="2" color="primaryAppBar" dark app>
         <v-app-bar-title>
-            <div class="d-flex align-center mx-4">
+            <div class="d-flex align-center">
                 <Link :href="route('dashboard')" class="d-flex align-center text-decoration-none">
                     <ApplicationMark style="height: 36px;" />
                 </Link>
