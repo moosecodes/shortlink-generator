@@ -38,8 +38,6 @@ onMounted(() => {
         elevation="2"
     >
         <v-list>
-            <v-app-bar-nav-icon @click.stop="state.rail = !state.rail" />
-
             <v-list-item
                 @click="state.rail = !state?.rail"
                 :prepend-avatar="$page.props.auth.user.profile_photo_url"
@@ -60,8 +58,6 @@ onMounted(() => {
             Create Link
             </v-btn>
         </div>
-
-        <v-divider />
 
         <v-list>
             <v-list-item

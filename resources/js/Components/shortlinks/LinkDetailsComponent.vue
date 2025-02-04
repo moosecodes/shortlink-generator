@@ -150,8 +150,8 @@ watch(() => props.filteredShortlinks, (newValue) => {
                     >
                         <div>
                             <v-btn
-                                variant="flat"
-                                :color="link.is_active ? 'primary' : 'success'"
+                                variant="outlined"
+                                :color="link.is_active ? 'primary' : 'white bg-success'"
                                 @click="handleActivation(link, i)"
                                 class="mx-2 border-md">
                                     <v-icon>{{ link.is_active ? 'mdi-stop' : 'mdi-play' }}</v-icon>
@@ -159,7 +159,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                             <v-btn
                                 v-if="(route().current('link.update') || route().current('show.links'))"
-                                variant="outlined"
+                                variant="flat"
                                 :disabled="!!link.is_active"
                                 :color="link.is_active ? 'black' : 'white bg-primary'"
                                 :prepend-icon="'mdi-delete'"
