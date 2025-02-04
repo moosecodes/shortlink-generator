@@ -85,6 +85,7 @@ onMounted(async () => {
             <v-col>
                 <v-select
                     v-model="state.linkFilter"
+                    variant="solo"
                     :items="['All', 'Active', 'Inactive']"
                     label="Filter Shortlinks"
                     ></v-select>

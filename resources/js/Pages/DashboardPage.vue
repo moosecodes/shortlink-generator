@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link } from '@inertiajs/vue3';
 import { VBtn, VRow, VCol } from 'vuetify/lib/components/index.mjs';
 import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
@@ -32,12 +33,11 @@ const editLink = (shortCode) => {
                 <div
                     :value="item.shortCode"
                     active-class="text-pink"
-                    class="py-3"
                 >
                     <p>
-                        <v-btn :href="item.short_url" target="_blank">
+                        <Link :href="item.short_url" target="_blank">
                             {{ item.short_url }}
-                        </v-btn>
+                        </Link>
                     </p>
 
                     <v-btn

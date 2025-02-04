@@ -49,7 +49,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
             <v-col cols="12" md="12">
 
                 <v-card
-                    :color="isActive[i] ? 'white ' : 'primary'"
+                    :color="isActive[i] ? 'white ' : 'grey'"
                     :variant="isActive[i] ? 'outlined' : 'outlined'">
 
                     <v-card-actions
@@ -74,6 +74,15 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                         <div>
                             <v-btn
+                                variant="outlined"
+                                :href="route('link.analytics', { shortlink_id: link.id })"
+                                :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-off'"
+                                :color="isActive[i] ? 'bg-success' : 'white'"
+                                class="mx-2 font-weight-bold"
+                            >
+                                Stats
+                            </v-btn>
+                            <v-btn
                                 v-if="!route().current('link.update')"
                                 variant="outlined"
                                 :color="isActive[i] ? 'black' : 'white'"
@@ -85,7 +94,7 @@ watch(() => props.filteredShortlinks, (newValue) => {
                             <v-btn
                                 variant="outlined"
                                 :href="link?.short_url"
-                                :color="isActive[i] ? 'black' : 'blue-grey'"
+                                :color="isActive[i] ? 'black' : 'white'"
                                 target="_blank"
                                 class="mx-2 font-weight-bold">
                                     <v-icon>mdi-eye</v-icon>
@@ -112,56 +121,63 @@ watch(() => props.filteredShortlinks, (newValue) => {
 
                                 <Link
                                     :href="`/link/edit/byShortCode/${link.short_code}`"
-                                    :class="isActive[i] ? 'blue-grey' : 'text-blue-grey'"
-                                    class="font-weight-bold">
+                                    :class="isActive[i] ? 'text-blue-grey' : 'text-white'"
+                                    class="font-weight-bold mb-2">
                                     {{ link.title }}
                                 </Link>
 
                                 <Link
-                                    :href="`/link/edit/byShortCode/${link.short_code}`"
-                                    class="mb-2 text-blue-grey">
-                                    {{ link?.short_code }}
+                                    :href="link?.short_url"
+                                    target="_blank"
+                                    :class="isActive[i] ? 'text-black' : 'text-blue-grey-lighten-2'">
+                                        {{ link?.short_url }}
                                 </Link>
 
-                                <Link :href="link?.short_url" target="_blank">
-                                    {{ link?.short_url }}
-                                </Link>
-
-                                <Link :href="link?.user_url" target="_blank">
-                                    {{ link?.user_url }}
+                                <Link
+                                    :href="link?.user_url"
+                                    target="_blank"
+                                    :class="isActive[i] ? 'text-black' : 'text-blue-grey-lighten-2'">
+                                        {{ link?.user_url }}
                                 </Link>
 
                             </div>
 
-                            <div class="flex flex-wrap items-center">
+                            <div class="flex flex-column justify-start text-blue-grey-lighten-2 my-2">
+                                <p>
+                                    <span variant="text">
+                                        {{
+                                            new Date(link?.created_at)
+                                                .toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                })
+                                        }}
+                                    </span>
 
-                                <small>Created</small>
+                                    <span> - </span>
 
-                                <v-chip variant="text" class="font-weight-bold text-blue-grey">
-                                    {{
-                                        new Date(link?.created_at)
-                                            .toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric',
-                                            })
-                                    }}
-                                </v-chip>
+                                    <span variant="text">
+                                        {{
+                                            new Date(link?.expires_at)
+                                                .toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric',
+                                                })
+                                        }}
+                                    </span>
+                                </p>
 
-                                <small>Expires</small>
-
-                                <v-chip variant="text" class="font-weight-bold text-blue-grey">
-                                    {{
-                                        new Date(link?.expires_at)
-                                            .toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'short',
-                                                day: 'numeric',
-                                            })
-                                    }}
-                                </v-chip>
-
+                                <p
+                                variant="text"
+                                    :class="isActive[i] ? 'text-blue-grey' : 'white'">
+                                    {{ link?.total_clicks + link?.qr_scans }} engagements
+                                </p>
                             </div>
+
+
+
 
                         </v-col>
 
@@ -171,23 +187,6 @@ watch(() => props.filteredShortlinks, (newValue) => {
                         class="d-flex flex-wrap justify-between"
                         :class="isActive[i] ? 'bg-white' : 'bg-grey-darken-4'"
                     >
-
-                        <v-chip
-                            variant="outlined"
-                            @click="route('link.analytics', { shortlink_id: link.id })"
-                            :prepend-icon="link?.total_clicks + link?.qr_scans > 0 ? 'mdi-signal-cellular-3' : 'mdi-signal-cellular-outline'"
-                            color="bg-black"
-                            class="mx-2 font-weight-bold"
-                        >
-                            Stats
-                        </v-chip>
-
-                        <v-chip
-                            variant="text"
-                            class="font-weight-bold mx-2">
-                            {{ link?.total_clicks + link?.qr_scans }} engagements
-                        </v-chip>
-
                         <div>
 
                             <v-btn
