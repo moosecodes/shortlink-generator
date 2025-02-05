@@ -1,7 +1,7 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
-import { router } from '@inertiajs/vue3';
-import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
+import { ref, reactive, computed } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components'
 
 const state = reactive({
     shortlink: {
@@ -19,11 +19,11 @@ const state = reactive({
     showFormFields: true,
     message: '',
     valid: false,
-});
+})
 
-const message = ref('');
+const message = ref('')
 
-const valid = ref(false);
+const valid = ref(false)
 
 const createNewLink = async () => {
     try {
@@ -32,47 +32,45 @@ const createNewLink = async () => {
             user_url: state.shortlink.user_url,
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
-        });
+        })
 
-        state.message = response;
+        state.message = response
     } catch (error) {
-        console.error('Error creating shortlink:', error);
-        state.message = error;
+        console.error('Error creating shortlink:', error)
+        state.message = error
     }
-};
+}
 
 const toggleUTMFields = () => {
-    state.showFormFields = !state.showFormFields;
+    state.showFormFields = !state.showFormFields
 }
 
 const addNewMetaField = () => {
-    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
-};
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' })
+}
 
 const navigateTo = (routeName) => {
-    router.get(route(routeName));
-};
+    router.get(route(routeName))
+}
 
 const computedParameters = computed(() => {
-  let parameters = state.shortlink.metadatas.map(
-    m => (m.meta_key && m.meta_value)
-        ? `${m.meta_key}=${m.meta_value}`
-        : null);
-    parameters = parameters.filter(p => p);
-  return parameters.join(' & ');
-});
+    let parameters = state.shortlink.metadatas.map((m) =>
+        m.meta_key && m.meta_value ? `${m.meta_key}=${m.meta_value}` : null,
+    )
+    parameters = parameters.filter((p) => p)
+    return parameters.join(' & ')
+})
 </script>
 
 <template>
     <v-row>
         <v-col cols="12">
-            <h1 class="text-3xl font-semibold mb-4">{{ $page.props.title }}</h1>
+            <h1 class="mb-4 text-3xl font-semibold">{{ $page.props.title }}</h1>
         </v-col>
     </v-row>
 
     <v-form v-model="valid" @submit.prevent="createNewLink">
         <v-row>
-
             <v-col cols="12" md="12">
                 <v-text-field
                     v-model="state.shortlink.title"
@@ -97,28 +95,33 @@ const computedParameters = computed(() => {
 
         <v-row v-if="state.shortlink.user_url.length">
             <v-col cols="12">
-            <p cols="12">Link Preview</p>
+                <p cols="12">Link Preview</p>
                 {{ state.shortlink.user_url }}
                 /
-                {{ state.shortlink?.custom_short_code || "XxXxXxXx"}}
+                {{ state.shortlink?.custom_short_code || 'XxXxXxXx' }}
                 ?
                 {{ computedParameters }}
             </v-col>
         </v-row>
 
-        <v-row class="my-4" >
+        <v-row class="my-4">
             <v-col>
-                <v-btn
-                    color="info"
-                    @click="toggleUTMFields">
-                        {{ state.showFormFields ? 'Hide' : 'Show' }} UTM Fields
-                    </v-btn>
+                <v-btn color="info" @click="toggleUTMFields">
+                    {{ state.showFormFields ? 'Hide' : 'Show' }} UTM Fields
+                </v-btn>
             </v-col>
         </v-row>
 
         <v-row v-if="state.showFormFields">
             <v-col cols="12" md="12">UTM Fields</v-col>
-            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="4">
+            <v-col
+                v-for="(field, i) in state.shortlink.metadatas.filter((data) =>
+                    data.meta_key.startsWith('utm_'),
+                )"
+                :key="i"
+                cols="12"
+                md="4"
+            >
                 <v-text-field
                     variant="solo"
                     v-model="field.meta_key"
@@ -136,7 +139,14 @@ const computedParameters = computed(() => {
 
         <v-row>
             <v-col>Custom Fields</v-col>
-            <v-col v-for="(field, i) in state.shortlink.metadatas.filter(data => !data.meta_key.startsWith('utm_'))" :key="i" cols="12" md="12">
+            <v-col
+                v-for="(field, i) in state.shortlink.metadatas.filter(
+                    (data) => !data.meta_key.startsWith('utm_'),
+                )"
+                :key="i"
+                cols="12"
+                md="12"
+            >
                 <v-text-field
                     v-model="field.meta_key"
                     variant="solo"
@@ -154,13 +164,20 @@ const computedParameters = computed(() => {
 
         <v-row>
             <v-col>
-                <v-btn color="secondary" @click="addNewMetaField">Add Custom Field</v-btn>
+                <v-btn color="secondary" @click="addNewMetaField"
+                    >Add Custom Field</v-btn
+                >
             </v-col>
         </v-row>
 
         <v-row>
             <v-col>
-                <v-btn type="submit" color="primary" @click="navigateTo('show.links')">Create Shortlink</v-btn>
+                <v-btn
+                    type="submit"
+                    color="primary"
+                    @click="navigateTo('show.links')"
+                    >Create Shortlink</v-btn
+                >
             </v-col>
             <v-col>
                 <p v-if="message">{{ message }}</p>

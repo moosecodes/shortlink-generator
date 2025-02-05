@@ -1,23 +1,23 @@
 <script setup>
 import { GoogleMap, AdvancedMarker } from 'vue3-google-map'
-import { VCol, VRow } from 'vuetify/lib/components/index.mjs';
+import { VCol, VRow } from 'vuetify/lib/components/index.mjs'
 
-const props = defineProps(['locations']);
+const props = defineProps(['locations'])
 
-const pinOptions = { background: '#f87979' };
+const pinOptions = { background: '#f87979' }
 
 const deDupedLocations = (locations) => {
     if (!locations) {
-        return [];
+        return []
     }
-    return locations.filter((location, index, self) =>
-        index === self.findIndex((t) => (
-            t.country_name === location.country_name
-        ))
-    );
-};
+    return locations.filter(
+        (location, index, self) =>
+            index ===
+            self.findIndex((t) => t.country_name === location.country_name),
+    )
+}
 
-const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 </script>
 
 <template>
@@ -37,8 +37,9 @@ const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
                     :options="{
                         position: {
                             lat: parseFloat(location.latitude),
-                            lng: parseFloat(location.longitude)
-                    }}"
+                            lng: parseFloat(location.longitude),
+                        },
+                    }"
                 />
             </GoogleMap>
         </v-col>

@@ -1,61 +1,66 @@
 <script setup>
-import { router, usePage } from '@inertiajs/vue3';
-import { onMounted, reactive, computed } from 'vue';
-import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components';
-import { fetchShortlinkbyShortCode, updateLink } from '@/Components/shortlinks/requests';
+import { router, usePage } from '@inertiajs/vue3'
+import { onMounted, reactive, computed } from 'vue'
+import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components'
+import {
+    fetchShortlinkbyShortCode,
+    updateLink,
+} from '@/Components/shortlinks/requests'
 
 const page = usePage()
 
 const state = reactive({
     message: '',
     valid: false,
-});
+})
 
 const sortedMetadatas = computed(() => {
     if (!state.shortlink?.metadatas) {
-        return [];
+        return []
     }
     return state.shortlink.metadatas.slice().sort((a, b) => {
-        const aHasUtm = a.meta_key.startsWith('utm_');
-        const bHasUtm = b.meta_key.startsWith('utm_');
-        if (aHasUtm && !bHasUtm) return -1;
-        if (!aHasUtm && bHasUtm) return 1;
-        return 0;
-    });
-});
+        const aHasUtm = a.meta_key.startsWith('utm_')
+        const bHasUtm = b.meta_key.startsWith('utm_')
+        if (aHasUtm && !bHasUtm) return -1
+        if (!aHasUtm && bHasUtm) return 1
+        return 0
+    })
+})
 
 const addCustomParam = () => {
-    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
-};
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' })
+}
 
 const addUTMFields = () => {
-  const metaTemplate = [
-    { meta_key: 'utm_source', meta_value: '' },
-    { meta_key: 'utm_medium', meta_value: '' },
-    { meta_key: 'utm_campaign', meta_value: '' },
-    { meta_key: 'utm_term', meta_value: '' },
-    { meta_key: 'utm_content', meta_value: '' },
-  ];
+    const metaTemplate = [
+        { meta_key: 'utm_source', meta_value: '' },
+        { meta_key: 'utm_medium', meta_value: '' },
+        { meta_key: 'utm_campaign', meta_value: '' },
+        { meta_key: 'utm_term', meta_value: '' },
+        { meta_key: 'utm_content', meta_value: '' },
+    ]
 
-  metaTemplate.forEach(templateItem => {
-    const exists = state.shortlink.metadatas.some(
-      metadata => metadata.meta_key === templateItem.meta_key
-    );
-    if (!exists) {
-      state.shortlink.metadatas.push(templateItem);
-    }
-  });
-};
+    metaTemplate.forEach((templateItem) => {
+        const exists = state.shortlink.metadatas.some(
+            (metadata) => metadata.meta_key === templateItem.meta_key,
+        )
+        if (!exists) {
+            state.shortlink.metadatas.push(templateItem)
+        }
+    })
+}
 
 const navigateTo = (routeName) => {
-    router.get(route(routeName));
-};
+    router.get(route(routeName))
+}
 
 onMounted(async () => {
-    await fetchShortlinkbyShortCode(page.props.linkShortCode).then((response) => {
-        state.shortlink = response;
-    });
-});
+    await fetchShortlinkbyShortCode(page.props.linkShortCode).then(
+        (response) => {
+            state.shortlink = response
+        },
+    )
+})
 </script>
 
 <template>
@@ -66,12 +71,16 @@ onMounted(async () => {
             </v-col>
 
             <v-col cols="12" md="12">
-
                 <v-form
                     v-model="state.valid"
-                    @submit.prevent="updateLink(state.shortlink)">
-
-                    <p class="text-2xl font-weight-black">{{state.shortlink?.title || state.shortlink?.short_code}}</p>
+                    @submit.prevent="updateLink(state.shortlink)"
+                >
+                    <p class="font-weight-black text-2xl">
+                        {{
+                            state.shortlink?.title ||
+                            state.shortlink?.short_code
+                        }}
+                    </p>
 
                     <v-text-field
                         v-if="state.shortlink"
@@ -87,22 +96,25 @@ onMounted(async () => {
                         @click="navigateTo('dashboard')"
                         class="my-2"
                     >
-                        {{state.message ? state.message : 'Update Shortlink' }}
+                        {{ state.message ? state.message : 'Update Shortlink' }}
                     </v-btn>
 
                     <!-- UTM Parameters -->
                     <p class="text-1xl"><b>UTM Parameters</b></p>
 
-                    <v-btn
-                        color="white"
-                        @click="addUTMFields"
-                        class="my-2"
-                    >
+                    <v-btn color="white" @click="addUTMFields" class="my-2">
                         Add UTM Fields
                     </v-btn>
 
-                    <div v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i">
-                        <p class="font-weight-bold mb-4">{{ field.meta_key }}</p>
+                    <div
+                        v-for="(field, i) in sortedMetadatas.filter((d) =>
+                            d.meta_key.includes('utm_'),
+                        )"
+                        :key="i"
+                    >
+                        <p class="font-weight-bold mb-4">
+                            {{ field.meta_key }}
+                        </p>
 
                         <v-text-field
                             v-model="field.meta_value"
@@ -115,16 +127,19 @@ onMounted(async () => {
                     <!-- Custom Parameters -->
                     <p class="text-1xl"><b>Custom Parameters</b></p>
 
-                    <v-btn
-                        color="white"
-                        @click="addCustomParam"
-                        class="my-4"
-                    >
+                    <v-btn color="white" @click="addCustomParam" class="my-4">
                         Add Custom Parameter
                     </v-btn>
 
-                    <div v-for="(field, i) in sortedMetadatas.filter(d => !d.meta_key.includes('utm_'))" :key="i">
-                        <p class="mb-4"><b>Custom Parameter {{ i + 1 }}</b></p>
+                    <div
+                        v-for="(field, i) in sortedMetadatas.filter(
+                            (d) => !d.meta_key.includes('utm_'),
+                        )"
+                        :key="i"
+                    >
+                        <p class="mb-4">
+                            <b>Custom Parameter {{ i + 1 }}</b>
+                        </p>
 
                         <v-text-field
                             v-model="field.meta_key"

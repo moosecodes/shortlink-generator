@@ -4,7 +4,9 @@
     "scripts": {
         "build": "vite build && vite build --ssr",
         "build:css": "tailwindcss build resources/css/app.css -o public/css/app.css",
-        "dev": "vite"
+        "dev": "vite",
+        "prettier": "prettier --check \"**/*.vue\"",
+        "prettier:fix": "prettier --write \"**/*.vue\""
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.14",

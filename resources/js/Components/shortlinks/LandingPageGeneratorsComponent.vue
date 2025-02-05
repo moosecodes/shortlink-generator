@@ -1,6 +1,6 @@
 <script setup>
-import { reactive } from 'vue';
-import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue';
+import { reactive } from 'vue'
+import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue'
 import {
     VBtn,
     VForm,
@@ -8,14 +8,14 @@ import {
     VCard,
     VCardTitle,
     VCardText,
-} from 'vuetify/lib/components/index.mjs';
+} from 'vuetify/lib/components/index.mjs'
 
 const props = defineProps({
     auth: Object,
     flash: Object,
     title: String,
     initialState: Object,
-});
+})
 
 const state = reactive({
     user_url: '',
@@ -23,43 +23,45 @@ const state = reactive({
     short_url: '',
     message: '',
     switchFeature: false,
-});
+})
 
 const toggleFeature = () => {
-    state.switchFeature = !state.switchFeature;
-    return state.switchFeature ? 'shortlink' : 'qr';
-};
+    state.switchFeature = !state.switchFeature
+    return state.switchFeature ? 'shortlink' : 'qr'
+}
 
 const createFreeLink = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
             user_url: state.user_url,
-        });
-        state.short_url = response.data.short_url;
-        state.message = response;
+        })
+        state.short_url = response.data.short_url
+        state.message = response
     } catch (error) {
-        console.error('Error creating shortlink:', error);
-        state.message = error;
+        console.error('Error creating shortlink:', error)
+        state.message = error
     }
-};
+}
 </script>
 
 <template>
     <div>
-        <div class="flex justify-center my-4">
+        <div class="my-4 flex justify-center">
             <v-btn
                 class="mx-2"
                 color="primary"
                 :variant="state.switchFeature ? 'outlined' : 'elevated'"
-                @click="toggleFeature">
-                    Short link
+                @click="toggleFeature"
+            >
+                Short link
             </v-btn>
             <v-btn
                 class="mx-2"
                 color="primary"
                 :variant="!state.switchFeature ? 'outlined' : 'elevated'"
-                @click="toggleFeature">
-                    QR Code
+                @click="toggleFeature"
+            >
+                QR Code
             </v-btn>
         </div>
         <v-card v-if="!state.switchFeature">
@@ -79,16 +81,18 @@ const createFreeLink = async () => {
                         ype="submit"
                         variant="flat"
                         block
-                        @click="createFreeLink">
-                            Shorten Link
+                        @click="createFreeLink"
+                    >
+                        Shorten Link
                     </v-btn>
                     <v-btn
                         v-else
                         class="my-4"
                         color="success"
                         :href="state.short_url"
-                        target="_blank">
-                            {{ state.short_url }}
+                        target="_blank"
+                    >
+                        {{ state.short_url }}
                     </v-btn>
                 </v-form>
             </v-card-text>
@@ -109,8 +113,9 @@ const createFreeLink = async () => {
                         variant="flat"
                         color="primary"
                         block
-                        @click="createFreeLink">
-                            Generate FREE QR Code
+                        @click="createFreeLink"
+                    >
+                        Generate FREE QR Code
                     </v-btn>
                 </v-form>
                 <div v-if="state.short_url">

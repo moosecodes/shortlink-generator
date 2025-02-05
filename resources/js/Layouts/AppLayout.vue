@@ -1,8 +1,8 @@
 <script setup>
-import { Head, Link, router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
-import Banner from '@/Components/Banner.vue';
+import { Head, Link, router } from '@inertiajs/vue3'
+import { ref } from 'vue'
+import ApplicationMark from '@/Components/ApplicationMark.vue'
+import Banner from '@/Components/Banner.vue'
 import {
     VApp,
     VAppBar,
@@ -21,37 +21,36 @@ import {
     VMain,
     VMenu,
     VSpacer,
-} from 'vuetify/lib/components/index.mjs';
+} from 'vuetify/lib/components/index.mjs'
 
-import { useTheme } from 'vuetify';
-import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue';
+import { useTheme } from 'vuetify'
+import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue'
 
 defineProps({
     title: String,
-});
+})
 
 const theme = useTheme()
 
 const toggleTheme = () => {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 
 const switchToTeam = (team) => {
     router.put(
         route('current-team.update'),
-            {
-                team_id: team.id,
-            },
-            {
-                preserveState: false,
-            }
-    );
-};
+        {
+            team_id: team.id,
+        },
+        {
+            preserveState: false,
+        },
+    )
+}
 
 const logout = () => {
-    router.post(route('logout'));
-};
-
+    router.post(route('logout'))
+}
 </script>
 
 <template>
@@ -63,8 +62,14 @@ const logout = () => {
         <!-- Rest of the template remains the same -->
         <v-app-bar elevation="2">
             <v-app-bar-title>
-                <Link :href="route('landingPage')" class="d-flex align-center text-decoration-none">
-                    <ApplicationMark class="d-inline-block" style="height: 36px;" />
+                <Link
+                    :href="route('landingPage')"
+                    class="d-flex align-center text-decoration-none"
+                >
+                    <ApplicationMark
+                        class="d-inline-block"
+                        style="height: 36px"
+                    />
                 </Link>
             </v-app-bar-title>
 
@@ -83,7 +88,12 @@ const logout = () => {
                     <v-list-subheader>Manage Team</v-list-subheader>
 
                     <v-list-item
-                        :href="route('teams.show', $page.props.auth.user.current_team)"
+                        :href="
+                            route(
+                                'teams.show',
+                                $page.props.auth.user.current_team,
+                            )
+                        "
                         title="Team Settings"
                     />
 
@@ -93,7 +103,9 @@ const logout = () => {
                         title="Create New Team"
                     />
 
-                    <v-divider v-if="$page.props.auth.user.all_teams.length > 1" />
+                    <v-divider
+                        v-if="$page.props.auth.user.all_teams.length > 1"
+                    />
 
                     <template v-if="$page.props.auth.user.all_teams.length > 1">
                         <v-list-subheader>Switch Teams</v-list-subheader>
@@ -104,11 +116,19 @@ const logout = () => {
                             @click="switchToTeam(team)"
                         >
                             <template v-slot:prepend>
-                                <v-icon v-if="team.id == $page.props.auth.user.current_team_id" color="success">
+                                <v-icon
+                                    v-if="
+                                        team.id ==
+                                        $page.props.auth.user.current_team_id
+                                    "
+                                    color="success"
+                                >
                                     mdi-check-circle
                                 </v-icon>
                             </template>
-                            <v-list-item-title>{{ team.name }}</v-list-item-title>
+                            <v-list-item-title>{{
+                                team.name
+                            }}</v-list-item-title>
                         </v-list-item>
                     </template>
                 </v-list>
@@ -118,8 +138,14 @@ const logout = () => {
             <v-menu>
                 <template v-slot:activator="{ props }">
                     <v-btn variant="text" v-bind="props">
-                        <v-avatar v-if="$page.props.jetstream.managesProfilePhotos" size="32">
-                            <v-img :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name" />
+                        <v-avatar
+                            v-if="$page.props.jetstream.managesProfilePhotos"
+                            size="32"
+                        >
+                            <v-img
+                                :src="$page.props.auth.user.profile_photo_url"
+                                :alt="$page.props.auth.user.name"
+                            />
                         </v-avatar>
                         <span v-else>{{ $page.props.auth.user.name }}</span>
                         <v-icon>mdi-chevron-down</v-icon>
@@ -142,31 +168,23 @@ const logout = () => {
 
                     <v-divider />
 
-                    <v-list-item
-                        @click="toggleTheme"
-                        title="Toggle Theme"
-                    />
+                    <v-list-item @click="toggleTheme" title="Toggle Theme" />
 
                     <v-divider />
 
-                    <v-list-item
-                        @click="logout"
-                        title="Log Out"
-                    />
+                    <v-list-item @click="logout" title="Log Out" />
                 </v-list>
             </v-menu>
-
         </v-app-bar>
 
         <NavigationDrawer />
 
         <v-main>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+            <div class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8">
                 <v-container>
                     <slot />
                 </v-container>
             </div>
-
         </v-main>
 
         <v-footer>
