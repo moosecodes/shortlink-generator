@@ -36,7 +36,7 @@ const toggleTheme = () => {
             <v-btn
                 v-if="$page.props.auth.user"
                 :href="route('dashboard')"
-                variant="elevated" class="mr-4">
+                variant="elevated" class="mr-4" color="primary">
                 Dashboard
             </v-btn>
             <div v-else>
