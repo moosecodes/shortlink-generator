@@ -48,8 +48,8 @@ onMounted(async () => {
             </p>
         </div>
 
-        <div class="d-flex justify-center my-12">
-            <v-card variant="text" width="100%" class="d-flex justify-center">
+        <div class="d-flex justify-end my-4">
+            <v-card variant="text">
                 <v-btn
                     variant="outlined"
                     prepend-icon="mdi-link-plus"

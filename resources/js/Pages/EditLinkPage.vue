@@ -7,10 +7,6 @@ const linkShortCode = defineProps(['linkShortCode']);
 
 <template>
     <AppLayout title="Edit Shortlink">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <LinkEditComponent :linkShortCode="linkShortCode"/>
-            </div>
-        </div>
+        <LinkEditComponent :linkShortCode="linkShortCode"/>
     </AppLayout>
 </template>

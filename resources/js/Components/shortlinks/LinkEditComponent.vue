@@ -1,19 +1,10 @@
 <script setup>
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { onMounted, reactive, computed } from 'vue';
-import { VBtn, VCard, VTextField, VForm, VRow, VCol, VChip } from 'vuetify/components';
-import LinkDetailsComponent from './LinkDetailsComponent.vue';
+import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components';
 import { fetchShortlinkbyShortCode, updateLink } from '@/Components/shortlinks/requests';
 
-const props = defineProps({
-    auth: Object,
-    flash: Object,
-    filteredShortlinks: Object,
-    linkShortCode: {
-        type: Object,
-        required: true,
-    },
-});
+const page = usePage()
 
 const state = reactive({
     message: '',
@@ -61,105 +52,96 @@ const navigateTo = (routeName) => {
 };
 
 onMounted(async () => {
-    await fetchShortlinkbyShortCode(props.linkShortCode.linkShortCode).then((response) => {
+    await fetchShortlinkbyShortCode(page.props.linkShortCode).then((response) => {
         state.shortlink = response;
     });
 });
 </script>
 
 <template>
+    <div>
         <v-row>
             <v-col cols="12" md="12">
-                <h1 class="text-3xl font-semibold">Edit Link</h1>
-                <p class="text-2xl font-weight-black my-4">{{state.shortlink?.title || state.shortlink?.short_code}}</p>
-                <div v-if="state.shortlink" class="my-4">
+                <h1 class="text-3xl font-semibold">{{ page.props.title }}</h1>
+            </v-col>
+
+            <v-col cols="12" md="12">
+
+                <v-form
+                    v-model="state.valid"
+                    @submit.prevent="updateLink(state.shortlink)">
+
+                    <p class="text-2xl font-weight-black">{{state.shortlink?.title || state.shortlink?.short_code}}</p>
+
                     <v-text-field
+                        v-if="state.shortlink"
                         v-model="state.shortlink.short_code"
-                        variant="outlined"
+                        variant="solo-filled"
                         label="Customize Short Code"
                         required
                     />
-                </div>
-                <!-- <LinkDetailsComponent v-if="state.shortlink" :filteredShortlinks="[state.shortlink]" /> -->
-            </v-col>
-        </v-row>
 
-        <v-form
-            v-model="state.valid"
-            @submit.prevent="updateLink(state.shortlink)">
+                    <v-btn
+                        type="submit"
+                        color="primary"
+                        @click="navigateTo('dashboard')"
+                        class="my-2"
+                    >
+                        {{state.message ? state.message : 'Update Shortlink' }}
+                    </v-btn>
 
-            <v-row>
-                <v-card>
-                    <v-col cols="12" md="12">
-                        <v-btn
-                            type="submit"
-                            color="blue-grey"
-                            @click="navigateTo('dashboard')"
-                            class="m-4"
-                        >
-                            {{state.message ? state.message : 'Update Shortlink' }}
-                        </v-btn>
+                    <!-- UTM Parameters -->
+                    <p class="text-1xl"><b>UTM Parameters</b></p>
 
-                        <v-btn
-                            color="blue-grey"
-                            @click="addUTMFields"
-                            class="m-4"
-                        >
-                            Add UTM Fields
-                        </v-btn>
-                </v-col>
+                    <v-btn
+                        color="white"
+                        @click="addUTMFields"
+                        class="my-2"
+                    >
+                        Add UTM Fields
+                    </v-btn>
 
-                <!-- Custom Parameters -->
-                <v-col cols="12" md="12">
-                    <p class="text-2xl"><b>Custom Parameters</b></p>
-                </v-col>
-
-                <v-col v-for="(field, i) in sortedMetadatas.filter(d => !d.meta_key.includes('utm_'))" :key="i" cols="12" md="4">
-                    <div class="mb-4"><b>Custom Parameter {{ i + 1 }}</b></div>
-                    <v-text-field
-                        v-model="field.meta_key"
-                        variant="outlined"
-                        label="Key"
-                        required
-                    />
-                    <v-text-field
-                        v-model="field.meta_value"
-                        variant="outlined"
-                        label="Value"
-                        required
-                        :disabled="!field.meta_key"
-                    />
-                </v-col>
-
-                <v-col cols="12" md="12">
-                    <v-card color="blue-grey">
-                        <v-btn
-                            color="blue-grey"
-                            @click="addCustomParam"
-                            class="m-4"
-                        >Add Custom Parameter</v-btn>
-                    </v-card>
-                </v-col>
-            </v-card>
-        </v-row>
-
-            <!-- UTM Parameters -->
-            <v-row>
-                <v-card>
-                    <v-col cols="12" md="12">
-                        <p class="text-2xl"><b>UTM Parameters</b></p>
-                    </v-col>
-
-                    <v-col v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i" cols="12" md="12">
-                        <v-chip class="mb-4">{{ field.meta_key }}</v-chip>
+                    <div v-for="(field, i) in sortedMetadatas.filter(d => d.meta_key.includes('utm_'))" :key="i">
+                        <p class="font-weight-bold mb-4">{{ field.meta_key }}</p>
 
                         <v-text-field
                             v-model="field.meta_value"
+                            variant="solo-filled"
                             label="Value"
                             required
                         />
-                    </v-col>
-                </v-card>
-            </v-row>
-        </v-form>
+                    </div>
+
+                    <!-- Custom Parameters -->
+                    <p class="text-1xl"><b>Custom Parameters</b></p>
+
+                    <v-btn
+                        color="white"
+                        @click="addCustomParam"
+                        class="my-4"
+                    >
+                        Add Custom Parameter
+                    </v-btn>
+
+                    <div v-for="(field, i) in sortedMetadatas.filter(d => !d.meta_key.includes('utm_'))" :key="i">
+                        <p class="mb-4"><b>Custom Parameter {{ i + 1 }}</b></p>
+
+                        <v-text-field
+                            v-model="field.meta_key"
+                            variant="solo-filled"
+                            label="Key"
+                            required
+                        />
+                        <v-text-field
+                            v-model="field.meta_value"
+                            variant="solo-filled"
+                            label="Value"
+                            required
+                            :disabled="!field.meta_key"
+                        />
+                    </div>
+                </v-form>
+            </v-col>
+        </v-row>
+    </div>
 </template>

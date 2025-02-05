@@ -16,55 +16,54 @@ const navigateTo = (routeName) => {
 
 <template>
     <AppLayout title="Dashboard">
-
         <v-row>
             <v-col cols="12" md="12">
-                <p class="text-3xl font-semibold">Click Engagement</p>
+                <p class="text-3xl font-semibold">Dashboard</p>
             </v-col>
-            <div class="d-flex justify-center my-12">
-            <v-card variant="text" width="100%" class="d-flex justify-center">
-                <v-btn
-                    variant="outlined"
-                    prepend-icon="mdi-link-plus"
-                    color="primary"
-                    class="m-4"
-                    @click="navigateTo('link.create')">
-                        New Shortlink
-                </v-btn>
 
-                <v-btn
-                    disabled
-                    variant="text"
-                    prepend-icon="mdi-qrcode-scan"
-                    color="white"
-                    class="m-4"
-                    @click="navigateTo('link.create')">
-                        New QR Code
-                </v-btn>
+            <div class="d-flex justify-center">
+                <v-card variant="text">
+                    <v-btn
+                        variant="outlined"
+                        prepend-icon="mdi-link-plus"
+                        color="primary"
+                        class="m-4"
+                        @click="navigateTo('link.create')">
+                            New Shortlink
+                    </v-btn>
 
-                <v-btn
-                    disabled
-                    variant="text"
-                    prepend-icon="mdi-file-document-outline"
-                    color="white"
-                    class="m-4"
-                    @click="navigateTo('link.create')">
-                        New Page
-                </v-btn>
-            </v-card>
+                    <v-btn
+                        disabled
+                        variant="text"
+                        prepend-icon="mdi-qrcode-scan"
+                        color="white"
+                        class="m-4"
+                        @click="navigateTo('link.create')">
+                            New QR Code
+                    </v-btn>
 
-        </div>
+                    <v-btn
+                        disabled
+                        variant="text"
+                        prepend-icon="mdi-file-document-outline"
+                        color="white"
+                        class="m-4"
+                        @click="navigateTo('link.create')">
+                            New Page
+                    </v-btn>
+                </v-card>
+            </div>
         </v-row>
 
         <v-row v-if="props?.shortlinks?.length">
             <v-col cols="12" md="12">
-                <div class="my-2 text-3xl font-semibold">Recent Activity</div>
+                <div class="my-2 text-3xl font-semibold">Short Links</div>
             </v-col>
 
-            <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="4">
+            <v-col v-for="item in props.shortlinks" :key="item.shortCode" cols="12" md="12">
 
                 <p class="font-weight-bold">
-                    <Link :href="item.short_url" target="_blank">
+                    <Link :href="item.short_url" target="_blank" class="text-primary">
                         {{ item.title || 'No Title' }}
                     </Link>
                 </p>
@@ -77,20 +76,20 @@ const navigateTo = (routeName) => {
 
                 <v-btn
                     :href="route('link.analytics', { shortlink_id: item.id })"
-                    prepend-icon="mdi-signal"
+                    icon="mdi-signal"
                     variant="outlined"
-                    class="my-4"
+                    class="my-4 mr-4"
                 >
-                    Analytics
+
                 </v-btn>
 
                 <v-btn
                     v-if="!route().current('link.update')"
                     variant="outlined"
-                    prepend-icon="mdi-link-edit"
+                    icon="mdi-link-edit"
                     :href="`/link/edit/byShortCode/${item.short_code}`"
-                    class="my4-2">
-                    Edit Link
+                    class="my-2">
+
                 </v-btn>
 
             </v-col>
@@ -98,7 +97,12 @@ const navigateTo = (routeName) => {
 
         <v-row v-else>
             <v-col cols="12" md="12">
-                <v-btn class="text-2xl font-semibold" color="primary" :href="route('link.create')">Create New Link</v-btn>
+                <v-btn
+                    class="text-2xl font-semibold"
+                    color="primary"
+                    :href="route('link.create')">
+                        Create New Link
+                    </v-btn>
             </v-col>
         </v-row>
     </AppLayout>

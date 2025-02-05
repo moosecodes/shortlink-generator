@@ -1,6 +1,6 @@
 import { router } from '@inertiajs/vue3';
 
-export const deleteShortlink = async ({ short_code }) => {
+export const deleteShortlink = async (short_code) => {
     const confirmDelete = confirm(`Are you sure you want to delete this shortlink ${short_code}?`);
 
     if (confirmDelete) {
@@ -13,11 +13,11 @@ export const deleteShortlink = async ({ short_code }) => {
     }
 }
 
-export const toggleActivation = async (link) => {
+export const toggleActivation = async (id, is_active) => {
     try {
-        const route = link.is_active
-            ? `/api/link/deactivate/${link.id}`
-            : `/api/link/activate/${link.id}`;
+        const route = is_active
+            ? `/api/link/deactivate/${id}`
+            : `/api/link/activate/${id}`;
 
         const response = await axios.patch(route);
 

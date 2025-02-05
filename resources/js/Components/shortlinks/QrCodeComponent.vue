@@ -1,11 +1,10 @@
 <script setup>
 import { reactive, watch } from 'vue';
-import { VImg, VChip } from 'vuetify/components';
+import { VImg, VChip, VCard, VCardActions } from 'vuetify/components';
 import QRCode from 'qrcode';
 
 const props = defineProps({
-    input: String,
-    scans: Number,
+    input: Object,
 });
 
 const state = reactive({
@@ -34,7 +33,7 @@ const generateQRCode = async (input) => {
 };
 
 // Watch for changes to props.input and generate the QR code when it changes
-watch(() => props.input, (newInput) => {
+watch(() => props.input.short_url, (newInput) => {
     if(!newInput) return;
     newInput +=  newInput.indexOf("?") < 0 ? "?qr=1" : "&qr=1";
     state.qrURL = newInput;
@@ -43,16 +42,39 @@ watch(() => props.input, (newInput) => {
 </script>
 
 <template>
-    <div class="flex flex-col items-center my-4">
-        <v-chip class="my-4">{{ scans }} QR Scans</v-chip>
+    <v-card
+        class="my-4"
+        :color="props.input.is_active ? 'white ' : 'black'"
+        :variant="props.input.is_active ? 'flat' : 'flat'">
 
-        <v-img
-            :width="200"
-            :src="state.base64QRCode"
-        />
+        <v-card-actions class="flex flex-column">
+            <v-card-actions>
+                <v-chip variant="outlined" class="mx-2">Clicks: {{ input.total_clicks }}</v-chip>
+                <v-chip variant="outlined" class="mx-2">Unique: {{ input.unique_clicks }}</v-chip>
+            </v-card-actions>
 
-        <v-chip class="my-4">
-            <a :href="state.qrURL" target="_blank">{{ state.qrURL }}</a>
-        </v-chip>
-    </div>
+            <v-card-actions>
+                <v-chip variant="outlined" class="mx-2">Last 7 Days: xxx clicks</v-chip>
+                <v-chip variant="outlined" class="mx-2">Weekly Change: xx%</v-chip>
+            </v-card-actions>
+        </v-card-actions>
+    </v-card>
+
+    <v-card
+        class="my-4"
+        :color="props.input.is_active ? 'white ' : 'black'"
+        :variant="props.input.is_active ? 'flat' : 'flat'">
+
+        <v-card-actions class="flex flex-column">
+            <v-img
+                :width="200"
+                :src="state.base64QRCode"
+            />
+
+            <v-chip variant="outlined" class="font-weight-bold m-2">QR Scans: {{ props.input.qr_scans }}</v-chip>
+        </v-card-actions>
+
+
+    </v-card>
+
 </template>

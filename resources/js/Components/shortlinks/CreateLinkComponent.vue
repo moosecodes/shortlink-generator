@@ -78,7 +78,6 @@ const computedParameters = computed(() => {
                     v-model="state.shortlink.title"
                     variant="solo"
                     label="Shortlink Title (optional)"
-                    required
                 />
 
                 <v-text-field
