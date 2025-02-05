@@ -1,6 +1,6 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue'
-import { computed, reactive, onMounted } from 'vue'
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { computed, reactive, onMounted } from 'vue';
 import {
     VBtn,
     VRow,
@@ -9,45 +9,45 @@ import {
     VCard,
     VCardItem,
     VCardTitle,
-} from 'vuetify/components'
-import { usePage } from '@inertiajs/vue3'
-import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue'
+} from 'vuetify/components';
+import { usePage } from '@inertiajs/vue3';
+import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 import {
     fetchUserShortlinks,
     navigateTo,
-} from '@/Components/shortlinks/requests'
+} from '@/Components/shortlinks/requests';
 
-const page = usePage() // TODO: look up docs for usePage() and useOther()
+const page = usePage(); // TODO: look up docs for usePage() and useOther()
 
 const props = defineProps({
     auth: Object,
     flash: Object,
-})
+});
 
 const state = reactive({
     shortlinks: [],
     linkFilter: 'All',
-})
+});
 
 const filteredShortlinks = computed(() => {
-    const { linkFilter, shortlinks } = state
+    const { linkFilter, shortlinks } = state;
 
     if (!shortlinks) {
-        return []
+        return [];
     }
     if (linkFilter === 'All') {
-        return shortlinks.slice().reverse()
+        return shortlinks.slice().reverse();
     } else if (linkFilter === 'Active') {
-        return shortlinks.filter((link) => link.is_active).reverse()
+        return shortlinks.filter((link) => link.is_active).reverse();
     } else {
-        return shortlinks.filter((link) => !link.is_active).reverse()
+        return shortlinks.filter((link) => !link.is_active).reverse();
     }
-})
+});
 
 onMounted(async () => {
-    console.log(page)
-    state.shortlinks = await fetchUserShortlinks()
-})
+    console.log(page);
+    state.shortlinks = await fetchUserShortlinks();
+});
 </script>
 
 <template>

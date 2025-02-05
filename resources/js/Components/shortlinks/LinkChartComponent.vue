@@ -6,18 +6,18 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { Chart } from 'chart.js'
+import { ref, onMounted } from 'vue';
+import { Chart } from 'chart.js';
 
 export default {
     name: 'LinkChartComponent',
     setup() {
-        const chart = ref(null)
+        const chart = ref(null);
 
         onMounted(() => {
             const ctx = document
                 .getElementById('LinkChartComponentCanvas')
-                .getContext('2d')
+                .getContext('2d');
             chart.value = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -47,14 +47,14 @@ export default {
                         },
                     },
                 },
-            })
-        })
+            });
+        });
 
         return {
             chart,
-        }
+        };
     },
-}
+};
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <script setup>
-import AppBarComponent from '@/Components/shortlinks/AppBarComponent.vue'
-import { Head } from '@inertiajs/vue3'
-import Banner from '@/Components/Banner.vue'
+import AppBarComponent from '@/Components/shortlinks/AppBarComponent.vue';
+import { Head } from '@inertiajs/vue3';
+import Banner from '@/Components/Banner.vue';
 import {
     VApp,
     VContainer,
@@ -10,11 +10,11 @@ import {
     VRow,
     VCol,
     VLayout,
-} from 'vuetify/lib/components/index.mjs'
+} from 'vuetify/lib/components/index.mjs';
 
 defineProps({
     title: String,
-})
+});
 </script>
 
 <template>

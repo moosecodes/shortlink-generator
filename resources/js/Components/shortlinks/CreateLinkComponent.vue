@@ -1,7 +1,7 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { router } from '@inertiajs/vue3'
-import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components'
+import { ref, reactive, computed } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
 
 const state = reactive({
     shortlink: {
@@ -19,11 +19,11 @@ const state = reactive({
     showFormFields: true,
     message: '',
     valid: false,
-})
+});
 
-const message = ref('')
+const message = ref('');
 
-const valid = ref(false)
+const valid = ref(false);
 
 const createNewLink = async () => {
     try {
@@ -32,34 +32,34 @@ const createNewLink = async () => {
             user_url: state.shortlink.user_url,
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
-        })
+        });
 
-        state.message = response
+        state.message = response;
     } catch (error) {
-        console.error('Error creating shortlink:', error)
-        state.message = error
+        console.error('Error creating shortlink:', error);
+        state.message = error;
     }
-}
+};
 
 const toggleUTMFields = () => {
-    state.showFormFields = !state.showFormFields
-}
+    state.showFormFields = !state.showFormFields;
+};
 
 const addNewMetaField = () => {
-    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' })
-}
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
+};
 
 const navigateTo = (routeName) => {
-    router.get(route(routeName))
-}
+    router.get(route(routeName));
+};
 
 const computedParameters = computed(() => {
     let parameters = state.shortlink.metadatas.map((m) =>
         m.meta_key && m.meta_value ? `${m.meta_key}=${m.meta_value}` : null,
-    )
-    parameters = parameters.filter((p) => p)
-    return parameters.join(' & ')
-})
+    );
+    parameters = parameters.filter((p) => p);
+    return parameters.join(' & ');
+});
 </script>
 
 <template>

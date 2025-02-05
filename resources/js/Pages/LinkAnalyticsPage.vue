@@ -1,14 +1,14 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue'
-import { Line, Bar } from 'vue-chartjs'
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { Line, Bar } from 'vue-chartjs';
 import {
     VRow,
     VCol,
     VChip,
     VCard,
     VCardActions,
-} from 'vuetify/lib/components/index.mjs'
-import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue'
+} from 'vuetify/lib/components/index.mjs';
+import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
 import {
     Chart as ChartJS,
@@ -20,8 +20,8 @@ import {
     Tooltip,
     Legend,
     BarElement,
-} from 'chart.js'
-import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue'
+} from 'chart.js';
+import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 
 ChartJS.register(
     CategoryScale,
@@ -32,13 +32,13 @@ ChartJS.register(
     Tooltip,
     Legend,
     BarElement,
-)
+);
 
 const props = defineProps({
     graphs: Array,
     locations: Array,
     shortlink: Object,
-})
+});
 
 const lineOptions = {
     responsive: true,
@@ -71,7 +71,7 @@ const lineOptions = {
             display: false,
         },
     },
-}
+};
 
 const barOptions = {
     responsive: true,
@@ -104,18 +104,18 @@ const barOptions = {
             display: false,
         },
     },
-}
+};
 
 const deDupedLocations = () => {
     if (!props.locations) {
-        return []
+        return [];
     }
     return props.locations.filter(
         (location, index, self) =>
             index ===
             self.findIndex((t) => t.country_name === location.country_name),
-    )
-}
+    );
+};
 </script>
 
 <template>

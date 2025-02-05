@@ -1,15 +1,15 @@
 <script setup>
-import LandingPageLayout from '@/Layouts/LandingPageLayout.vue'
-import LandingPageFeaturesComponent from '@/Components/shortlinks/LandingPageFeaturesComponent.vue'
-import LandingPageGeneratorsComponent from '@/Components/shortlinks/LandingPageGeneratorsComponent.vue'
+import LandingPageLayout from '@/Layouts/LandingPageLayout.vue';
+import LandingPageFeaturesComponent from '@/Components/shortlinks/LandingPageFeaturesComponent.vue';
+import LandingPageGeneratorsComponent from '@/Components/shortlinks/LandingPageGeneratorsComponent.vue';
 
-import { VRow, VContainer } from 'vuetify/lib/components/index.mjs'
+import { VRow, VContainer } from 'vuetify/lib/components/index.mjs';
 
 defineProps({
     auth: Object,
     flash: Object,
     title: String,
-})
+});
 </script>
 
 <template>

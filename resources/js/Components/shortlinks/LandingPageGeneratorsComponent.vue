@@ -1,6 +1,6 @@
 <script setup>
-import { reactive } from 'vue'
-import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue'
+import { reactive } from 'vue';
+import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue';
 import {
     VBtn,
     VForm,
@@ -8,14 +8,14 @@ import {
     VCard,
     VCardTitle,
     VCardText,
-} from 'vuetify/lib/components/index.mjs'
+} from 'vuetify/lib/components/index.mjs';
 
 const props = defineProps({
     auth: Object,
     flash: Object,
     title: String,
     initialState: Object,
-})
+});
 
 const state = reactive({
     user_url: '',
@@ -23,25 +23,25 @@ const state = reactive({
     short_url: '',
     message: '',
     switchFeature: false,
-})
+});
 
 const toggleFeature = () => {
-    state.switchFeature = !state.switchFeature
-    return state.switchFeature ? 'shortlink' : 'qr'
-}
+    state.switchFeature = !state.switchFeature;
+    return state.switchFeature ? 'shortlink' : 'qr';
+};
 
 const createFreeLink = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
             user_url: state.user_url,
-        })
-        state.short_url = response.data.short_url
-        state.message = response
+        });
+        state.short_url = response.data.short_url;
+        state.message = response;
     } catch (error) {
-        console.error('Error creating shortlink:', error)
-        state.message = error
+        console.error('Error creating shortlink:', error);
+        state.message = error;
     }
-}
+};
 </script>
 
 <template>

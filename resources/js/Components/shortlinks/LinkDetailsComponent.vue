@@ -1,6 +1,6 @@
 <script setup>
-import dayjs from 'dayjs'
-import { ref, watch } from 'vue'
+import dayjs from 'dayjs';
+import { ref, watch } from 'vue';
 import {
     VRow,
     VCol,
@@ -9,40 +9,40 @@ import {
     VIcon,
     VCard,
     VCardActions,
-} from 'vuetify/components'
-import { Link } from '@inertiajs/vue3'
-import { deleteShortlink, toggleActivation } from './requests'
-import QrCodeComponent from './QrCodeComponent.vue'
+} from 'vuetify/components';
+import { Link } from '@inertiajs/vue3';
+import { deleteShortlink, toggleActivation } from './requests';
+import QrCodeComponent from './QrCodeComponent.vue';
 
 const props = defineProps({
     filteredShortlinks: Object,
     required: true,
-})
+});
 
-let filteredShortlinks = ref([])
+let filteredShortlinks = ref([]);
 
 const isRecent = (created_at, updated_at) => {
-    const now = dayjs()
-    const createdAt = dayjs(created_at)
-    const updatedAt = dayjs(updated_at)
+    const now = dayjs();
+    const createdAt = dayjs(created_at);
+    const updatedAt = dayjs(updated_at);
 
     return (
         now.diff(createdAt, 'minute') < 15 || now.diff(updatedAt, 'minute') < 15
-    )
-}
+    );
+};
 
 const handleActivation = async (id, is_active, i) => {
-    await toggleActivation(id, is_active)
-    filteredShortlinks[i].is_active = !filteredShortlinks[i].is_active
-}
+    await toggleActivation(id, is_active);
+    filteredShortlinks[i].is_active = !filteredShortlinks[i].is_active;
+};
 
 watch(
     () => props.filteredShortlinks,
     (newValue) => {
-        filteredShortlinks = newValue
+        filteredShortlinks = newValue;
     },
     { immediate: true },
-)
+);
 </script>
 
 <template>

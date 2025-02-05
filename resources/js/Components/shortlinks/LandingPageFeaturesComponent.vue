@@ -10,7 +10,7 @@ import {
     VListItem,
     VListItemTitle,
     VListSubheader,
-} from 'vuetify/lib/components/index.mjs'
+} from 'vuetify/lib/components/index.mjs';
 
 const rowStyles = {
     flex: true,
@@ -18,7 +18,7 @@ const rowStyles = {
     'justify-center': true,
     'text-center': true,
     'my-4': true,
-}
+};
 
 const freeFeatures = [
     '50 Free Short Links / month',
@@ -26,7 +26,7 @@ const freeFeatures = [
     'Qr Code Generation',
     'Unlimited Clicks and Scans',
     'Custom Domains (coming soon)',
-]
+];
 </script>
 
 <template>

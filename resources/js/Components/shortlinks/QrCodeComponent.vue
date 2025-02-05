@@ -1,17 +1,17 @@
 <script setup>
-import { reactive, watch } from 'vue'
-import { VImg, VChip, VCard, VCardActions } from 'vuetify/components'
-import QRCode from 'qrcode'
+import { reactive, watch } from 'vue';
+import { VImg, VChip, VCard, VCardActions } from 'vuetify/components';
+import QRCode from 'qrcode';
 
 const props = defineProps({
     input: Object,
-})
+});
 
 const state = reactive({
     base64QRCode: '',
     scans: 0,
     qrURL: '',
-})
+});
 
 const generateQRCode = async (input) => {
     try {
@@ -25,24 +25,24 @@ const generateQRCode = async (input) => {
                     dark: '#fe2c55ff',
                     light: '#ffffffff',
                 },
-            })
+            });
         }
     } catch (error) {
-        console.error('Error generating QR code:', error)
+        console.error('Error generating QR code:', error);
     }
-}
+};
 
 // Watch for changes to props.input and generate the QR code when it changes
 watch(
     () => props.input.short_url,
     (newInput) => {
-        if (!newInput) return
-        newInput += newInput.indexOf('?') < 0 ? '?qr=1' : '&qr=1'
-        state.qrURL = newInput
-        generateQRCode(newInput)
+        if (!newInput) return;
+        newInput += newInput.indexOf('?') < 0 ? '?qr=1' : '&qr=1';
+        state.qrURL = newInput;
+        generateQRCode(newInput);
     },
     { immediate: true },
-)
+);
 </script>
 
 <template>

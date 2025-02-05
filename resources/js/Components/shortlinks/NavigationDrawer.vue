@@ -1,7 +1,7 @@
 <script setup>
-import { router } from '@inertiajs/vue3'
-import { onMounted, reactive, ref } from 'vue'
-import { usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3';
+import { onMounted, reactive, ref } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import {
     VBtn,
     VDivider,
@@ -9,24 +9,24 @@ import {
     VListItem,
     VNavigationDrawer,
     VAppBarNavIcon,
-} from 'vuetify/lib/components/index.mjs'
+} from 'vuetify/lib/components/index.mjs';
 
 const props = defineProps({
     auth: Object,
-})
+});
 
 const state = reactive({
     drawer: true,
     rail: false,
-})
+});
 
 const navigateTo = (routeName) => {
-    router.get(route(routeName))
-}
+    router.get(route(routeName));
+};
 
 onMounted(() => {
-    console.log(state)
-})
+    console.log(state);
+});
 </script>
 
 <template>

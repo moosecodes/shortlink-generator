@@ -1,10 +1,10 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
-import { VBtn, VRow, VCol, VCard } from 'vuetify/lib/components/index.mjs'
-import SubMenuComponent from './SubMenuComponent.vue'
+import { Link } from '@inertiajs/vue3';
+import { VBtn, VRow, VCol, VCard } from 'vuetify/lib/components/index.mjs';
+import SubMenuComponent from './SubMenuComponent.vue';
 const navigateTo = (routeName) => {
-    router.get(route(routeName))
-}
+    router.get(route(routeName));
+};
 </script>
 
 <template>

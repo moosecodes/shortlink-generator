@@ -1,8 +1,8 @@
 <script setup>
-import { Head, Link, router } from '@inertiajs/vue3'
-import { ref } from 'vue'
-import ApplicationMark from '@/Components/ApplicationMark.vue'
-import Banner from '@/Components/Banner.vue'
+import { Head, Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import ApplicationMark from '@/Components/ApplicationMark.vue';
+import Banner from '@/Components/Banner.vue';
 import {
     VApp,
     VAppBar,
@@ -21,20 +21,22 @@ import {
     VMain,
     VMenu,
     VSpacer,
-} from 'vuetify/lib/components/index.mjs'
+} from 'vuetify/lib/components/index.mjs';
 
-import { useTheme } from 'vuetify'
-import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue'
+import { useTheme } from 'vuetify';
+import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue';
 
 defineProps({
     title: String,
-})
+});
 
-const theme = useTheme()
+const theme = useTheme();
 
 const toggleTheme = () => {
-    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-}
+    theme.global.name.value = theme.global.current.value.dark
+        ? 'light'
+        : 'dark';
+};
 
 const switchToTeam = (team) => {
     router.put(
@@ -45,12 +47,12 @@ const switchToTeam = (team) => {
         {
             preserveState: false,
         },
-    )
-}
+    );
+};
 
 const logout = () => {
-    router.post(route('logout'))
-}
+    router.post(route('logout'));
+};
 </script>
 
 <template>

@@ -1,16 +1,18 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
-import ApplicationMark from '@/Components/ApplicationMark.vue'
+import { Link } from '@inertiajs/vue3';
+import ApplicationMark from '@/Components/ApplicationMark.vue';
 
-import { VBtn, VAppBar, VAppBarTitle } from 'vuetify/lib/components/index.mjs'
+import { VBtn, VAppBar, VAppBarTitle } from 'vuetify/lib/components/index.mjs';
 
-import { useTheme } from 'vuetify'
+import { useTheme } from 'vuetify';
 
-const theme = useTheme()
+const theme = useTheme();
 
 const toggleTheme = () => {
-    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-}
+    theme.global.name.value = theme.global.current.value.dark
+        ? 'light'
+        : 'dark';
+};
 </script>
 
 <template>

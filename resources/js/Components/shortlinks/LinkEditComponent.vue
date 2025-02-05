@@ -1,35 +1,35 @@
 <script setup>
-import { router, usePage } from '@inertiajs/vue3'
-import { onMounted, reactive, computed } from 'vue'
-import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components'
+import { router, usePage } from '@inertiajs/vue3';
+import { onMounted, reactive, computed } from 'vue';
+import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components';
 import {
     fetchShortlinkbyShortCode,
     updateLink,
-} from '@/Components/shortlinks/requests'
+} from '@/Components/shortlinks/requests';
 
-const page = usePage()
+const page = usePage();
 
 const state = reactive({
     message: '',
     valid: false,
-})
+});
 
 const sortedMetadatas = computed(() => {
     if (!state.shortlink?.metadatas) {
-        return []
+        return [];
     }
     return state.shortlink.metadatas.slice().sort((a, b) => {
-        const aHasUtm = a.meta_key.startsWith('utm_')
-        const bHasUtm = b.meta_key.startsWith('utm_')
-        if (aHasUtm && !bHasUtm) return -1
-        if (!aHasUtm && bHasUtm) return 1
-        return 0
-    })
-})
+        const aHasUtm = a.meta_key.startsWith('utm_');
+        const bHasUtm = b.meta_key.startsWith('utm_');
+        if (aHasUtm && !bHasUtm) return -1;
+        if (!aHasUtm && bHasUtm) return 1;
+        return 0;
+    });
+});
 
 const addCustomParam = () => {
-    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' })
-}
+    state.shortlink.metadatas.push({ meta_key: '', meta_value: '' });
+};
 
 const addUTMFields = () => {
     const metaTemplate = [
@@ -38,29 +38,29 @@ const addUTMFields = () => {
         { meta_key: 'utm_campaign', meta_value: '' },
         { meta_key: 'utm_term', meta_value: '' },
         { meta_key: 'utm_content', meta_value: '' },
-    ]
+    ];
 
     metaTemplate.forEach((templateItem) => {
         const exists = state.shortlink.metadatas.some(
             (metadata) => metadata.meta_key === templateItem.meta_key,
-        )
+        );
         if (!exists) {
-            state.shortlink.metadatas.push(templateItem)
+            state.shortlink.metadatas.push(templateItem);
         }
-    })
-}
+    });
+};
 
 const navigateTo = (routeName) => {
-    router.get(route(routeName))
-}
+    router.get(route(routeName));
+};
 
 onMounted(async () => {
     await fetchShortlinkbyShortCode(page.props.linkShortCode).then(
         (response) => {
-            state.shortlink = response
+            state.shortlink = response;
         },
-    )
-})
+    );
+});
 </script>
 
 <template>
