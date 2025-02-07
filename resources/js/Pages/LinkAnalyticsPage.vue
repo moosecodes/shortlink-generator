@@ -1,13 +1,7 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Line, Bar } from 'vue-chartjs';
-import {
-    VRow,
-    VCol,
-    VChip,
-    VCard,
-    VCardActions,
-} from 'vuetify/lib/components/index.mjs';
+import { VRow, VCol, VCard } from 'vuetify/lib/components/index.mjs';
 import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
 
 import {

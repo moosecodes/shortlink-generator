@@ -2,6 +2,7 @@
 import { reactive } from 'vue';
 import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue';
 import {
+    VRow,
     VBtn,
     VForm,
     VTextField,
@@ -45,35 +46,59 @@ const createFreeLink = async () => {
 </script>
 
 <template>
-    <div>
-        <div class="my-4 flex justify-center">
-            <v-btn
-                class="mx-2"
-                color="primary"
-                :variant="state.switchFeature ? 'outlined' : 'elevated'"
-                @click="toggleFeature"
-            >
-                Short link
-            </v-btn>
-            <v-btn
-                class="mx-2"
-                color="primary"
-                :variant="!state.switchFeature ? 'outlined' : 'elevated'"
-                @click="toggleFeature"
-            >
-                QR Code
-            </v-btn>
+    <v-row
+        class="flex-column mx-auto my-4 flex max-w-3xl justify-center text-center sm:px-6 lg:px-8"
+    >
+        <div class="">
+            <p class="text-h3 my-8">
+                Transform Your Links into Powerful Connections
+            </p>
+            <p class="my-4">
+                Simplify engagement with our powerful URL shortener, dynamic QR
+                Codes, and customized landing pages. Effortlessly connect your
+                audience to the right content while building, editing, and
+                tracking every interaction on our intuitive platform.
+            </p>
         </div>
+    </v-row>
+
+    <v-row
+        class="flex-column mx-auto my-4 flex max-w-3xl justify-center text-center sm:px-6 lg:px-8"
+    >
+        <v-btn
+            class="my-2"
+            color="primary"
+            :variant="state.switchFeature ? 'outlined' : 'elevated'"
+            @click="toggleFeature"
+        >
+            Short link
+        </v-btn>
+
+        <v-btn
+            class="my-2"
+            color="primary"
+            :variant="!state.switchFeature ? 'outlined' : 'elevated'"
+            @click="toggleFeature"
+        >
+            QR Code
+        </v-btn>
+    </v-row>
+
+    <v-row
+        class="flex-column mx-auto flex max-w-3xl justify-center text-center sm:px-6 lg:px-8"
+    >
         <v-card v-if="!state.switchFeature">
+            <v-card-title>Link Shortener</v-card-title>
+
             <v-card-text>
                 <v-form @submit.prevent>
-                    <v-card-title>Link Shortener</v-card-title>
                     <v-text-field
                         v-model="state.user_url"
                         variant="solo-filled"
                         label="Paste your URL here"
                         :rules="state.urlRules"
                     />
+
                     <v-btn
                         v-if="!state.short_url"
                         class="my-4"
@@ -85,6 +110,7 @@ const createFreeLink = async () => {
                     >
                         Shorten Link
                     </v-btn>
+
                     <v-btn
                         v-else
                         class="my-4"
@@ -97,16 +123,19 @@ const createFreeLink = async () => {
                 </v-form>
             </v-card-text>
         </v-card>
+
         <v-card v-else>
             <v-card-text>
                 <v-form @submit.prevent>
                     <v-card-title>Generate Free QR Code</v-card-title>
+
                     <v-text-field
                         v-model="state.user_url"
                         variant="solo-filled"
                         label="Paste your long link here"
                         :rules="state.urlRules"
                     />
+
                     <v-btn
                         class="my-4"
                         type="submit"
@@ -118,10 +147,11 @@ const createFreeLink = async () => {
                         Generate FREE QR Code
                     </v-btn>
                 </v-form>
+
                 <div v-if="state.short_url">
                     <QrCodeComponent :input="state.short_url" />
                 </div>
             </v-card-text>
         </v-card>
-    </div>
+    </v-row>
 </template>

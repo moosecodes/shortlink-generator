@@ -9,6 +9,7 @@ import {
     VIcon,
     VCard,
     VCardActions,
+    VCardTitle,
 } from 'vuetify/components';
 import { Link } from '@inertiajs/vue3';
 import { deleteShortlink, toggleActivation } from './requests';
@@ -46,9 +47,9 @@ watch(
 </script>
 
 <template>
-    <div v-if="!filteredShortlinks?.length">
+    <v-row v-if="!filteredShortlinks?.length">
         <p>No short links currently exist. Create a new link to get started!</p>
-    </div>
+    </v-row>
 
     <div v-else>
         <v-row
@@ -65,6 +66,7 @@ watch(
                     qr_scans,
                     expires_at,
                     created_at,
+                    unique_clicks,
                 },
                 i
             ) in filteredShortlinks"
@@ -72,27 +74,26 @@ watch(
         >
             <v-col cols="12" md="12">
                 <v-card
-                    :color="is_active ? 'white ' : 'black'"
-                    :variant="is_active ? 'outlined' : 'outlined'"
+                    :color="is_active ? 'white ' : 'white'"
+                    :variant="is_active ? 'outlined' : 'plain'"
                 >
                     <v-card-actions
                         class="d-flex flex-wrap justify-between"
                         :class="is_active ? 'bg-white' : 'bg-black'"
                     >
-                        <div>
-                            <v-chip variant="text">
-                                <span
-                                    v-if="isRecent(short_code, updated_at)"
-                                    :class="
-                                        is_active
-                                            ? 'text-green-500'
-                                            : 'text-primary'
-                                    "
-                                    class="mr-2"
-                                >
-                                    [ NEW ]
-                                </span>
-
+                        <v-card-title>
+                            <span
+                                v-if="isRecent(short_code, updated_at)"
+                                :class="
+                                    is_active
+                                        ? 'text-green-500'
+                                        : 'text-primary'
+                                "
+                                class="mr-2"
+                            >
+                                [ NEW ]
+                            </span>
+                            <v-chip variant="outlined">
                                 <span
                                     :class="
                                         is_active
@@ -103,7 +104,11 @@ watch(
                                 >
                                     {{ short_code }}
                                 </span>
+                            </v-chip>
+                        </v-card-title>
 
+                        <div>
+                            <v-chip variant="text">
                                 <span
                                     class="text-lowercase font-weight-bold mx-2"
                                     :class="
@@ -305,10 +310,12 @@ watch(
                     v-if="route().current('link.analytics')"
                     :input="{
                         user_url,
+                        short_url,
                         short_code,
                         is_active,
                         total_clicks,
                         unique_clicks,
+                        qr_scans,
                     }"
                 />
             </v-col>

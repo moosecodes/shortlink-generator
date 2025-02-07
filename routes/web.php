@@ -29,7 +29,8 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/links/manage', function () {
-        return Inertia::render('ManageLinksPage', [
+        return Inertia::render('LinksManagePage', [
+            'title' => 'Manage Links',
             'links' => Auth::user()->shortlinks,
         ]);
     })->name('show.links');
@@ -38,7 +39,7 @@ Route::middleware([
         Route::get('/analytics/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
 
         Route::get('/new', function () {
-            return Inertia::render('link.create', [
+            return Inertia::render('LinkCreatePage', [
                 'title' => 'Create New Link'
             ]);
         })->name('create');
@@ -52,27 +53,27 @@ Route::middleware([
     });
 
     Route::get('/qrcodes', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('qr-codes');
 
     Route::get('/pages', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('pages');
 
     Route::get('/analytics', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('page.analytics');
 
     Route::get('/campaigns', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('campaigns');
 
     Route::get('/custom-domains', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('custom-domains');
 
     Route::get('/settings', function () {
-        return Inertia::render('ManageLinksPage');
+        return Inertia::render('LinksManagePage');
     })->name('settings');
 });
 

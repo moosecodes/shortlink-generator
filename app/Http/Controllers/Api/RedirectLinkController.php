@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Shortlink;
 use App\Models\Location;
+use App\Models\Metadata;
 use Stevebauman\Location\Facades\Location as LocationService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -32,9 +33,15 @@ class RedirectLinkController extends Controller
 
             $this->upsertUniqueClick($shortlink, $ipAddress, $userId, $request);
 
-            $props = [];
+            $props = collect();
 
-            return redirect($shortlink->user_url . '?' . http_build_query($props));
+            $metadatas = Metadata::where('shortlink_id', $shortlink->id);
+
+            $metadatas->each(function ($item, $key) use ($props) {
+                $props->put($item->meta_key, $item->meta_value);
+            });
+
+            return redirect($shortlink->user_url . '?' . http_build_query($props->toArray()));
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {

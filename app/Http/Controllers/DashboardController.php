@@ -7,8 +7,6 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Shortlink;
 use App\Models\Location;
-use App\Http\Controllers\Api\GetClicksOverTime;
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -21,6 +19,7 @@ class DashboardController extends Controller
         $locations = Location::where('user_id', $userId)->get();
 
         return Inertia::render('DashboardPage', [
+            'title' => 'Dashboard',
             'shortlinks' => $shortlinks,
             'locations' => $locations,
         ]);

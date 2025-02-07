@@ -31,7 +31,7 @@ const freeFeatures = [
 
 <template>
     <v-row>
-        <v-card class="mx-auto my-8">
+        <v-card class="mx-auto my-4">
             <v-list>
                 <v-list-subheader
                     class="text-h6 flex justify-center"

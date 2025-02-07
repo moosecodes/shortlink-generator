@@ -1,16 +1,9 @@
 <script setup>
 import AppBarComponent from '@/Components/shortlinks/AppBarComponent.vue';
+import LandingPageFooter from '@/Components/shortlinks/LandingPageFooter.vue';
 import { Head } from '@inertiajs/vue3';
 import Banner from '@/Components/Banner.vue';
-import {
-    VApp,
-    VContainer,
-    VFooter,
-    VMain,
-    VRow,
-    VCol,
-    VLayout,
-} from 'vuetify/lib/components/index.mjs';
+import { VApp, VContainer, VMain } from 'vuetify/lib/components/index.mjs';
 
 defineProps({
     title: String,
@@ -31,20 +24,6 @@ defineProps({
             </v-container>
         </v-main>
 
-        <v-footer>
-            <v-row>
-                <v-col> Why Shortlinks? </v-col>
-                <v-col> Products </v-col>
-                <v-col> Feature </v-col>
-                <v-col> Legal </v-col>
-                <v-col> About </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    &copy; {{ new Date().getFullYear() }} FreedomFace, LLC. All
-                    rights reserved.
-                </v-col>
-            </v-row>
-        </v-footer>
+        <LandingPageFooter />
     </v-app>
 </template>
