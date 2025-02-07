@@ -1,14 +1,14 @@
 <script setup>
+import QrCodeComponent from '@/Components/QrCodes/QrCodeComponent.vue';
 import { reactive } from 'vue';
-import QrCodeComponent from '@/Components/shortlinks/QrCodeComponent.vue';
 import {
-    VRow,
     VBtn,
-    VForm,
-    VTextField,
     VCard,
-    VCardTitle,
     VCardText,
+    VCardTitle,
+    VForm,
+    VRow,
+    VTextField,
 } from 'vuetify/lib/components/index.mjs';
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const props = defineProps({
 });
 
 const state = reactive({
-    user_url: '',
+    target_url: '',
     urlRules: [],
     short_url: '',
     message: '',
@@ -34,7 +34,7 @@ const toggleFeature = () => {
 const createFreeLink = async () => {
     try {
         const response = await axios.post('/api/shortlinks/free', {
-            user_url: state.user_url,
+            target_url: state.target_url,
         });
         state.short_url = response.data.short_url;
         state.message = response;
@@ -93,7 +93,7 @@ const createFreeLink = async () => {
             <v-card-text>
                 <v-form @submit.prevent>
                     <v-text-field
-                        v-model="state.user_url"
+                        v-model="state.target_url"
                         variant="solo-filled"
                         label="Paste your URL here"
                         :rules="state.urlRules"
@@ -130,7 +130,7 @@ const createFreeLink = async () => {
                     <v-card-title>Generate Free QR Code</v-card-title>
 
                     <v-text-field
-                        v-model="state.user_url"
+                        v-model="state.target_url"
                         variant="solo-filled"
                         label="Paste your long link here"
                         :rules="state.urlRules"

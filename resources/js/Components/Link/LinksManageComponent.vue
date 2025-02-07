@@ -1,10 +1,10 @@
 <script setup>
-import { reactive, computed, onMounted } from 'vue';
-import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
-import PageHeaderComponent from './PageHeaderComponent.vue';
+import LinkFilterComponent from '@/Components/Link/LinkFilterComponent.vue';
+import LinkDetailsComponent from '@/Components/LinkDetails/LinkDetailsComponent.vue';
+import PageHeaderComponent from '@/Components/shortlinks/PageHeaderComponent.vue';
 import { fetchUserShortlinks } from '@/Components/shortlinks/requests';
 import SubMenuComponent from '@/Components/shortlinks/SubMenuComponent.vue';
-import LinkFilterComponent from './LinkFilterComponent.vue';
+import { computed, onMounted, reactive } from 'vue';
 
 const state = reactive({
     links: [],

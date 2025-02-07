@@ -1,13 +1,12 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
-import { router } from '@inertiajs/vue3';
-import { VForm, VRow, VCol, VTextField, VBtn } from 'vuetify/components';
+import { computed, reactive, ref } from 'vue';
+import { VBtn, VCol, VForm, VRow, VTextField } from 'vuetify/components';
 
 const state = reactive({
     shortlink: {
         title: '',
         custom_short_code: '',
-        user_url: 'http://www.reddit.com',
+        target_url: 'http://www.reddit.com',
         metadatas: [],
     },
     showFormFields: true,
@@ -35,7 +34,7 @@ const createNewLink = async () => {
     try {
         const response = await axios.post('/api/manage/new', {
             title: state.shortlink.title,
-            user_url: state.shortlink.user_url,
+            target_url: state.shortlink.target_url,
             metadatas: state.shortlink.metadatas,
             custom_short_code: state.shortlink.custom_short_code,
         });
@@ -95,7 +94,7 @@ const computedParameters = computed(() => {
                 />
 
                 <v-text-field
-                    v-model="state.shortlink.user_url"
+                    v-model="state.shortlink.target_url"
                     variant="solo"
                     label="Target URL"
                     required
@@ -111,10 +110,10 @@ const computedParameters = computed(() => {
         </v-row>
 
         <!-- Preview -->
-        <v-row v-if="state.shortlink.user_url.length">
+        <v-row v-if="state.shortlink.target_url.length">
             <v-col cols="12">
                 <p>Expanded URL Preview</p>
-                {{ state.shortlink.user_url }}/{{
+                {{ state.shortlink.target_url }}/{{
                     computedParameters ? '?' + computedParameters : ''
                 }}
             </v-col>

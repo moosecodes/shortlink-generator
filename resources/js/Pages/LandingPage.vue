@@ -1,7 +1,7 @@
 <script setup>
+import LandingPageFeaturesComponent from '@/Components/LandingPage/LandingPageFeaturesComponent.vue';
+import LandingPageGeneratorsComponent from '@/Components/LandingPage/LandingPageGeneratorsComponent.vue';
 import LandingPageLayout from '@/Layouts/LandingPageLayout.vue';
-import LandingPageFeaturesComponent from '@/Components/shortlinks/LandingPageFeaturesComponent.vue';
-import LandingPageGeneratorsComponent from '@/Components/shortlinks/LandingPageGeneratorsComponent.vue';
 
 defineProps({
     title: String,
@@ -11,6 +11,7 @@ defineProps({
 <template>
     <LandingPageLayout title="Landing Page">
         <LandingPageGeneratorsComponent />
+
         <LandingPageFeaturesComponent />
     </LandingPageLayout>
 </template>

@@ -33,7 +33,7 @@ class CreateLinkController extends Controller
     {
         return $request->validate([
             'userId' => 'integer',
-            'user_url' => 'required|url',
+            'target_url' => 'required|url',
             'metadatas' => 'array',
             'custom_short_code' => 'string|nullable',
         ]);
@@ -55,11 +55,12 @@ class CreateLinkController extends Controller
         $data = [
             'title' => $request->title,
             'user_id' => $request->user()->id ?? 999,
-            'user_url' => $validatedData['user_url'],
+            'target_url' => $validatedData['target_url'],
             'short_code' => $shortCode,
             'short_url' => config('app.url') . '/' . $shortCode,
             'hash' => $hash,
             'is_active' => $request->user()->id === 999 ? true : false,
+            'is_premium' => $request->user()->id === 999 ? false : true,
             'expires_at' => now()->addDays(30),
         ];
 

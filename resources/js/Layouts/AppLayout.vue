@@ -1,8 +1,7 @@
 <script setup>
-import { Head, Link, router } from '@inertiajs/vue3';
-import { ref } from 'vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
+import { Head, Link, router } from '@inertiajs/vue3';
 import {
     VApp,
     VAppBar,
@@ -23,8 +22,8 @@ import {
     VSpacer,
 } from 'vuetify/lib/components/index.mjs';
 
-import { useTheme } from 'vuetify';
 import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue';
+import { useTheme } from 'vuetify';
 
 defineProps({
     title: String,

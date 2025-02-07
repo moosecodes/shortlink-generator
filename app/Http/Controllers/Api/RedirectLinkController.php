@@ -41,7 +41,7 @@ class RedirectLinkController extends Controller
                 $props->put($item->meta_key, $item->meta_value);
             });
 
-            return redirect($shortlink->user_url . '?' . http_build_query($props->toArray()));
+            return redirect($shortlink->target_url . '?' . http_build_query($props->toArray()));
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Shortlink not found'], 404);
         } catch (Exception $e) {

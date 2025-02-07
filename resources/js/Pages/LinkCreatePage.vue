@@ -1,6 +1,6 @@
 <script setup>
+import LinkCreateComponent from '@/Components/Link/LinkCreateComponent.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import LinkCreateComponent from '@/Components/shortlinks/LinkCreateComponent.vue';
 </script>
 
 <template>

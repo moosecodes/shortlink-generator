@@ -31,7 +31,7 @@ class GenerateShortlinkTestData extends Command
                 $shortlink = Shortlink::create([
                     'id' => Str::uuid(),
                     'user_id' => $user->id,
-                    'user_url' => $faker->url(),
+                    'target_url' => $faker->url(),
                     'short_code' => Str::random(6),
                     'short_url' => 'https://short.link/' . Str::random(6),
                     'total_clicks' => 0,

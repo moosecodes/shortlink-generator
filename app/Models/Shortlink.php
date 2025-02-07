@@ -20,7 +20,7 @@ class Shortlink extends Model
         'short_url',
         'is_active',
         'is_premium',
-        'user_url',
+        'target_url',
         'total_clicks',
         'qr_scans',
         'unique_clicks',

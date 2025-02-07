@@ -25,7 +25,7 @@ class InfluencerGrowthSeeder extends Seeder
             DB::table('shortlinks')->insert([
                 'id'           => $shortlinkId,
                 'user_id'      => $userId,
-                'user_url'     => 'https://www.leetcode.com',
+                'target_url'     => 'https://www.leetcode.com',
                 'short_code'   => $shortCode,
                 'hash'         => Str::random(10),
                 'short_url'    => 'https://localhost/' . $shortCode,

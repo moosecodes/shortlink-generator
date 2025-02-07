@@ -20,7 +20,7 @@ class CreateLinkTest extends TestCase
 
         $response = $this->post('/api/manage/new', [
             'userId' => $user->id,
-            'user_url' => 'https://www.example.com',
+            'target_url' => 'https://www.example.com',
             'metadatas' => [
                 [
                     'meta_key' => 'description',
@@ -38,7 +38,7 @@ class CreateLinkTest extends TestCase
 
         $this->assertDatabaseHas('shortlinks', [
             'user_id' => 1,
-            'user_url' => 'https://www.example.com',
+            'target_url' => 'https://www.example.com',
             'short_code' => 'example',
             'short_url' => 'http://localhost/example',
             'is_active' => false,

@@ -1,21 +1,21 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import { Line, Bar } from 'vue-chartjs';
-import { VRow, VCol, VCard } from 'vuetify/lib/components/index.mjs';
 import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { Bar, Line } from 'vue-chartjs';
+import { VCard, VCol, VRow } from 'vuetify/lib/components/index.mjs';
 
+import LinkDetailsComponent from '@/Components/LinkDetails/LinkDetailsComponent.vue';
 import {
-    Chart as ChartJS,
+    BarElement,
     CategoryScale,
+    Chart as ChartJS,
+    Legend,
     LinearScale,
-    PointElement,
     LineElement,
+    PointElement,
     Title,
     Tooltip,
-    Legend,
-    BarElement,
 } from 'chart.js';
-import LinkDetailsComponent from '@/Components/shortlinks/LinkDetailsComponent.vue';
 
 ChartJS.register(
     CategoryScale,

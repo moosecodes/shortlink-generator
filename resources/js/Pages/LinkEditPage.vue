@@ -1,6 +1,6 @@
 <script setup>
+import LinkEditComponent from '@/Components/Link/LinkEditComponent.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import LinkEditComponent from '@/Components/shortlinks/LinkEditComponent.vue';
 
 const linkShortCode = defineProps(['linkShortCode']);
 </script>
