@@ -1,10 +1,10 @@
 <script setup>
 import PricingComponent from '@/Components/Pricing/PricingComponent.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import LandingPageLayout from '@/Layouts/LandingPageLayout.vue';
 </script>
 
 <template>
-    <AppLayout title="Edit Shortlink">
+    <LandingPageLayout title="Edit Shortlink">
         <PricingComponent />
-    </AppLayout>
+    </LandingPageLayout>
 </template>
