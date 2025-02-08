@@ -1,8 +1,8 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
+import { Link } from '@inertiajs/vue3';
 
-import { VBtn, VAppBar, VAppBarTitle } from 'vuetify/lib/components/index.mjs';
+import { VAppBar, VAppBarTitle, VBtn } from 'vuetify/lib/components/index.mjs';
 
 import { useTheme } from 'vuetify';
 
@@ -34,7 +34,9 @@ const toggleTheme = () => {
         <nav class="flex justify-between">
             <v-btn variant="text" class="mr-4">Platform</v-btn>
 
-            <v-btn variant="text" class="mr-4">Pricing</v-btn>
+            <v-btn :href="route('pricing')" variant="text" class="mr-4"
+                >Pricing</v-btn
+            >
 
             <v-btn
                 v-if="$page.props.auth.user"
@@ -45,6 +47,7 @@ const toggleTheme = () => {
             >
                 Dashboard
             </v-btn>
+
             <div v-else>
                 <v-btn :href="route('login')" variant="plain" class="mr-4">
                     Login

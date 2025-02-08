@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 use Stevebauman\Location\Facades\Location;
 
-class LocationController extends Controller
+class ClickLocationController extends Controller
 {
     public function index($ip)
     {

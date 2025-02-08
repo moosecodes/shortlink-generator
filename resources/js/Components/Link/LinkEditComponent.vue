@@ -1,11 +1,8 @@
 <script setup>
+import { fetchShortlinkbyShortCode, updateLink } from '@/utils/requests';
 import { router, usePage } from '@inertiajs/vue3';
-import { onMounted, reactive, computed } from 'vue';
-import { VBtn, VCard, VTextField, VForm, VRow, VCol } from 'vuetify/components';
-import {
-    fetchShortlinkbyShortCode,
-    updateLink,
-} from '@/Components/shortlinks/requests';
+import { computed, onMounted, reactive } from 'vue';
+import { VBtn, VCol, VForm, VRow, VTextField } from 'vuetify/components';
 
 const page = usePage();
 

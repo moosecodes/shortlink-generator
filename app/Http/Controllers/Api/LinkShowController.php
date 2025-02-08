@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
-class ShowLinkController extends Controller
+class LinkShowController extends Controller
 {
 
     public function index(Request $request)

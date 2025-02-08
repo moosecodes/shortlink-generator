@@ -22,7 +22,7 @@ import {
     VSpacer,
 } from 'vuetify/lib/components/index.mjs';
 
-import NavigationDrawer from '@/Components/shortlinks/NavigationDrawer.vue';
+import NavigationDrawer from '@/Components/Navigation/NavigationDrawer.vue';
 import { useTheme } from 'vuetify';
 
 defineProps({

@@ -1,14 +1,12 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import { onMounted, reactive, ref } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { onMounted, reactive } from 'vue';
 import {
     VBtn,
     VDivider,
     VList,
     VListItem,
     VNavigationDrawer,
-    VAppBarNavIcon,
 } from 'vuetify/lib/components/index.mjs';
 
 const props = defineProps({
@@ -70,8 +68,8 @@ onMounted(() => {
 
             <v-list-item
                 link
-                @click="navigateTo('show.links')"
-                :active="route().current('show.links')"
+                @click="navigateTo('manage.links')"
+                :active="route().current('manage.links')"
                 prepend-icon="mdi-link-variant"
                 title="Manage Links"
             />

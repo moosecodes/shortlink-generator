@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class RedirectLinkController extends Controller
+class LinkRedirectController extends Controller
 {
     public function index(Request $request, $short_code)
     {

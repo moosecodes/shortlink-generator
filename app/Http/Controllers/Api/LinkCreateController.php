@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Shortlink;
 use Illuminate\Validation\ValidationException;
+use App\Models\Metadata;
 
-class CreateLinkController extends Controller
+class LinkCreateController extends Controller
 {
     public function index(Request $request)
     {
@@ -18,7 +19,7 @@ class CreateLinkController extends Controller
 
             $shortlink = $this->createShortlink($request);
 
-            $this->createShortlinkMetadatas($shortlink, $validatedData);
+            $this->createShortlinkMetadatas($request, $shortlink, $validatedData);
 
             return response()->json($shortlink, 201);
         } catch (ValidationException $e) {
@@ -41,11 +42,14 @@ class CreateLinkController extends Controller
 
     private function generateShortCode(Request $request)
     {
-        return $request->custom_short_code ?? substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
+        return $request->custom_short_code
+            ?? substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
     }
 
     private function createShortlink(Request $request)
     {
+        $userId = $request->user()->id ?? 999;
+
         $validatedData = $this->validateRequest($request);
 
         $hash = substr(hash_hmac('sha256', uniqid(), config('app.secret_key')), 0, 8);
@@ -54,27 +58,48 @@ class CreateLinkController extends Controller
 
         $data = [
             'title' => $request->title,
-            'user_id' => $request->user()->id ?? 999,
-            'target_url' => $validatedData['target_url'],
+            'user_id' => $userId,
             'short_code' => $shortCode,
+            'target_url' => $validatedData['target_url'],
             'short_url' => config('app.url') . '/' . $shortCode,
+            'final_url' => 'http://www.bing.com/',
             'hash' => $hash,
             'is_active' => $request->user()->id === 999 ? true : false,
             'is_premium' => $request->user()->id === 999 ? false : true,
             'expires_at' => now()->addDays(30),
         ];
 
-        return Shortlink::create(array_merge($validatedData, $data));
+        $shortlink = Shortlink::create(array_merge($validatedData, $data));
+
+        $props = collect();
+
+        $metadatas = Metadata::where('shortlink_id', $shortlink->id);
+
+        $props->put('user_id', $userId);
+
+        $metadatas->each(function ($item, $key) use ($props) {
+            $props->put($item->meta_key, $item->meta_value);
+            $item->save();
+        });
+
+        $shortlink->final_url . '?' . http_build_query($props->toArray());
+
+        $shortlink->save();
+
+        return $shortlink;
     }
 
-    private function createShortlinkMetadatas(Shortlink $shortlink, array $validatedData)
+    private function createShortlinkMetadatas(Request $request, Shortlink $shortlink, array $validatedData)
     {
         if (isset($validatedData['metadatas'])) {
-            foreach ($validatedData['metadatas'] as $metadata) {
-                if (isset($metadata['meta_key']) && isset($metadata['meta_value'])) {
+            foreach ($validatedData['metadatas'] as $metas) {
+                if (isset($metas['meta_key']) && isset($metas['meta_value'])) {
                     $shortlink->metadatas()->create([
-                        'meta_key' => $metadata['meta_key'],
-                        'meta_value' => $metadata['meta_value'],
+                        'user_id'
+                        => $request->user()->id ?? 999,
+                        'meta_key' => $metas['meta_key'],
+                        'meta_value' =>
+                        $metas['meta_value'],
                     ]);
                 }
             }

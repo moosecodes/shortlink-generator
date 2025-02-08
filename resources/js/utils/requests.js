@@ -60,7 +60,7 @@ export const fetchUserShortlinks = async () => {
 export const updateLink = async (link) => {
     try {
         const { id, short_code, target_url, metadatas } = link;
-        console.log(link)
+
         const response = await axios.patch(`/api/link/edit/byShortCode`, {
             id,
             short_code,

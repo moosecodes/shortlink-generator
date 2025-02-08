@@ -21,6 +21,13 @@ return new class extends Migration
                 ->constrained()
                 ->onDelete('cascade');
         });
+
+        Schema::table('metadatas', function (Blueprint $table) {
+            $table->foreignId('user_id')
+                ->after('shortlink_id')
+                ->constrained()
+                ->onDelete('cascade');
+        });
     }
 
     public function down(): void
@@ -30,6 +37,10 @@ return new class extends Migration
             $table->dropColumn('user_id');
         });
         Schema::table('locations', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
+        Schema::table('metadatas', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropColumn('user_id');
         });

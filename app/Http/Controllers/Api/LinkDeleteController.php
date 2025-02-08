@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
-class DeleteLinkController extends Controller
+class LinkDeleteController extends Controller
 {
     public function index($id)
     {

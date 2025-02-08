@@ -17,13 +17,14 @@ class Shortlink extends Model
         'user_id',
         'short_code',
         'hash',
+        'target_url',
+        'final_url',
         'short_url',
         'is_active',
         'is_premium',
-        'target_url',
         'total_clicks',
-        'qr_scans',
         'unique_clicks',
+        'qr_scans',
         'expires_at',
     ];
 

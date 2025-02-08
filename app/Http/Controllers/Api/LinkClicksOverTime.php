@@ -7,7 +7,7 @@ use App\Models\ClicksOverTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
-class GetClicksOverTime extends Controller
+class LinkClicksOverTime extends Controller
 {
     public function index($id)
     {

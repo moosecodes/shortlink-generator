@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
-class LinkActivationController extends Controller
+class LinkStatusController extends Controller
 {
     public function activate($id)
     {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShortlinksMetadataTable extends Migration
+class CreateMetadatasTable extends Migration
 {
     public function up()
     {
@@ -15,7 +15,7 @@ class CreateShortlinksMetadataTable extends Migration
             $table->text('meta_value')->nullable();
             $table->timestamps();
 
-            // Foreign key cons  traint
+            // Foreign key constraint
             $table->foreign('shortlink_id')
                 ->references('id')
                 ->on('shortlinks')

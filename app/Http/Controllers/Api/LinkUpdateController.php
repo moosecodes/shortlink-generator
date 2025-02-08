@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
-class UpdateLinkController extends Controller
+class LinkUpdateController extends Controller
 {
     public function update(Request $request)
     {

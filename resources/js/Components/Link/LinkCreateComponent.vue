@@ -33,6 +33,7 @@ const createNewLink = async () => {
 
     try {
         const response = await axios.post('/api/manage/new', {
+            user_id: '',
             title: state.shortlink.title,
             target_url: state.shortlink.target_url,
             metadatas: state.shortlink.metadatas,

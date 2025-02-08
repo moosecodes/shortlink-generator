@@ -5,21 +5,19 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class AutoLoginGuest
 {
     public function handle(Request $request, Closure $next)
     {
-
-        // dd($request->user());
         // if (!Auth::check()) {
-        //     $user = User::find(999);
-
-        //     if ($user) {
-        //         Auth::login($user);
-        //     }
+        //     Auth::loginUsingId(999); // Automatically log in guest user
         // }
+
+        // // Ensure `user_id` is added to request parameters
+        // $modifiedRequest = $request->replace([
+        //     'user_id' => Auth::id(),
+        // ] + $request->all()); // Keeps all original parameters
 
         return $next($request);
     }

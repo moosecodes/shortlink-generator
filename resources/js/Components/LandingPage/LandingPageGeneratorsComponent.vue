@@ -6,6 +6,7 @@ import {
     VCard,
     VCardText,
     VCardTitle,
+    VCol,
     VForm,
     VRow,
     VTextField,
@@ -47,41 +48,41 @@ const createFreeLink = async () => {
 
 <template>
     <v-row
-        class="flex-column mx-auto my-4 flex max-w-3xl justify-center text-center sm:px-6 lg:px-8"
+        class="flex-column mx-auto my-4 max-w-3xl justify-center text-center"
     >
-        <div class="">
-            <p class="text-h3 my-8">
-                Transform Your Links into Powerful Connections
-            </p>
-            <p class="my-4">
-                Simplify engagement with our powerful URL shortener, dynamic QR
-                Codes, and customized landing pages. Effortlessly connect your
-                audience to the right content while building, editing, and
-                tracking every interaction on our intuitive platform.
-            </p>
-        </div>
+        <p class="text-h3 my-8">
+            Transform Your Links into Powerful Connections
+        </p>
+        <p class="my-4">
+            Simplify engagement with our powerful URL shortener, dynamic QR
+            Codes, and customized landing pages. Effortlessly connect your
+            audience to the right content while building, editing, and tracking
+            every interaction on our intuitive platform.
+        </p>
     </v-row>
 
-    <v-row
-        class="flex-column mx-auto my-4 flex max-w-3xl justify-center text-center sm:px-6 lg:px-8"
-    >
-        <v-btn
-            class="my-2"
-            color="primary"
-            :variant="state.switchFeature ? 'outlined' : 'elevated'"
-            @click="toggleFeature"
-        >
-            Short link
-        </v-btn>
+    <v-row class="mx-auto my-4 max-w-3xl justify-center text-center">
+        <v-col cols="12" col="6">
+            <v-btn
+                class="m-4"
+                color="primary"
+                :variant="state.switchFeature ? 'outlined' : 'elevated'"
+                @click="toggleFeature"
+            >
+                Short link
+            </v-btn>
+        </v-col>
 
-        <v-btn
-            class="my-2"
-            color="primary"
-            :variant="!state.switchFeature ? 'outlined' : 'elevated'"
-            @click="toggleFeature"
-        >
-            QR Code
-        </v-btn>
+        <v-col cols="12" col="6">
+            <v-btn
+                class="m-4"
+                color="primary"
+                :variant="!state.switchFeature ? 'outlined' : 'elevated'"
+                @click="toggleFeature"
+            >
+                QR Code
+            </v-btn>
+        </v-col>
     </v-row>
 
     <v-row

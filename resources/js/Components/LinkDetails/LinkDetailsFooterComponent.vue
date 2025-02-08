@@ -1,7 +1,7 @@
 <script setup>
 import { defineEmits } from 'vue';
 import { VBtn, VCardActions, VIcon } from 'vuetify/components';
-import { toggleActivation } from '../shortlinks/requests';
+import { toggleActivation } from '../../utils/requests';
 
 const emit = defineEmits(['update-status']);
 
@@ -37,7 +37,7 @@ const handleActivation = async (id, is_active) => {
                 v-if="
                     !data.is_active &&
                     (route().current('link.update') ||
-                        route().current('show.links'))
+                        route().current('manage.links'))
                 "
                 variant="flat"
                 :color="data.is_active ? 'black' : 'white bg-primary'"

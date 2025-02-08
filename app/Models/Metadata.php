@@ -14,6 +14,7 @@ class Metadata extends Model
 
     protected $fillable = [
         'shortlink_id',
+        'user_id',
         'meta_key',
         'meta_value',
     ];

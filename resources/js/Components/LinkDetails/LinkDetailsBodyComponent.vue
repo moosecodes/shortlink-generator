@@ -32,6 +32,18 @@ const props = defineProps({
                 </a>
 
                 <a
+                    :href="data.final_url"
+                    :target="'_blank'"
+                    :class="
+                        data.is_active
+                            ? 'text-black'
+                            : 'text-blue-grey-lighten-2'
+                    "
+                >
+                    {{ data.final_url }}
+                </a>
+
+                <a
                     :href="data.target_url"
                     :target="'_blank'"
                     :class="

@@ -4,10 +4,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\CheckShortlinkExpiration;
-use App\Http\Controllers\Api\RedirectLinkController;
+use App\Http\Controllers\Api\LinkRedirectController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LinkGraphController;
-use Carbon\Carbon;
+use App\Http\Controllers\LinkAnalyticsController;
+use App\Models\Metadata;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -28,15 +29,20 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/links/manage', function () {
+    Route::get('/links/manage', function (Request $request) {
         return Inertia::render('LinksManagePage', [
             'title' => 'Manage Links',
             'links' => Auth::user()->shortlinks,
+            'metas'  => Metadata::where('user_id', $request->user()->id),
         ]);
-    })->name('show.links');
+    })->name('manage.links');
+
+    Route::get('/pricing', function () {
+        return Inertia::render('PricingPage');
+    })->name('pricing');
 
     Route::prefix('link')->name('link.')->group(function () {
-        Route::get('/analytics/{shortlink_id}', [LinkGraphController::class, 'index'])->name('analytics');
+        Route::get('/analytics/{shortlink_id}', [LinkAnalyticsController::class, 'index'])->name('analytics');
 
         Route::get('/new', function () {
             return Inertia::render('LinkCreatePage', [
@@ -77,6 +83,6 @@ Route::middleware([
     })->name('settings');
 });
 
-Route::get('/{short_code}', [RedirectLinkController::class, 'index'])
+Route::get('/{short_code}', [LinkRedirectController::class, 'index'])
     ->middleware(CheckShortlinkExpiration::class)
     ->name('shortlink.redirect');

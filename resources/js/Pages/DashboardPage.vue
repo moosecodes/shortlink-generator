@@ -1,5 +1,5 @@
 <script setup>
-import DashboardComponent from '@/Components/shortlinks/DashboardComponent.vue';
+import DashboardComponent from '@/Components/Dashboard/DashboardComponent.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 </script>
 

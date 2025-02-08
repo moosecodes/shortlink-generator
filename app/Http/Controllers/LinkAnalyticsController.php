@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Shortlink;
 use App\Models\Location;
-use App\Http\Controllers\Api\GetClicksOverTime;
+use App\Http\Controllers\Api\LinkClicksOverTime;
 
-class LinkGraphController extends Controller
+class LinkAnalyticsController extends Controller
 {
     public function index(Request $request)
     {
@@ -35,7 +35,7 @@ class LinkGraphController extends Controller
 
     private function getClickData($shortlink)
     {
-        $clicksController = new GetClicksOverTime();
+        $clicksController = new LinkClicksOverTime();
         $clickData = $clicksController->index($shortlink->id)->getData();
         $clickData->shortlink_id = $shortlink->id;
         $clickData->shortCode = $shortlink->short_code;

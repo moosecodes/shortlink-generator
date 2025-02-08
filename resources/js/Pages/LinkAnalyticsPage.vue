@@ -1,5 +1,5 @@
 <script setup>
-import WorldTrafficComponent from '@/Components/shortlinks/WorldTrafficComponent.vue';
+import WorldTrafficComponent from '@/Components/Traffic/WorldTrafficComponent.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Bar, Line } from 'vue-chartjs';
 import { VCard, VCol, VRow } from 'vuetify/lib/components/index.mjs';

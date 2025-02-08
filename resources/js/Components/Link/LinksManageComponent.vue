@@ -1,9 +1,9 @@
 <script setup>
 import LinkFilterComponent from '@/Components/Link/LinkFilterComponent.vue';
 import LinkDetailsComponent from '@/Components/LinkDetails/LinkDetailsComponent.vue';
-import PageHeaderComponent from '@/Components/shortlinks/PageHeaderComponent.vue';
-import { fetchUserShortlinks } from '@/Components/shortlinks/requests';
-import SubMenuComponent from '@/Components/shortlinks/SubMenuComponent.vue';
+import SubMenuComponent from '@/Components/Navigation/SubMenuComponent.vue';
+import PageHeaderComponent from '@/Components/PageHeaderComponent.vue';
+import { fetchUserShortlinks } from '@/utils/requests';
 import { computed, onMounted, reactive } from 'vue';
 
 const state = reactive({
