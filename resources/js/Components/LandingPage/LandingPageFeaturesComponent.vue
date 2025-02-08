@@ -1,16 +1,12 @@
 <script setup>
 import {
     VBtn,
-    VRow,
-    VIcon,
     VCard,
-    VCardTitle,
     VCardText,
-    VList,
-    VListItem,
-    VListItemTitle,
-    VListSubheader,
+    VCardTitle,
+    VRow,
 } from 'vuetify/lib/components/index.mjs';
+import PricingComponent from '../Pricing/PricingComponent.vue';
 
 const rowStyles = {
     flex: true,
@@ -30,30 +26,7 @@ const freeFeatures = [
 </script>
 
 <template>
-    <v-row>
-        <v-card class="mx-auto my-4">
-            <v-list>
-                <v-list-subheader
-                    class="text-h6 flex justify-center"
-                    color="text-secondary"
-                    >Sign up for free. Your free plan
-                    includes:</v-list-subheader
-                >
-
-                <div class="flex-column text-secondary flex">
-                    <v-list-item v-for="(feature, i) in freeFeatures" :key="i">
-                        <template v-slot:prepend>
-                            <v-icon
-                                icon="mdi-check-circle-outline"
-                                class="text-green"
-                            />
-                        </template>
-                        <v-list-item-title>{{ feature }}</v-list-item-title>
-                    </v-list-item>
-                </div>
-            </v-list>
-        </v-card>
-    </v-row>
+    <PricingComponent />
 
     <v-row :class="rowStyles">
         <p class="text-h4 my-8">The Best Engagement Platform</p>

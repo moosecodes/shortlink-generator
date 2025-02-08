@@ -1,6 +1,6 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
-import { onMounted, reactive } from 'vue';
+import { reactive } from 'vue';
 import {
     VBtn,
     VDivider,
@@ -21,10 +21,6 @@ const state = reactive({
 const navigateTo = (routeName) => {
     router.get(route(routeName));
 };
-
-onMounted(() => {
-    console.log(state);
-});
 </script>
 
 <template>
