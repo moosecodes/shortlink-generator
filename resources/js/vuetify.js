@@ -1,8 +1,8 @@
-import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
 import { createVuetify } from 'vuetify';
-import colors from 'vuetify/util/colors'
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
-import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles';
+import colors from 'vuetify/util/colors';
 
 const vuetify = createVuetify({
     icons: {

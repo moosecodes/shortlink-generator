@@ -6,7 +6,7 @@ import {
     VCardTitle,
     VRow,
 } from 'vuetify/lib/components/index.mjs';
-import PricingComponent from '../Pricing/PricingComponent.vue';
+import PricingTableComponent from '../Pricing/PricingTableComponent.vue';
 
 const rowStyles = {
     flex: true,
@@ -26,7 +26,7 @@ const freeFeatures = [
 </script>
 
 <template>
-    <PricingComponent />
+    <PricingTableComponent />
 
     <v-row :class="rowStyles">
         <p class="text-h4 my-8">The Best Engagement Platform</p>
