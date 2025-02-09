@@ -38,7 +38,6 @@ export const fetchShortlinkByShortCode = async (shortCode) => {
 };
 
 export const fetchShortlinkbyShortCode = async (shortCode) => {
-    console.log('Fetching shortlink by shortCode:', shortCode);
     try {
         const response = await axios.post(`/api/link/details`, { id: shortCode });
         return response.data;

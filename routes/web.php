@@ -10,6 +10,7 @@ use App\Http\Controllers\LinkAnalyticsController;
 use App\Models\Metadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BillingController;
 
 Route::get('/', function () {
     return Inertia::render('LandingPage', [
@@ -27,6 +28,8 @@ Route::middleware([
     \App\Http\Middleware\AutoLoginGuest::class,
     \App\Http\Middleware\LogAuthStatus::class,
 ])->group(function () {
+    Route::post('/checkout', [BillingController::class, 'checkout'])->name('checkout');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/links/manage', function (Request $request) {
@@ -36,10 +39,6 @@ Route::middleware([
             'metas'  => Metadata::where('user_id', $request->user()->id),
         ]);
     })->name('manage.links');
-
-    Route::get('/pricing', function () {
-        return Inertia::render('PricingPage');
-    })->name('pricing');
 
     Route::prefix('link')->name('link.')->group(function () {
         Route::get('/analytics/{shortlink_id}', [LinkAnalyticsController::class, 'index'])->name('analytics');
@@ -82,6 +81,10 @@ Route::middleware([
         return Inertia::render('LinksManagePage');
     })->name('settings');
 });
+
+Route::get('/pricing', function () {
+    return Inertia::render('PricingPage');
+})->name('pricing');
 
 Route::get('/{short_code}', [LinkRedirectController::class, 'index'])
     ->middleware(CheckShortlinkExpiration::class)
