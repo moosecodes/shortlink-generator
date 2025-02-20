@@ -1,9 +1,18 @@
 <script setup>
-import { VBtn, VRow, VCol } from 'vuetify/lib/components/index.mjs';
+import { defineEmits } from 'vue';
+import { VBtn, VCol, VRow } from 'vuetify/lib/components/index.mjs';
+import { toggleActivation } from '../../utils/requests';
 
 defineProps({
     links: Object,
 });
+
+const emit = defineEmits(['update-status']);
+
+const handleActivation = async (id, is_active) => {
+    const response = await toggleActivation(id, is_active);
+    emit('update-status', is_active);
+};
 </script>
 
 <template>
@@ -13,14 +22,32 @@ defineProps({
         </v-col>
 
         <v-col
-            v-for="{ short_code, short_url, title, id, is_active } in links"
+            v-for="{
+                short_code,
+                target_url,
+                short_url,
+                final_url,
+                title,
+                id,
+                is_active,
+                is_premium,
+                expires_at,
+            } in links"
             :key="short_code"
             cols="12"
             md="12"
         >
             <p>
-                <a :href="short_url" target="_blank" class="font-weight-bold">
-                    {{ title || 'No Title' }}
+                {{ title || 'Title not set.' }}
+            </p>
+
+            <p>
+                <a
+                    :href="route('link.analytics', { shortlink_id: id })"
+                    :class="is_active ? 'text-accent' : 'text-warning'"
+                    class="font-weight-bold"
+                >
+                    {{ short_code }}
                 </a>
             </p>
 
@@ -29,23 +56,28 @@ defineProps({
                     :href="short_url"
                     target="_blank"
                     :class="is_active ? 'text-accent' : 'text-warning'"
+                    class="font-weight-bold"
                 >
-                    {{ short_code }}
-                </a>
-            </p>
-
-            <p>
-                <a :href="short_url" target="_blank">
                     {{ short_url }}
                 </a>
             </p>
 
             <v-btn
-                :href="route('link.analytics', { shortlink_id: id })"
-                icon="mdi-signal"
                 variant="outlined"
+                :icon="is_active ? 'mdi-stop' : 'mdi-play'"
+                :color="is_active ? 'white bg-primary' : 'white bg-success'"
+                @click="handleActivation(id, is_active)"
+                class="border-md mr-4"
+            >
+            </v-btn>
+
+            <v-btn
+                variant="outlined"
+                :icon="'mdi-eye'"
+                :href="short_url"
                 :class="is_active ? 'text-accent' : 'text-warning'"
-                class="m-4 ml-0"
+                :target="'_blank'"
+                class="font-weight-bold m-2"
             >
             </v-btn>
 
@@ -55,7 +87,7 @@ defineProps({
                 icon="mdi-link-edit"
                 :href="`/link/edit/byShortCode/${short_code}`"
                 :class="is_active ? 'text-accent' : 'text-warning'"
-                class="my-2"
+                class="m-4"
             >
             </v-btn>
         </v-col>
