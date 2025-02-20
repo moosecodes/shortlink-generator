@@ -86,6 +86,8 @@ Route::get('/pricing', function () {
     return Inertia::render('PricingPage');
 })->name('pricing');
 
-Route::get('/{short_code}', [LinkRedirectController::class, 'index'])
-    ->middleware(CheckShortlinkExpiration::class)
-    ->name('shortlink.redirect');
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/{short_code}', [LinkRedirectController::class, 'index'])
+        ->middleware(CheckShortlinkExpiration::class)
+        ->name('shortlink.redirect');
+});
