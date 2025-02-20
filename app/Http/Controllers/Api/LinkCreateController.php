@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 use App\Models\Shortlink;
 use Illuminate\Validation\ValidationException;
 use App\Models\Metadata;
+use App\Http\Requests\CreateLinkRequest;
 
 class LinkCreateController extends Controller
 {
     public function index(Request $request)
     {
         try {
+            // $validated = $request->validated();
             $validatedData = $this->validateRequest($request);
 
             $shortlink = $this->createShortlink($request);
