@@ -64,7 +64,7 @@ class LinkCreateController extends Controller
             'short_code' => $shortCode,
             'target_url' => $validatedData['target_url'],
             'short_url' => config('app.url') . '/' . $shortCode,
-            'final_url' => 'http://www.bing.com/',
+            'final_url' => 'http://www.finalurl.com/',
             'hash' => $hash,
             'is_active' => $request->user()->id === 999 ? true : false,
             'is_premium' => $request->user()->id === 999 ? false : true,

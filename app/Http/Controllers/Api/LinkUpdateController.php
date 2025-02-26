@@ -22,7 +22,7 @@ class LinkUpdateController extends Controller
 
             $this->updateShortlink($shortlink, $validatedData);
 
-            $this->updateShortlinkMetadata($shortlink, $validatedData);
+            $this->updateMetadata($shortlink, $validatedData);
 
             $metadatas = Metadata::where('shortlink_id', $shortlink->id)->get();
 
@@ -56,10 +56,12 @@ class LinkUpdateController extends Controller
 
     private function updateShortlink($shortlink, $validatedData)
     {
+        $validatedData['short_url'] = config('app.url') . '/' . $validatedData['short_code'];
+
         $shortlink->update($validatedData);
     }
 
-    private function updateShortlinkMetadata($shortlink, $validatedData)
+    private function updateMetadata($shortlink, $validatedData)
     {
         if (isset($validatedData['metadatas'])) {
             $shortlink->metadatas()->delete();

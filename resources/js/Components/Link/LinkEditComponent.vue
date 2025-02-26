@@ -90,7 +90,7 @@ onMounted(async () => {
                     <v-btn
                         type="submit"
                         color="primary"
-                        @click="navigateTo('dashboard')"
+                        @click="navigateTo('manage.links')"
                         class="my-2"
                     >
                         {{ state.message ? state.message : 'Update Shortlink' }}
