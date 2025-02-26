@@ -1,7 +1,7 @@
 <script setup>
 import { defineEmits } from 'vue';
 import { VBtn, VCardActions, VIcon } from 'vuetify/components';
-import { toggleActivation } from '../../utils/requests';
+import { toggleActivation, deleteShortlink } from '@/utils/requests';
 
 const emit = defineEmits(['update-status']);
 

@@ -1,4 +1,5 @@
 <script setup>
+import { router } from '@inertiajs/vue3';
 import { computed, reactive, ref } from 'vue';
 import { VBtn, VCol, VForm, VRow, VTextField } from 'vuetify/components';
 
@@ -26,24 +27,35 @@ const rules = {
     minLength: (value) => value.length >= 3 || 'Must be at least 3 characters',
 };
 
+const navigateTo = (routeName) => {
+    router.get(route(routeName));
+};
+
 // Create Shortlink Function
 const createNewLink = async () => {
-    const { valid } = await formRef.value.validate(); // Validate form before submission
-    if (!valid) return; // Stop if validation fails
+    const { valid } = await formRef.value.validate();
+    if (!valid) return;
+
+    const shortlinkData = {
+        user_id: '',
+        title: state.shortlink.title,
+        target_url: state.shortlink.target_url,
+        metadatas: state.shortlink.metadatas,
+        custom_short_code: state.shortlink.custom_short_code,
+    };
 
     try {
-        const response = await axios.post('/api/manage/new', {
-            user_id: '',
-            title: state.shortlink.title,
-            target_url: state.shortlink.target_url,
-            metadatas: state.shortlink.metadatas,
-            custom_short_code: state.shortlink.custom_short_code,
-        });
+        await axios.post('/api/manage/new', shortlinkData);
 
         state.message = 'Shortlink created successfully!';
+        navigateTo('manage.links');
     } catch (error) {
-        console.error('Error creating shortlink:', error);
-        state.message = 'Failed to create shortlink.';
+        const errorMessage =
+            error?.response?.data?.error || error.message || '';
+
+        state.message = errorMessage.includes('Integrity constraint violation')
+            ? 'Shortcode unavailable'
+            : 'Failed to create shortlink.';
     }
 };
 
